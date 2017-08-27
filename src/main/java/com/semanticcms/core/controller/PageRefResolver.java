@@ -39,6 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper utilities for resolving  {@link PageRef PageRefs}.
+ *
+ * TODO: Parts of this go to pages-local?
  */
 public class PageRefResolver {
 
