@@ -100,7 +100,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-books.xsd</id>
+						<id>copy-books-1.0.xsd</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -111,6 +111,30 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 									<directory>${project.build.directory}/dependency/com/semanticcms/core/controller</directory>
 									<includes>
 										<include>books-1.0.xsd</include>
+									</includes>
+								</resource>
+							</resources>
+							<!-- Put into META-INF/resources to be accessible as website content when jar included in WEB-INF/lib -->
+							<outputDirectory>${project.build.outputDirectory}/META-INF/resources/core/servlet</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-books-1.1.xsd</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/dependency/com/semanticcms/core/controller</directory>
+									<includes>
 										<include>books-1.1.xsd</include>
 									</includes>
 								</resource>

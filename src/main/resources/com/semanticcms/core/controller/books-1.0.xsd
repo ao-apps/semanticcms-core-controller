@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+<!--
+semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
+Copyright (C) 2016  AO Industries, Inc.
+	support@aoindustries.com
+	7262 Bull Pen Cir
+	Mobile, AL 36695
+
+This file is part of semanticcms-core-servlet.
+
+semanticcms-core-servlet is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+semanticcms-core-servlet is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with semanticcms-core-servlet.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:books="https://semanticcms.com/core/servlet/"
+	targetNamespace="https://semanticcms.com/core/servlet/"
+	elementFormDefault="qualified"
+	version="1.0"
+>
+	<xs:simpleType name="bookName">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				The name of a book.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Book names must always begin with a slash (/).
+				</xs:documentation>
+			</xs:annotation>
+			<xs:pattern value="/.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="books">
+		<xs:complexType>
+			<!-- TODO: How to allow missing book anywhere, but still require at least one book? -->
+			<xs:sequence>
+				<xs:element name="missingBook" minOccurs="0" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							The list of books that are allowed to be referenced and missing.
+							Any reference to a book that is in neither the books list nor the
+							missingBooks list will immediately result in an exception.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="name" type="books:bookName" use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="book" minOccurs="1" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							The list of books that are contained within this set of books.
+							Links to contained books will be verified, and page titles substituted in place of page paths.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="parent" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										The parent pages that will be used for any pages
+										within this book that do not define their parents.
+									</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="book" type="books:bookName" use="required">
+										<xs:annotation>
+											<xs:documentation xml:lang="en">
+												The book containing the parent of this book.
+											</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="page" use="required">
+										<xs:annotation>
+											<xs:documentation xml:lang="en">
+												The book-relative path containing the parent of this book.
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:documentation xml:lang="en">
+													A path withing a book.
+												</xs:documentation>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:annotation>
+													<xs:documentation xml:lang="en">
+														Paths must always begin with a slash (/).
+													</xs:documentation>
+												</xs:annotation>
+												<xs:pattern value="/.*"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="shortTitle">
+										<xs:annotation>
+											<xs:documentation xml:lang="en">
+												The optional short title for this book within the context of this parent.
+											</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:annotation>
+													<xs:documentation xml:lang="en">
+														shortTitle may not be empty.
+													</xs:documentation>
+												</xs:annotation>
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="books:bookName" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									The name of the book.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<!-- TODO: this should not be required, parts of code that assume it should be modified -->
+						<xs:attribute name="cvsworkDirectory" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									The directory containing the source files for this book.
+									If begins with a ~/ will be relative to the user's home directory.
+								</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:annotation>
+										<xs:documentation xml:lang="en">
+											cvsworkDirectory may not be empty.
+										</xs:documentation>
+									</xs:annotation>
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="allowRobots" type="xs:boolean" default="true">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									The allowRobots setting of the book.  Any page with an "auto"
+									setting and no parents within the book will use this setting.
+									Defaults to "true", allowing robots.
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+					<xs:unique name="parentUni">
+						<xs:annotation>
+							<xs:documentation xml:lang="en">
+								Each parent must be a unique combination of book and page.
+								No duplicate parents per book.
+							</xs:documentation>
+						</xs:annotation>
+						<xs:selector xpath="books:parent" />
+						<xs:field xpath="@book" />
+						<xs:field xpath="@page" />
+					</xs:unique>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="rootBook" type="books:bookName" use="required">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+						The name of the book representing the overall content root.
+						Must be the name of one of the books defined below.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:unique name="allBookNameUni">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					A book name must be unique across both missingBooks and books.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="books:missingBook|books:book" />
+			<xs:field xpath="@name" />
+		</xs:unique>
+		<xs:key name="bookNameKey">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					A key of book names (not including missing books).
+				</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="books:book" />
+			<xs:field xpath="@name" />
+		</xs:key>
+		<xs:keyref name="rootBookNameRef" refer="books:bookNameKey">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					The rootBook must reference an existing book.
+					It cannot reference missing books.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="."/>
+			<xs:field xpath="@rootBook"/>
+		</xs:keyref>
+		<xs:keyref name="parentBookNameRef" refer="books:bookNameKey">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					Parents must reference an existing book.
+					They cannot reference missing books.
+				</xs:documentation>
+			</xs:annotation>
+			<xs:selector xpath="books:book/books:parent"/>
+			<xs:field xpath="@book"/>
+		</xs:keyref>
+	</xs:element>
+</xs:schema>
