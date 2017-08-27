@@ -131,7 +131,7 @@ public class SemanticCMS {
 	// <editor-fold defaultstate="collapsed" desc="Books">
 	// See https://docs.oracle.com/javase/tutorial/jaxp/dom/validating.html
 	private static final String BOOKS_XML_RESOURCE = "/WEB-INF/books.xml";
-	private static final String BOOKS_XML_SCHEMA_1_0_RESOURCE = "books-1.0.xsd";
+	private static final String BOOKS_XML_SCHEMA_1_0_RESOURCE = "/com/semanticcms/core/servlet/books-1.0.xsd";
 	private static final String BOOKS_XML_SCHEMA_1_1_RESOURCE = "books-1.1.xsd";
 
 	private static final String MISSING_BOOK_TAG_NAME = "missingBook";

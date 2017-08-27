@@ -86,7 +86,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 									<version>2.0.0-SNAPSHOT</version>
 									<type>jar</type>
 									<includes>
-										com/semanticcms/core/controller/books-1.0.xsd,
+										com/semanticcms/core/servlet/books-1.0.xsd,
 										com/semanticcms/core/controller/books-1.1.xsd
 									</includes>
 								</artifactItem>
@@ -108,7 +108,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 						<configuration>
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/dependency/com/semanticcms/core/controller</directory>
+									<directory>${project.build.directory}/dependency/com/semanticcms/core/servlet</directory>
 									<includes>
 										<include>books-1.0.xsd</include>
 									</includes>
