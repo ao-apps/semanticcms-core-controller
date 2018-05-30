@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2016, 2017  AO Industries, Inc.
+Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
 	support@aoindustries.com
 	7262 Bull Pen Cir
 	Mobile, AL 36695
@@ -41,53 +41,67 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	</ordering>
 	<!-- Filter to set request character encoding to UTF-8 -->
 	<filter>
-		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>
+		<filter-name>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-name>
 		<filter-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>Utf8RequestCharacterEncodingFilter</filter-name>
+		<filter-name>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	<!-- Filter to strip invalid XML characters from incoming parameters -->
 	<filter>
-		<filter-name>StripInvalidXmlCharactersFilter</filter-name>
+		<filter-name>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-name>
 		<filter-class>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>StripInvalidXmlCharactersFilter</filter-name>
+		<filter-name>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
 	<filter>
-		<filter-name>CountConcurrencyFilter</filter-name>
+		<filter-name>com.semanticcms.core.controller.CountConcurrencyFilter</filter-name>
 		<filter-class>com.semanticcms.core.controller.CountConcurrencyFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>CountConcurrencyFilter</filter-name>
+		<filter-name>com.semanticcms.core.controller.CountConcurrencyFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
 	<!-- Sets up the cache for the request. -->
 	<filter>
-		<filter-name>CacheFilter</filter-name>
+		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
 		<filter-class>com.semanticcms.core.controller.CacheFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>CacheFilter</filter-name>
+		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	<!-- Main SemanticCMS Controller -->
+	<filter>
+		<filter-name>com.semanticcms.core.controller.Controller</filter-name>
+		<filter-class>com.semanticcms.core.controller.Controller</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>com.semanticcms.core.controller.Controller</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<!-- TODO: ERROR, too?
+		<dispatcher>ERROR</dispatcher>
+		-->
+	</filter-mapping>
 	<!-- Servlet to rewrite CSS files to include lastModified parameters -->
+	<!-- TODO: A version of this for SemanticCMS resources? -->
 	<servlet>
-		<servlet-name>LastModifiedServlet</servlet-name>
+		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<servlet-class>com.aoindustries.servlet.http.LastModifiedServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>LastModifiedServlet</servlet-name>
+		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<url-pattern>*.css</url-pattern>
 	</servlet-mapping>
 </web-fragment>
