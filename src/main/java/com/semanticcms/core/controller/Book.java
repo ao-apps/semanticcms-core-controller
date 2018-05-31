@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.lang.NullArgumentException;
 import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.BookRef;
@@ -85,7 +86,7 @@ abstract public class Book implements Comparable<Book> {
 		return bookRef.compareTo(o.bookRef);
 	}
 
-	public BookRef getBookRef() {
+	final public BookRef getBookRef() {
 		return bookRef;
 	}
 
@@ -95,6 +96,18 @@ abstract public class Book implements Comparable<Book> {
 	 * be local, but they are still part of the set of pages.
 	 */
 	abstract public boolean isAccessible();
+
+	public boolean isProtected() {
+		throw new NotImplementedException();
+	}
+
+	public boolean isPassThroughEnabled() {
+		throw new NotImplementedException();
+	}
+
+	public boolean isLocal() {
+		throw new NotImplementedException();
+	}
 
 	/**
 	 * Gets the {@link PageRepository} for this book.
