@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -56,7 +56,7 @@ public class PageRefResolver {
 
 	/**
 	 * Finds the path to the current page, optionally returning {@code null} when the
-	 * current page is not in a book.
+	 * current page is not in a book.  The page must be in a published book.
 	 *
 	 * @param requireBook affects the behavior when the current page is not in a book.
 	 *                    When {@code true}, a {@link ServletException} is thrown.

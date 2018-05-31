@@ -375,9 +375,11 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if the published book is also a local book.
+	 *
+	 * @implSpec  This default implementation calls {@link Book#isLocal()}
 	 */
-	protected boolean isPublishedBookLocal(SemanticCMS semanticCMS, Book publishedBook) {
-		return semanticCMS.isLocalBook(publishedBook);
+	protected boolean isPublishedBookLocal(Book publishedBook) {
+		return publishedBook.isLocal();
 	}
 
 	/**
@@ -399,7 +401,7 @@ public class Controller implements Filter {
 			!isPublishedBookProtected(publishedBook, publishedPath, request)
 			&& isPublishedBookPassThroughEnabled(publishedBook, publishedPath, request)
 		) {
-			if(isPublishedBookLocal(semanticCMS, publishedBook)) {
+			if(isPublishedBookLocal(publishedBook)) {
 				doPassThrough(request, response, chain);
 			} else {
 				Book localBook = getLocalBook(semanticCMS, servletPath);
@@ -658,7 +660,7 @@ public class Controller implements Filter {
 		if(!isPublishedBookPassThroughEnabled(publishedBook, publishedPath, request)) {
 			doNotFound(request, response);
 		} else {
-			if(semanticCMS.isLocalBook(publishedBook)) {
+			if(isPublishedBookLocal(publishedBook)) {
 				doPublishedBookResourceNotExistsIsLocalBook(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
 			} else {
 				Book localBook = getLocalBook(semanticCMS, servletPath);

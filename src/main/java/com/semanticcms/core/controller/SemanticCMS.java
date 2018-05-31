@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,26 +22,32 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.PropertiesUtils;
 import com.aoindustries.servlet.http.Dispatcher;
 import com.aoindustries.util.StringUtility;
+import com.aoindustries.util.Tuple2;
 import com.aoindustries.util.WrappedException;
 import com.aoindustries.validation.ValidationException;
 import com.aoindustries.xml.XmlUtils;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.model.ParentRef;
+import com.semanticcms.core.renderer.Renderer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
@@ -116,12 +122,15 @@ public class SemanticCMS {
 	// </editor-fold>
 
 	// <editor-fold defaultstate="collapsed" desc="Demo Mode">
-	private static final String DEMO_MODE_INIT_PARAM = "com.semanticcms.core.servlet.SemanticCMS.demoMode";
+	// TODO: Move to semanticcms-controller.xml, or somehow its own plugin?
+
+	private static final String DEMO_MODE_INIT_PARAM = "com.semanticcms.core.controller.SemanticCMS.demoMode";
 
 	private final boolean demoMode;
 
 	/**
-	 * When true, a cursory attempt will be made to hide sensitive information for demo mode.
+	 * When {@code true}, a cursory attempt will be made to hide sensitive information for demo mode.
+	 * Defaults to {@code false}.
 	 */
 	public boolean getDemoMode() {
 		return demoMode;
@@ -354,7 +363,7 @@ public class SemanticCMS {
 	}
 
 	/**
-	 * Gets the published book for the provided context-relative servlet path or <code>null</code> if no book published at that path.
+	 * Gets the published book for the provided context-relative servlet path or {@code null} if no book published at that path.
 	 * The book with the longest prefix match is used, matched along segments only (along '/' boundaries).
 	 * The servlet path must begin with a slash (/).
 	 * <p>
@@ -398,6 +407,14 @@ public class SemanticCMS {
 	 */
 	public Book getPublishedBook(HttpServletRequest request) {
 		return getPublishedBook(Dispatcher.getCurrentPagePath(request));
+	}
+
+	public Book getLocalBook(String servletPath) {
+		throw new NotImplementedException();
+	}
+
+	public Book getLocalBook(HttpServletRequest request) {
+		return getLocalBook(Dispatcher.getCurrentPagePath(request));
 	}
 
 	/**
@@ -448,6 +465,86 @@ public class SemanticCMS {
 	 */
 	public Executors getExecutors() {
 		return executors;
+	}
+	// </editor-fold>
+
+	// <editor-fold defaultstate="collapsed" desc="Renderers">
+
+	private final SortedMap<String,Renderer> renderers = new TreeMap<String,Renderer>(
+		new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				// Order by length descending
+				int len1 = s1.length();
+				int len2 = s2.length();
+				if(len1 < len2) return 1;
+				if(len1 > len2) return -1;
+				// Then order by suffix, case-insensitive ascending
+				return s1.compareToIgnoreCase(s2);
+			}
+		}
+	);
+	private final SortedMap<String,Renderer> unmodifiableRenderers = Collections.unmodifiableSortedMap(renderers);
+
+	/**
+	 * Gets the mapping of all configured renderers, key is suffix, value is renderer.
+	 * A renderer may exist under multiple suffixes, but only one unique renderer may be
+	 * associated with each suffix.
+	 * <p>
+	 * The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.
+	 * </p>
+	 *
+	 * @see  #getRendererAndPath(java.lang.String)
+	 * @see  #getRendererAndPath(javax.servlet.http.HttpServletRequest)
+	 */
+	public SortedMap<String,Renderer> getRenderers() {
+		// Not synchronizing renderers where because they are normally only set on application start-up
+		return unmodifiableRenderers;
+	}
+
+	/**
+	 * Finds the renderer that matches the given servletPath.  The renderer with the longest
+	 * suffix match is used.  This means that any renderer with an empty suffix will always match,
+	 * but only when no other renderer matches.  This also means that one renderer can be more
+	 * specific than another, such as both ".html" and ".amp.html" being registered as separate
+	 * renderers.
+	 *
+	 * @return  The matched renderer and trimmed path, or {@code null} if none found
+	 *
+	 * @see  #getRendererAndPath(javax.servlet.http.HttpServletRequest)
+	 */
+	public Tuple2<Renderer,Path> getRendererAndPath(String servletPath) {
+		synchronized(renderers) {
+			for(Map.Entry<String,Renderer> entry : renderers.entrySet()) {
+				String suffix = entry.getKey();
+				if(servletPath.endsWith(suffix)) {
+					// Remove suffix from path
+					servletPath = servletPath.substring(0, servletPath.length() - suffix.length());
+					// TODO: What to do about domain, book path, path?
+					throw new NotImplementedException();
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @see  #getRendererAndPath(java.lang.String)
+	 */
+	public Tuple2<Renderer,Path> getRendererAndPath(HttpServletRequest request) {
+		return getRendererAndPath(Dispatcher.getCurrentPagePath(request));
+	}
+
+	/**
+	 * Registers a new renderer.
+	 *
+	 * @throws  IllegalStateException  if a renderer is already registered with the suffix.
+	 */
+	public void addRenderer(String suffix, Renderer renderer) throws IllegalStateException {
+		synchronized(renderers) {
+			if(renderers.containsKey(suffix)) throw new IllegalStateException("Renderer already registered: " + suffix);
+			if(renderers.put(suffix, renderer) != null) throw new AssertionError();
+		}
 	}
 	// </editor-fold>
 }
