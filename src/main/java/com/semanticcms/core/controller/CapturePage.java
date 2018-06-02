@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,11 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.encoding.MediaType;
 import com.aoindustries.lang.NullArgumentException;
-import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.servlet.http.NullHttpServletResponseWrapper;
-import com.aoindustries.servlet.http.ServletUtil;
 import com.aoindustries.tempfiles.TempFileContext;
 import com.aoindustries.tempfiles.servlet.ServletTempFileContext;
 import com.aoindustries.util.AoCollections;
@@ -36,15 +32,11 @@ import com.semanticcms.core.controller.subrequest.HttpServletSubResponse;
 import com.semanticcms.core.controller.subrequest.UnmodifiableCopyHttpServletRequest;
 import com.semanticcms.core.controller.subrequest.UnmodifiableCopyHttpServletResponse;
 import com.semanticcms.core.model.BookRef;
-import com.semanticcms.core.model.Node;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.model.PageReferrer;
 import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.pages.PageRepository;
-import com.semanticcms.core.pages.local.CurrentCaptureLevel;
-import com.semanticcms.core.pages.local.CurrentNode;
-import com.semanticcms.core.pages.local.CurrentPage;
 import com.semanticcms.core.pages.local.PageContext;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,27 +56,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.SkipPageException;
 
 public class CapturePage {
-
-	private static final String CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME = CapturePage.class.getName()+".captureContext";
 
 	private static final boolean CONCURRENT_TRAVERSALS_ENABLED = true;
 
 	private static final boolean DEBUG = false;
 	private static final boolean DEBUG_NOW = false;
-
-	/**
-	 * Gets the capture context or <code>null</code> if none occurring.
-	 */
-	public static CapturePage getCaptureContext(ServletRequest request) {
-		return (CapturePage)request.getAttribute(CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME);
-	}
 
 	/**
 	 * Captures a page.
@@ -94,6 +74,8 @@ public class CapturePage {
 	 * TODO: Within the scope of one request and cache, avoid capturing the same page at the same time (CurrencyLimiter applied to sub requests), is there a reasonable way to catch deadlock conditions?
 	 *
 	 * @param level  The minimum page capture level, note that a higher level might be substituted, such as a META capture in place of a PAGE request.
+	 *
+	 * @return  The captured page or {@code null} if page does not exist.
 	 */
 	public static Page capturePage(
 		ServletContext servletContext,
@@ -113,18 +95,23 @@ public class CapturePage {
 	}
 
 	/**
+	 * TODO: Support null level for non-capture fetches
+	 * TODO: Rename this class to "PageCache"?
+	 *
 	 * @param cache  See {@link CacheFilter#getCache(javax.servlet.ServletRequest)}
+	 *
+	 * @return  The captured page or {@code null} if page does not exist.
 	 */
 	public static Page capturePage(
 		final ServletContext servletContext,
 		final HttpServletRequest request,
 		final HttpServletResponse response,
 		PageReferrer pageReferrer,
-		CaptureLevel level,
+		final CaptureLevel level,
 		Cache cache
 	) throws ServletException, IOException {
 		NullArgumentException.checkNotNull(level, "level");
-		PageRef pageRef = pageReferrer.getPageRef();
+		final PageRef pageRef = pageReferrer.getPageRef();
 
 		// Don't use cache for full body captures
 		boolean useCache = level != CaptureLevel.BODY;
@@ -135,9 +122,15 @@ public class CapturePage {
 		if(useCache) {
 			// Check the cache
 			cacheKey = new Cache.CaptureKey(pageRef, level);
-			capturedPage = cache.get(cacheKey);
-			// Set useCache = false to not put back into the cache unnecessarily below
-			useCache = capturedPage == null;
+			Cache.CaptureResult capturedResult = cache.get(cacheKey);
+			if(capturedResult != null) {
+				capturedPage = capturedResult.page;
+				if(capturedPage == null) return null; // Cached page not found
+				// Set useCache = false to not put back into the cache unnecessarily below
+				useCache = false;
+			} else {
+				capturedPage = null;
+			}
 		} else {
 			cacheKey = null;
 			capturedPage = null;
@@ -149,95 +142,44 @@ public class CapturePage {
 			final BookRef bookRef = pageRef.getBookRef();
 			Book book = semanticCMS.getBook(bookRef);
 			if(!book.isAccessible()) throw new ServletException("Book is inaccessible: " + bookRef);
-			PageRepository repository = book.getPages();
+			final PageRepository repository = book.getPages();
 			if(!repository.isAvailable()) throw new ServletException("Page repository is unavailable: " + repository);
-			// Perform new capture
-			Node oldNode = CurrentNode.getCurrentNode(request);
-			Page oldPage = CurrentPage.getCurrentPage(request);
-			try {
-				// Clear request values that break captures
-				if(oldNode != null) CurrentNode.setCurrentNode(request, null);
-				if(oldPage != null) CurrentPage.setCurrentPage(request, null);
-				CaptureLevel oldCaptureLevel = CurrentCaptureLevel.getCaptureLevel(request);
-				CapturePage oldCaptureContext = CapturePage.getCaptureContext(request);
-				try {
-					// Set the response content type to "application/xhtml+xml" for a consistent starting point for captures
-					String oldContentType = response.getContentType();
-					try {
-						response.setContentType(MediaType.XHTML.getContentType());
-						// Set new capture context
-						CurrentCaptureLevel.setCaptureLevel(request, level);
-						CapturePage captureContext = new CapturePage();
-						request.setAttribute(CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, captureContext);
-						// TODO: Set more "current" for request and response
-						// TODO: Is PageContext useful for this?
-						// TODO: capturedPage = repository.getPage(pageRef.getPath(), level);
-						// Include the page resource, discarding any direct output
-						final String capturePath = bookRef.getPrefix() + pageRef.getPath();
-						try {
-							// Clear PageContext on include
-							PageContext.newPageContextSkip(
-								null,
-								null,
-								null,
-								new PageContext.PageContextCallableSkip() {
-									@Override
-									public void call() throws ServletException, IOException, SkipPageException {
-										Dispatcher.include(
-											servletContext,
-											capturePath,
-											// Always capture as "GET" request
-											ServletUtil.METHOD_GET.equals(request.getMethod())
-												// Is already "GET"
-												? request
-												// Wrap to make "GET"
-												: new HttpServletRequestWrapper(request) {
-													@Override
-													public String getMethod() {
-														return ServletUtil.METHOD_GET;
-													}
-												},
-											new NullHttpServletResponseWrapper(response)
-										);
-									}
-								}
-							);
-						} catch(SkipPageException e) {
-							// An individual page may throw SkipPageException which only terminates
-							// the capture, not the request overall
-						}
-						capturedPage = captureContext.getCapturedPage();
-						if(capturedPage==null) throw new ServletException("No page captured, page=" + capturePath);
-						PageRef capturedPageRef = capturedPage.getPageRef();
-						if(!capturedPageRef.equals(pageRef)) throw new ServletException(
-							"Captured page has unexpected pageRef.  Expected ("
-								+ pageRef.getBookRef()+ ", " + pageRef.getPath()
-								+ ") but got ("
-								+ capturedPageRef.getBookRef() + ", " + capturedPageRef.getPath()
-								+ ')'
-						);
-
-					} finally {
-						if(oldContentType != null) response.setContentType(oldContentType);
+			// TODO: A way to do this without a hard dependency on LocalPageRepository?
+			capturedPage = PageContext.newPageContext(
+				servletContext,
+				request,
+				response,
+				new PageContext.PageContextCallable<Page>() {
+					@Override
+					public Page call() throws ServletException, IOException {
+						return repository.getPage(pageRef.getPath(), level);
 					}
-				} finally {
-					// Restore previous capture context
-					CurrentCaptureLevel.setCaptureLevel(request, oldCaptureLevel);
-					request.setAttribute(CAPTURE_CONTEXT_REQUEST_ATTRIBUTE_NAME, oldCaptureContext);
 				}
-			} finally {
-				if(oldNode != null) CurrentNode.setCurrentNode(request, oldNode);
-				if(oldPage != null) CurrentPage.setCurrentPage(request, oldPage);
+			);
+			if(capturedPage != null) {
+				PageRef capturedPageRef = capturedPage.getPageRef();
+				if(!capturedPageRef.equals(pageRef)) throw new ServletException(
+					"Captured page has unexpected pageRef.  Expected ("
+						+ pageRef.getBookRef()+ ", " + pageRef.getPath()
+						+ ") but got ("
+						+ capturedPageRef.getBookRef() + ", " + capturedPageRef.getPath()
+						+ ')'
+				);
 			}
 		}
-		assert capturedPage != null;
 		if(useCache) {
 			// Add to cache
 			cache.put(cacheKey, capturedPage);
 		} else {
-			// Body capture, performance is not the main objective, perform full child and parent verifications,
-			// this will mean a "View All" will perform thorough verifications.
-			if(level == CaptureLevel.BODY) {
+			if(
+				(
+					// Body capture, performance is not the main objective, perform full child and parent verifications,
+					// this will mean a "View All" will perform thorough verifications.
+					level == CaptureLevel.BODY
+					// Perform full verification now since not interacting with the page cache
+					|| level == null
+				) && capturedPage != null
+			) {
 				PageUtils.fullVerifyParentChild(servletContext, request, response, capturedPage);
 			}
 		}
@@ -246,6 +188,8 @@ public class CapturePage {
 
 	/**
 	 * Captures a page in the current page context.
+	 *
+	 * @return  The captured page or {@code null} if page does not exist.
 	 *
 	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageRef, com.semanticcms.core.servlet.CaptureLevel)
 	 * @see  PageContext
@@ -269,6 +213,7 @@ public class CapturePage {
 	 * @param  pageRefs  The pages that should be captured.  This set will be iterated only once during this operation.
 	 *
 	 * @return  map from pageRef to page, with iteration order equal to the provided pageRefs parameter.
+	 *          the map will contain {@code null} values for pages not found.
 	 *
 	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageRef, com.semanticcms.core.servlet.CaptureLevel)
 	 */
@@ -296,10 +241,10 @@ public class CapturePage {
 				// Check cache before queuing on different threads, building list of those not in cache
 				for(PageReferrer pageReferrer : pageReferrers) {
 					PageRef pageRef = pageReferrer.getPageRef();
-					Page page = cache.get(pageRef, level);
-					if(page != null) {
+					Cache.CaptureResult captureResult = cache.get(pageRef, level);
+					if(captureResult != null) {
 						// Use cached value
-						results.put(pageRef, page);
+						results.put(pageRef, captureResult.page);
 					} else {
 						// Will capture below
 						notCachedList.add(pageRef);
@@ -651,14 +596,14 @@ public class CapturePage {
 						) {
 							visited.add(edge);
 							// Check cache before going to concurrency
-							Page cached;
+							Cache.CaptureResult cached;
 							if(level == CaptureLevel.BODY) {
 								cached = null;
 							} else {
 								cached = cache.get(edge, level);
 							}
 							if(cached != null) {
-								newReadyPages.add(cached);
+								newReadyPages.add(cached.page); // TODO: What to do with null pages here?  Error when traversal gets page not found?
 							} else {
 								newEdgesToAdd.add(edge);
 							}
@@ -678,6 +623,7 @@ public class CapturePage {
 				if(futures.isEmpty() && edgesToAdd.size() == 1) {
 					if(DEBUG) System.err.println("There is only one, running on current thread");
 					readyPages.add(
+						// TODO: What to do when null?
 						capturePage(
 							servletContext,
 							request,
@@ -717,6 +663,7 @@ public class CapturePage {
 										@Override
 										public Page call() throws ServletException, IOException, InterruptedException {
 											try {
+												// TODO: What to do when returns null?
 												return capturePage(
 													servletContext,
 													new HttpServletSubRequest(finalThreadSafeReq),
@@ -946,6 +893,7 @@ public class CapturePage {
 					servletContext,
 					request,
 					response,
+					// TODO: What to do when returns null?
 					CapturePage.capturePage(
 						servletContext,
 						request,
@@ -1132,23 +1080,6 @@ public class CapturePage {
 		return result;
 	}
 
-	private CapturePage() {
-	}
-
-	private Page capturedPage;
-	public void setCapturedPage(Page capturedPage) {
-		NullArgumentException.checkNotNull(capturedPage, "page");
-		if(this.capturedPage != null) {
-			throw new IllegalStateException(
-				"Cannot capture more than one page: first page="
-				+ this.capturedPage.getPageRef()
-				+ ", second page=" + capturedPage.getPageRef()
-			);
-		}
-		this.capturedPage = capturedPage;
-	}
-
-	private Page getCapturedPage() {
-		return capturedPage;
-	}
+	// Make no instances
+	private CapturePage() {}
 }

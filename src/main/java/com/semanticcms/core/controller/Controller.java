@@ -28,6 +28,7 @@ import com.aoindustries.servlet.http.ServletUtil;
 import com.aoindustries.util.Tuple2;
 import com.aoindustries.validation.ValidationException;
 import com.semanticcms.core.model.Page;
+import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import com.semanticcms.core.renderer.Renderer;
 import com.semanticcms.core.resources.Resource;
@@ -61,6 +62,9 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * TODO: Support "*" for OPTIONS method?
  * </p>
+ * TODO: Redirect "/" to root page of root book
+ * TODO: Redirect /book/path not match book, must have following slash
+ * TODO: Redirect /book/path/ to root page of book, when page "/" doesn't exist in the book, in the same renderer suffix
  */
 public class Controller implements Filter {
 
@@ -85,7 +89,7 @@ public class Controller implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if(
 			!(request instanceof HttpServletRequest)
-			|| !(request instanceof HttpServletResponse)
+			|| !(response instanceof HttpServletResponse)
 		) {
 			// Is not HTTP
 			doNotHttp(request, response, chain);
@@ -480,7 +484,7 @@ public class Controller implements Filter {
 		Book publishedBook,
 		Path publishedPath
 	) throws IOException, ServletException {
-		Tuple2<Renderer,Path> rendererAndPath = semanticCMS.getRendererAndPath(request);
+		Tuple2<Renderer,Path> rendererAndPath = semanticCMS.getRendererAndPath(publishedPath);
 		if(rendererAndPath == null) {
 			doPublishedBookNoRenderer(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
 		} else {
@@ -524,7 +528,13 @@ public class Controller implements Filter {
 		Renderer renderer,
 		Path pagePath
 	) throws IOException, ServletException {
-		Page page = publishedBook.getPages().getPage(pagePath, CaptureLevel.PAGE);
+		Page page = CapturePage.capturePage(
+			servletContext,
+			request,
+			response,
+			new PageRef(publishedBook.bookRef, pagePath),
+			CaptureLevel.PAGE
+		);
 		if(page == null) {
 			doPublishedBookOptionsNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
 		} else {
@@ -580,7 +590,13 @@ public class Controller implements Filter {
 		Renderer renderer,
 		Path pagePath
 	) throws IOException, ServletException {
-		Page page = publishedBook.getPages().getPage(pagePath, renderer.getCaptureLevel());
+		Page page = CapturePage.capturePage(
+			servletContext,
+			request,
+			response,
+			new PageRef(publishedBook.bookRef, pagePath),
+			renderer.getCaptureLevel()
+		);
 		if(page == null) {
 			doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
 		} else {

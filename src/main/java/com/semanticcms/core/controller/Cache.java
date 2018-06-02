@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.lang.ObjectUtils;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
@@ -99,15 +100,48 @@ public abstract class Cache {
 		}
 	}
 
-	/**
-	 * A lookup of level PAGE will also perform a lookup of META if not found.
-	 */
-	abstract Page get(CaptureKey key);
+	// TODO: Java 1.8: Optional<Page>
+	static class CaptureResult {
+
+		static final CaptureResult EMPTY = new CaptureResult(null);
+
+		static CaptureResult valueOf(Page page) {
+			return page == null ? EMPTY : new CaptureResult(page);
+		}
+
+		final Page page;
+
+		private CaptureResult(Page page) {
+			this.page = page;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if(!(o instanceof CaptureResult)) return false;
+			CaptureResult other = (CaptureResult)o;
+			return ObjectUtils.equals(page, other.page);
+		}
+
+		@Override
+		public int hashCode() {
+			return ObjectUtils.hash(page);
+		}
+
+		@Override
+		public String toString() {
+			return "CaptureResult(" + ObjectUtils.toString(page) + ')';
+		}
+	}
 
 	/**
 	 * A lookup of level PAGE will also perform a lookup of META if not found.
 	 */
-	Page get(PageRef pageRef, CaptureLevel level) {
+	abstract CaptureResult get(CaptureKey key);
+
+	/**
+	 * A lookup of level PAGE will also perform a lookup of META if not found.
+	 */
+	CaptureResult get(PageRef pageRef, CaptureLevel level) {
 		return get(new CaptureKey(pageRef, level));
 	}
 

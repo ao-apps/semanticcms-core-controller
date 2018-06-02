@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -40,7 +40,7 @@ abstract class MapCache extends Cache {
 
 	protected final SemanticCMS semanticCMS;
 
-	private final Map<CaptureKey,Page> pageCache;
+	private final Map<CaptureKey,CaptureResult> pageCache;
 
 	/**
 	 * Tracks which parent pages are still not verified.
@@ -67,7 +67,7 @@ abstract class MapCache extends Cache {
 
 	MapCache(
 		SemanticCMS semanticCMS,
-		Map<CaptureKey,Page> pageCache,
+		Map<CaptureKey,CaptureResult> pageCache,
 		Map<PageRef,Set<PageRef>> unverifiedParentsByPageRef,
 		Map<PageRef,Set<PageRef>> unverifiedChildrenByPageRef,
 		Map<String,Object> attributes
@@ -83,13 +83,13 @@ abstract class MapCache extends Cache {
 	 * {@inheritDoc}
 	 */
 	@Override
-	Page get(CaptureKey key) {
-		Page page = pageCache.get(key);
-		if(page == null && key.level == CaptureLevel.PAGE) {
+	CaptureResult get(CaptureKey key) {
+		CaptureResult result = pageCache.get(key);
+		if(result == null && key.level == CaptureLevel.PAGE) {
 			// Look for meta in place of page
-			page = pageCache.get(new CaptureKey(key.pageRef, CaptureLevel.META));
+			result = pageCache.get(new CaptureKey(key.pageRef, CaptureLevel.META));
 		}
-		return page;
+		return result;
 	}
 
 	private static void addToSet(Map<PageRef,Set<PageRef>> map, PageRef key, PageRef pageRef) {
@@ -111,16 +111,16 @@ abstract class MapCache extends Cache {
 	@Override
 	void put(CaptureKey key, Page page) throws ServletException {
 		// Check if found in other level, this is used to avoid verifying twice
-		Page otherLevelPage = pageCache.get(
+		CaptureResult otherLevelResult = page == null ? null : pageCache.get(
 			new CaptureKey(key.pageRef, key.level==CaptureLevel.PAGE ? CaptureLevel.META : CaptureLevel.PAGE)
 		);
 		// Add to cache, verify if this page not yet put into cache
-		if(pageCache.put(key, page) == null) {
+		if(pageCache.put(key, CaptureResult.valueOf(page)) == null) {
 			// Was added, now avoid verifying twice typically.
 			// In the race condition where both levels check null then are added concurrently, this will verify twice
 			// rather than verify none.
 			if(VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS) {
-				if(otherLevelPage == null) verifyAdded(page);
+				if(otherLevelResult == null) verifyAdded(page);
 			}
 		}
 	}
@@ -138,9 +138,9 @@ abstract class MapCache extends Cache {
 				// Can't verify parent reference to missing book
 				if(semanticCMS.getBook(parentPageRef.getBookRef()).isAccessible()) {
 					// Check if parent in cache
-					Page parentPage = get(parentPageRef, CaptureLevel.PAGE);
-					if(parentPage != null) {
-						PageUtils.verifyChildToParent(pageRef, parentPageRef, parentPage.getChildRefs());
+					CaptureResult parentResult = get(parentPageRef, CaptureLevel.PAGE);
+					if(parentResult != null && parentResult.page != null) {
+						PageUtils.verifyChildToParent(pageRef, parentPageRef, parentResult.page.getChildRefs());
 					} else {
 						addToSet(unverifiedParentsByPageRef, parentPageRef, pageRef);
 					}
@@ -155,9 +155,9 @@ abstract class MapCache extends Cache {
 				// Can't verify child reference to missing book
 				if(semanticCMS.getBook(childPageRef.getBookRef()).isAccessible()) {
 					// Check if child in cache
-					Page childPage = get(childPageRef, CaptureLevel.PAGE);
-					if(childPage != null) {
-						PageUtils.verifyParentToChild(pageRef, childPageRef, childPage.getParentRefs());
+					CaptureResult childResult = get(childPageRef, CaptureLevel.PAGE);
+					if(childResult != null && childResult.page != null) {
+						PageUtils.verifyParentToChild(pageRef, childPageRef, childResult.page.getParentRefs());
 					} else {
 						addToSet(unverifiedChildrenByPageRef, childPageRef, pageRef);
 					}

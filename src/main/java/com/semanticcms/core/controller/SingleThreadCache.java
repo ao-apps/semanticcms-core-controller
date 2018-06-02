@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -41,7 +41,7 @@ class SingleThreadCache extends MapCache {
 	SingleThreadCache(SemanticCMS semanticCMS) {
 		super(
 			semanticCMS,
-			new HashMap<CaptureKey,Page>(),
+			new HashMap<CaptureKey,CaptureResult>(),
 			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<PageRef,Set<PageRef>>() : null,
 			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<PageRef,Set<PageRef>>() : null,
 			new HashMap<String, Object>()
@@ -53,7 +53,7 @@ class SingleThreadCache extends MapCache {
 	}
 
 	@Override
-	Page get(CaptureKey key) {
+	CaptureResult get(CaptureKey key) {
 		assert assertingThread == Thread.currentThread();
 		return super.get(key);
 	}
