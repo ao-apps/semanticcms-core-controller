@@ -104,4 +104,14 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<url-pattern>*.css</url-pattern>
 	</servlet-mapping>
+	<!-- TODO: Why is this required when have @WebServlet annotation? -->
+	<servlet>
+		<servlet-name>com.semanticcms.core.controller.RendererServlet</servlet-name>
+		<servlet-class>com.semanticcms.core.controller.RendererServlet</servlet-class>
+	</servlet>
+	<!-- TODO: Why is this required when have @WebServlet annotation? -->
+	<servlet>
+		<servlet-name>com.semanticcms.core.controller.ResourceServlet</servlet-name>
+		<servlet-class>com.semanticcms.core.controller.ResourceServlet</servlet-class>
+	</servlet>
 </web-fragment>
