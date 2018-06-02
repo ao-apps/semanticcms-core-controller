@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2017  AO Industries, Inc.
+Copyright (C) 2017, 2018  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -34,7 +34,10 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="@{documented.shortTitle}"
 		description="@{documented.description}"
 		datePublished="2017-08-26T19:19:43-0500"
+		dateModified="2018-06-01T21:04:31-0500"
 	>
+		<core:child page="url-space" />
+		<core:child page="servlet-space" />
 		<core:child page="changelog" />
 		<core:child page="apidocs/" />
 		<ao:include
