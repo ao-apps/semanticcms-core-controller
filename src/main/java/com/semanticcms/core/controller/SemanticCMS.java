@@ -49,6 +49,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -502,37 +503,54 @@ public class SemanticCMS {
 		return unmodifiableRenderers;
 	}
 
+	private static final String END_INDEX = "/index";
+	private static final int END_INDEX_LEN = END_INDEX.length();
+
 	/**
 	 * Finds the renderer that matches the given servletPath.  The renderer with the longest
 	 * suffix match is used.  This means that any renderer with an empty suffix will always match,
 	 * but only when no other renderer matches.  This also means that one renderer can be more
 	 * specific than another, such as both ".html" and ".amp.html" being registered as separate
 	 * renderers.
+	 * <p>
+	 * If the path ends with "/index" after the suffix is removed, the trailing "index" is removed.
+	 * TODO: Don't end with "/" ever except root.
+	 * </p>
 	 *
 	 * @return  The matched renderer and trimmed path, or {@code null} if none found
-	 *
-	 * @see  #getRendererAndPath(javax.servlet.http.HttpServletRequest)
 	 */
-	public Tuple2<Renderer,Path> getRendererAndPath(String servletPath) {
+	public Tuple2<Renderer,Path> getRendererAndPath(Path path) throws ServletException {
+		String pathStr = path.toString();
+		String suffix = null;
+		Renderer renderer = null;
 		synchronized(renderers) {
 			for(Map.Entry<String,Renderer> entry : renderers.entrySet()) {
-				String suffix = entry.getKey();
-				if(servletPath.endsWith(suffix)) {
-					// Remove suffix from path
-					servletPath = servletPath.substring(0, servletPath.length() - suffix.length());
-					// TODO: What to do about domain, book path, path?
-					throw new NotImplementedException();
+				String s = entry.getKey();
+				if(pathStr.endsWith(s)) {
+					suffix = s;
+					renderer = entry.getValue();
+					break;
 				}
 			}
 		}
-		return null;
-	}
-
-	/**
-	 * @see  #getRendererAndPath(java.lang.String)
-	 */
-	public Tuple2<Renderer,Path> getRendererAndPath(HttpServletRequest request) {
-		return getRendererAndPath(Dispatcher.getCurrentPagePath(request));
+		if(suffix != null) {
+			// Remove suffix from path
+			int pathLen = pathStr.length() - suffix.length();
+			// Remove any trailing /index, too
+			if(pathStr.regionMatches(pathLen - END_INDEX_LEN, END_INDEX, 0, END_INDEX_LEN)) {
+				pathLen -= END_INDEX.length() - 1;
+			}
+			try {
+				return new Tuple2<Renderer, Path>(
+					renderer,
+					Path.valueOf(pathStr.substring(0, pathLen))
+				);
+			} catch(ValidationException e) {
+				throw new ServletException(e);
+			}
+		} else {
+			return null;
+		}
 	}
 
 	/**
