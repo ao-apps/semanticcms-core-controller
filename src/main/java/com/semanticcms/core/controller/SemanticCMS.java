@@ -48,6 +48,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -563,6 +564,38 @@ public class SemanticCMS {
 			if(renderers.containsKey(suffix)) throw new IllegalStateException("Renderer already registered: " + suffix);
 			if(renderers.put(suffix, renderer) != null) throw new AssertionError();
 		}
+	}
+	// </editor-fold>
+
+	// <editor-fold defaultstate="collapsed" desc="Servlet Space">
+
+	private final ServletSpaceSet servletSpaces = new ServletSpaceSet();
+	{
+		// TODO: Add /META-INF, /META-INF/***, /WEB-INF, /WEB-INF/*** as not found
+		// servletSpaces.addServletSpace(null);
+		// TODO: Add "message" option to rules, only shown in dev mode but included in any logging
+		//       message within controller flow, too
+	}
+
+	public ServletSpaceSet getServletSpaces() {
+		return servletSpaces;
+	}
+
+	/**
+	 * Adds a new <a href="../servlet-space">Servlet Space</a> to the system, which
+	 * controls which requests may be passed along to the local {@link FilterChain}.
+	 *
+	 * @see  ServletSpaceSet#addServletSpace(com.semanticcms.core.controller.ServletSpace)
+	 */
+	public void addServletSpace(ServletSpace space) {
+		servletSpaces.addServletSpace(space);
+	}
+
+	/**
+	 * @see  ServletSpaceSet#findServletSpace(com.aoindustries.net.Path)
+	 */
+	public ServletSpace findServletSpace(Path servletPath) {
+		return servletSpaces.findServletSpace(servletPath);
 	}
 	// </editor-fold>
 }

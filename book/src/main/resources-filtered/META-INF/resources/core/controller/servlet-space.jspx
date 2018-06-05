@@ -136,5 +136,10 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 			from non-matching domains still be applied but with block-all, to prevent inadvertent disclosure
 			or duplication of information across domains?
 		</p>
+		<p>
+			TODO: Servlet Space matching by HTTP method, too?  Defaulting to all or "GET", "HEAD" (implied)
+			and "OPTIONS" (always) only?
+		</p>
 	</core:page>
 </jsp:root>
+
