@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -79,11 +79,11 @@ public class UnmodifiableCopyHttpServletRequest extends UnmodifiableCopyServletR
 
 		authType = req.getAuthType();
 		cookies = copyCookies(req.getCookies());
-		Map<String,List<String>> newHeaders = null;
+		Map<String,List<String>> newHeaders = MinimalMap.emptyMap();
 		Enumeration<String> headerNames = req.getHeaderNames();
 		while(headerNames.hasMoreElements()) {
 			String name = headerNames.nextElement();
-			List<String> values = null;
+			List<String> values = MinimalList.emptyList();
 			Enumeration<String> headerValues = req.getHeaders(name);
 			while(headerValues.hasMoreElements()) {
 				values = MinimalList.add(
