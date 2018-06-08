@@ -25,6 +25,8 @@ package com.semanticcms.core.controller;
 import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
+import com.aoindustries.net.pathspace.PathSpace;
+import com.aoindustries.net.pathspace.Prefix;
 import com.aoindustries.servlet.PropertiesUtils;
 import com.aoindustries.servlet.http.Dispatcher;
 import com.aoindustries.util.StringUtility;
@@ -569,7 +571,7 @@ public class SemanticCMS {
 
 	// <editor-fold defaultstate="collapsed" desc="Servlet Space">
 
-	private final ServletSpaceSet servletSpaces = new ServletSpaceSet();
+	private final PathSpace<ServletSpace> servletSpaces = new PathSpace<ServletSpace>();
 	{
 		// TODO: Add /META-INF, /META-INF/***, /WEB-INF, /WEB-INF/*** as not found
 		// servletSpaces.addServletSpace(null);
@@ -577,7 +579,7 @@ public class SemanticCMS {
 		//       message within controller flow, too
 	}
 
-	public ServletSpaceSet getServletSpaces() {
+	public PathSpace<ServletSpace> getServletSpaces() {
 		return servletSpaces;
 	}
 
@@ -588,14 +590,17 @@ public class SemanticCMS {
 	 * @see  ServletSpaceSet#addServletSpace(com.semanticcms.core.controller.ServletSpace)
 	 */
 	public void addServletSpace(ServletSpace space) {
-		servletSpaces.addServletSpace(space);
+		for(Map.Entry<? extends Prefix, ? extends ServletSpace.Matcher> entry : space.getMatchersByPrefix().entrySet()) {
+			servletSpaces.put(entry.getKey(), space);
+		}
 	}
 
 	/**
 	 * @see  ServletSpaceSet#findServletSpace(com.aoindustries.net.Path)
 	 */
 	public ServletSpace findServletSpace(Path servletPath) {
-		return servletSpaces.findServletSpace(servletPath);
+		PathSpace.PathMatch<ServletSpace> match = servletSpaces.get(servletPath);
+		return match == null ? null : match.getValue();
 	}
 	// </editor-fold>
 }

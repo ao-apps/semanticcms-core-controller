@@ -23,6 +23,7 @@
 package com.semanticcms.core.controller;
 
 import com.aoindustries.net.Path;
+import com.aoindustries.net.pathspace.Prefix;
 import com.aoindustries.util.AoCollections;
 import com.aoindustries.util.Tuple2;
 import java.io.IOException;
@@ -201,5 +202,9 @@ public class ServletSpace {
 
 	public ServletSpace(Prefix prefix, Matcher matcher) {
 		this(Collections.singletonMap(prefix, matcher));
+	}
+
+	public Map<? extends Prefix, ? extends Matcher> getMatchersByPrefix() {
+		return matchersByPrefix;
 	}
 }
