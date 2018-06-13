@@ -95,7 +95,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		-->
 	</filter-mapping>
 	<!-- Servlet to rewrite CSS files to include lastModified parameters -->
-	<!-- TODO: A version of this for SemanticCMS resources? -->
+	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
 	<servlet>
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<servlet-class>com.aoindustries.servlet.http.LastModifiedServlet</servlet-class>
