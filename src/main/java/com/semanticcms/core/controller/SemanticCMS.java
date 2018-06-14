@@ -25,8 +25,6 @@ package com.semanticcms.core.controller;
 import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
-import com.aoindustries.net.pathspace.PathSpace;
-import com.aoindustries.net.pathspace.Prefix;
 import com.aoindustries.servlet.PropertiesUtils;
 import com.aoindustries.servlet.http.Dispatcher;
 import com.aoindustries.util.StringUtility;
@@ -50,7 +48,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import javax.servlet.FilterChain;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -569,38 +566,7 @@ public class SemanticCMS {
 	}
 	// </editor-fold>
 
-	// <editor-fold defaultstate="collapsed" desc="Servlet Space">
-
-	private final PathSpace<ServletSpace> servletSpaces = new PathSpace<ServletSpace>();
-	{
-		// TODO: Add /META-INF, /META-INF/***, /WEB-INF, /WEB-INF/*** as not found
-		// servletSpaces.addServletSpace(null);
-		// TODO: Add "message" option to rules, only shown in dev mode but included in any logging
-		//       message within controller flow, too
-	}
-
-	public PathSpace<ServletSpace> getServletSpaces() {
-		return servletSpaces;
-	}
-
-	/**
-	 * Adds a new <a href="../servlet-space">Servlet Space</a> to the system, which
-	 * controls which requests may be passed along to the local {@link FilterChain}.
-	 *
-	 * @see  ServletSpaceSet#addServletSpace(com.semanticcms.core.controller.ServletSpace)
-	 */
-	public void addServletSpace(ServletSpace space) {
-		for(Map.Entry<? extends Prefix, ? extends ServletSpace.Matcher> entry : space.getMatchersByPrefix().entrySet()) {
-			servletSpaces.put(entry.getKey(), space);
-		}
-	}
-
-	/**
-	 * @see  ServletSpaceSet#findServletSpace(com.aoindustries.net.Path)
-	 */
-	public ServletSpace findServletSpace(Path servletPath) {
-		PathSpace.PathMatch<ServletSpace> match = servletSpaces.get(servletPath);
-		return match == null ? null : match.getValue();
-	}
-	// </editor-fold>
+	// TODO: Add /META-INF, /META-INF/***, /WEB-INF, /WEB-INF/*** as not found in global firewall space
+	// TODO: Add "message" option to rules, only shown in dev mode but included in any logging
+	//       message within controller flow, too
 }
