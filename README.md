@@ -1,4 +1,4 @@
-# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://aoindustries.com/) [SemanticCMS](https://semanticcms.com/) / [Core](https://semanticcms.com/core/) / [Controller](https://semanticcms.com/core/controller/)
+# [<img src="ao-logo.png" alt="AO Logo" width="35" height="40">](https://github.com/aoindustries) [SemanticCMS](https://github.com/aoindustries/semanticcms) / [Core](https://github.com/aoindustries/semanticcms-core) / [Controller](https://github.com/aoindustries/semanticcms-core-controller)
 <p>
 	<a href="https://aoindustries.com/life-cycle#project-alpha">
 		<img src="https://semanticcms.com/ao-badges/project-alpha.svg" alt="project: alpha" />
@@ -24,7 +24,7 @@
 	</a>
 </p>
 
-Serves [SemanticCMS](https://semanticcms.com/) content from a Servlet environment.
+Serves [SemanticCMS](https://github.com/aoindustries/semanticcms) content from a Servlet environment.
 
 ## Project Links
 * [Project Home](https://semanticcms.com/core/controller/)
