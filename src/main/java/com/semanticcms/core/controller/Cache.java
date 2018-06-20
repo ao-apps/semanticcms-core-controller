@@ -100,7 +100,7 @@ public abstract class Cache {
 		}
 	}
 
-	// TODO: Java 1.8: Optional<Page>
+	// Java 1.8: Optional<Page>
 	static class CaptureResult {
 
 		static final CaptureResult EMPTY = new CaptureResult(null);
