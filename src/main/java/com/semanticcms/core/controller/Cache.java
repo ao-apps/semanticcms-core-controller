@@ -105,7 +105,7 @@ public abstract class Cache {
 
 		static final CaptureResult EMPTY = new CaptureResult(null);
 
-		static CaptureResult valueOf(Page page) {
+		static CaptureResult of(Page page) {
 			return page == null ? EMPTY : new CaptureResult(page);
 		}
 

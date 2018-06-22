@@ -115,7 +115,7 @@ abstract class MapCache extends Cache {
 			new CaptureKey(key.pageRef, key.level==CaptureLevel.PAGE ? CaptureLevel.META : CaptureLevel.PAGE)
 		);
 		// Add to cache, verify if this page not yet put into cache
-		if(pageCache.put(key, CaptureResult.valueOf(page)) == null) {
+		if(pageCache.put(key, CaptureResult.of(page)) == null) {
 			// Was added, now avoid verifying twice typically.
 			// In the race condition where both levels check null then are added concurrently, this will verify twice
 			// rather than verify none.
