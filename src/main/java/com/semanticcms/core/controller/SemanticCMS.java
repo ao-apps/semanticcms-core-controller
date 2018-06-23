@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.PropertiesUtils;
@@ -56,6 +55,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -411,7 +411,7 @@ public class SemanticCMS {
 	}
 
 	public Book getLocalBook(String servletPath) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("TODO");
 	}
 
 	public Book getLocalBook(HttpServletRequest request) {
@@ -520,7 +520,7 @@ public class SemanticCMS {
 	 * @return  The matched renderer and trimmed path, or {@code null} if none found
 	 */
 	public Tuple2<Renderer,Path> getRendererAndPath(Path path) throws ServletException {
-		String pathStr = path.toString();
+		final String pathStr = path.toString();
 		String suffix = null;
 		Renderer renderer = null;
 		synchronized(renderers) {
@@ -540,14 +540,10 @@ public class SemanticCMS {
 			if(pathStr.regionMatches(pathLen - END_INDEX_LEN, END_INDEX, 0, END_INDEX_LEN)) {
 				pathLen -= END_INDEX.length() - 1;
 			}
-			try {
-				return new Tuple2<Renderer, Path>(
-					renderer,
-					Path.valueOf(pathStr.substring(0, pathLen))
-				);
-			} catch(ValidationException e) {
-				throw new ServletException(e);
-			}
+			return new Tuple2<Renderer, Path>(
+				renderer,
+				path.prefix(pathLen)
+			);
 		} else {
 			return null;
 		}
