@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2017, 2018  AO Industries, Inc.
+Copyright (C) 2017, 2018, 2019  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -37,7 +37,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<documented.groupId>com.semanticcms</documented.groupId><documented.artifactId>semanticcms-core-controller</documented.artifactId>
 		<documented.javaVersion>1.6</documented.javaVersion>
 		<documented.javac.link.javaApi>${javac.link.javaApi.jdk16}</documented.javac.link.javaApi>
-		<documented.name>SemanticCMS Core Controller</documented.name>
+		<documented.name>SemanticCMS 2 Core Controller</documented.name>
 		<documented.shortTitle>Controller</documented.shortTitle>
 		<documented.url>https://semanticcms.com/core/controller/</documented.url>
 		<documented.description>Serves SemanticCMS content from a Servlet environment.</documented.description>
