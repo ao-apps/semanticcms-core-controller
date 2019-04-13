@@ -109,6 +109,26 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 							<outputDirectory>${project.build.outputDirectory}/META-INF/resources/core/servlet</outputDirectory>
 						</configuration>
 					</execution>
+					<!-- Create a second copy in the resource directory used by maven-bundle-plugin -->
+					<execution>
+						<id>copy-books-1.0.xsd-bundle</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/dependency/com/semanticcms/core/servlet</directory>
+									<includes>
+										<include>books-1.0.xsd</include>
+									</includes>
+								</resource>
+							</resources>
+							<!-- Put into META-INF/resources to be accessible as website content when jar included in WEB-INF/lib -->
+							<outputDirectory>${project.build.directory}/resources-filtered/META-INF/resources/core/servlet</outputDirectory>
+						</configuration>
+					</execution>
 					<execution>
 						<id>copy-books-1.1.xsd</id>
 						<phase>prepare-package</phase>
@@ -126,6 +146,26 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 							</resources>
 							<!-- Put into META-INF/resources to be accessible as website content when jar included in WEB-INF/lib -->
 							<outputDirectory>${project.build.outputDirectory}/META-INF/resources/core/controller</outputDirectory>
+						</configuration>
+					</execution>
+					<!-- Create a second copy in the resource directory used by maven-bundle-plugin -->
+					<execution>
+						<id>copy-books-1.1.xsd-bundle</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/dependency/com/semanticcms/core/controller</directory>
+									<includes>
+										<include>books-1.1.xsd</include>
+									</includes>
+								</resource>
+							</resources>
+							<!-- Put into META-INF/resources to be accessible as website content when jar included in WEB-INF/lib -->
+							<outputDirectory>${project.build.directory}/resources-filtered/META-INF/resources/core/controller</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
