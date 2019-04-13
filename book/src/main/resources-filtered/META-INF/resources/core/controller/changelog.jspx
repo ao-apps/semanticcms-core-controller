@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2017  AO Industries, Inc.
+Copyright (C) 2017, 2019  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -60,7 +60,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 					<li>
 						<code><ao:a href="apidocs/com/semanticcms/core/controller/PageRefResolver.html">PageRefResolver</ao:a>.getCurrentPageRef(…)</code>
 						now accepts an optional parameter to optionally return <code>null</code> on missing book instead of throwing
-						<code><ao:a rel="nofollow" href="@{javac.link.javaeeApi.6}javax/servlet/ServletException.html">ServletException</ao:a></code>.
+						<code><ao:a rel="nofollow" href="@{javac.link.javaeeApi.6}/javax/servlet/ServletException.html">ServletException</ao:a></code>.
 					</li>
 					<li>Books now exist within an optional domain:
 						<ol>
