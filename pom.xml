@@ -65,7 +65,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 								<link>${javac.link.javaApi}</link>
 								<link>${javac.link.javaeeApi.6}</link>
 								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-3.8.1/</link>
-								<link>http://www.joda.org/joda-time/apidocs/</link>
+								<link>https://www.joda.org/joda-time/apidocs/</link>
 								<link>https://aoindustries.com/ao-concurrent/apidocs/</link>
 								<link>https://aoindustries.com/ao-encoding/apidocs/</link>
 								<link>https://aoindustries.com/ao-io-buffer/apidocs/</link>
