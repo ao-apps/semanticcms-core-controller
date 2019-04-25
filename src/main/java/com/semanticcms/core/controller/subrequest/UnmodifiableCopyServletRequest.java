@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.controller.subrequest;
 
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.util.AoCollections;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -87,14 +86,14 @@ public class UnmodifiableCopyServletRequest implements ServletRequest {
 		characterEncoding = req.getCharacterEncoding();
 		contentLength = req.getContentLength();
 		contentType = req.getContentType();
-		parameterMap = new LinkedHashMap<String,String[]>(req.getParameterMap());
+		parameterMap = new LinkedHashMap<>(req.getParameterMap());
 		protocol = req.getProtocol();
 		scheme = req.getScheme();
 		serverName = req.getServerName();
 		serverPort = req.getServerPort();
 		remoteAddr = req.getRemoteAddr();
 		locale = req.getLocale();
-		List<Locale> newLocales = new ArrayList<Locale>();
+		List<Locale> newLocales = new ArrayList<>();
 		Enumeration<Locale> e = req.getLocales();
 		while(e.hasMoreElements()) newLocales.add(e.nextElement());
 		locales = AoCollections.optimalUnmodifiableList(newLocales);
@@ -114,7 +113,7 @@ public class UnmodifiableCopyServletRequest implements ServletRequest {
 	@Override
 	public Enumeration<String> getAttributeNames() {
 		Set<String> attrNames = attributes.keySet();
-		List<String> nonHiddenAttributeNames = new ArrayList<String>(attrNames.size());
+		List<String> nonHiddenAttributeNames = new ArrayList<>(attrNames.size());
 		for(String attrName : attrNames) {
 			if(!ServletSubRequest.hiddenAttributeNames.contains(attrName)) {
 				nonHiddenAttributeNames.add(attrName);
@@ -144,8 +143,9 @@ public class UnmodifiableCopyServletRequest implements ServletRequest {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public ServletInputStream getInputStream() throws IOException {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class UnmodifiableCopyServletRequest implements ServletRequest {
 
 	@Override
 	public Map<String,String[]> getParameterMap() {
-		return new LinkedHashMap<String,String[]>(parameterMap);
+		return new LinkedHashMap<>(parameterMap);
 	}
 
 	@Override
@@ -192,8 +192,9 @@ public class UnmodifiableCopyServletRequest implements ServletRequest {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public BufferedReader getReader() throws IOException {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	@Override

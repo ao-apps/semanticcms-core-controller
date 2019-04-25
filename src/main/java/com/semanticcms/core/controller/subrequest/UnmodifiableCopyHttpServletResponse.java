@@ -180,12 +180,12 @@ public class UnmodifiableCopyHttpServletResponse extends UnmodifiableCopyServlet
 	@Override
 	public Collection<String> getHeaders(String name) {
 		List<String> values = headers.get(name);
-		if(values == null) return new ArrayList<String>(0);
-		return new ArrayList<String>(values);
+		if(values == null) return new ArrayList<>(0);
+		return new ArrayList<>(values);
 	}
 
 	@Override
 	public Collection<String> getHeaderNames() {
-		return new ArrayList<String>(headers.keySet());
+		return new ArrayList<>(headers.keySet());
 	}
 }
