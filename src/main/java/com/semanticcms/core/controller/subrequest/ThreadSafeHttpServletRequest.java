@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -93,7 +93,7 @@ public class ThreadSafeHttpServletRequest extends ThreadSafeServletRequest imple
 			if(e == null) {
 				return null;
 			} else {
-				headers = new ArrayList<String>();
+				headers = new ArrayList<>();
 				while(e.hasMoreElements()) headers.add(e.nextElement());
 			}
 		}
@@ -108,7 +108,7 @@ public class ThreadSafeHttpServletRequest extends ThreadSafeServletRequest imple
 			if(e == null) {
 				return null;
 			} else {
-				headerNames = new ArrayList<String>();
+				headerNames = new ArrayList<>();
 				while(e.hasMoreElements()) headerNames.add(e.nextElement());
 			}
 		}
@@ -277,7 +277,7 @@ public class ThreadSafeHttpServletRequest extends ThreadSafeServletRequest imple
 	public Collection<Part> getParts() throws IOException, ServletException {
 		synchronized(lock) {
 			Collection<Part> parts = req.getParts();
-			List<Part> wrapped = new ArrayList<Part>(parts.size());
+			List<Part> wrapped = new ArrayList<>(parts.size());
 			for(Part part : parts) {
 				wrapped.add(new ThreadSafePart(part, lock));
 			}

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -93,14 +93,14 @@ public class ThreadSafePart implements Part {
 	@Override
 	public Collection<String> getHeaders(String name) {
 		synchronized(lock) {
-			return new ArrayList<String>(part.getHeaders(name));
+			return new ArrayList<>(part.getHeaders(name));
 		}
 	}
 
 	@Override
 	public Collection<String> getHeaderNames() {
 		synchronized(lock) {
-			return new ArrayList<String>(part.getHeaderNames());
+			return new ArrayList<>(part.getHeaderNames());
 		}
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -101,7 +101,7 @@ public class ServletBook extends Book {
 		super(bookRef, getCanonicalBase(bookProps));
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-		Set<Object> usedKeys = new HashSet<Object>(bookProps.size() * 4/3 + 1);
+		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
 
 		// Mark as used
 		getProperty(bookProps, usedKeys, "canonicalBase");
@@ -123,7 +123,7 @@ public class ServletBook extends Book {
 		} else {
 			this.copyright = null;
 		}
-		Set<Author> authors = new LinkedHashSet<Author>();
+		Set<Author> authors = new LinkedHashSet<>();
 		for(int i=1; i<Integer.MAX_VALUE; i++) {
 			String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
 			String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
@@ -167,7 +167,7 @@ public class ServletBook extends Book {
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
 		this.allowRobots = allowRobots;
-		Map<String,String> newParam = new LinkedHashMap<String,String>();
+		Map<String,String> newParam = new LinkedHashMap<>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
@@ -185,7 +185,7 @@ public class ServletBook extends Book {
 		this.contentRoot = new PageRef(this.bookRef, Path.valueOf(getProperty(bookProps, usedKeys, "content.root")));
 
 		// Make sure all keys used
-		Set<Object> unusedKeys = new HashSet<Object>();
+		Set<Object> unusedKeys = new HashSet<>();
 		for(Object key : bookProps.keySet()) {
 			if(!usedKeys.contains(key)) unusedKeys.add(key);
 		}
@@ -202,7 +202,7 @@ public class ServletBook extends Book {
 		if(resourceDirectories == null || resourceDirectories.isEmpty()) {
 			resources = servletStore;
 		} else {
-			List<File> directories = new ArrayList<File>(resourceDirectories.size());
+			List<File> directories = new ArrayList<>(resourceDirectories.size());
 			for(String resourceDirectory : resourceDirectories) {
 				File directory;
 				if(resourceDirectory.startsWith("~/")) {
@@ -212,7 +212,7 @@ public class ServletBook extends Book {
 				}
 				directories.add(directory);
 			}
-			List<ResourceStore> resourceStores = new ArrayList<ResourceStore>(directories.size() + 1);
+			List<ResourceStore> resourceStores = new ArrayList<>(directories.size() + 1);
 			for(File directory : directories) {
 				resourceStores.add(FilesystemResourceStore.getInstance(directory));
 			}

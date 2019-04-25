@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -82,7 +82,7 @@ public class ServletSubRequest implements ServletRequest {
 	 * in Tomcat 7.0 - is this a bug?)
 	 */
 	static final Set<String> hiddenAttributeNames = Collections.unmodifiableSet(
-		new HashSet<String>(
+		new HashSet<>(
 			Arrays.asList(
 				//"org.apache.catalina.core.DISPATCHER_TYPE",
 				//"org.apache.catalina.core.DISPATCHER_REQUEST_PATH",
@@ -102,7 +102,7 @@ public class ServletSubRequest implements ServletRequest {
 	);
 
 	static Map<String,Object> getAllAttributes(ServletRequest req) {
-		Map<String,Object> newAttributes = new LinkedHashMap<String,Object>();
+		Map<String,Object> newAttributes = new LinkedHashMap<>();
 		for(String hiddenAttrName : hiddenAttributeNames) {
 			if(DEBUG) System.out.println("DEBUG: setAttribute: hiddenAttrName: " + hiddenAttrName);
 			Object hiddenAttrVal = req.getAttribute(hiddenAttrName);
@@ -147,7 +147,7 @@ public class ServletSubRequest implements ServletRequest {
 		Map<String,Object> a = attributes;
 		if(a != null) {
 			Set<String> attrNames = a.keySet();
-			List<String> nonHiddenAttributeNames = new ArrayList<String>(attrNames.size());
+			List<String> nonHiddenAttributeNames = new ArrayList<>(attrNames.size());
 			for(String attrName : attrNames) {
 				if(!hiddenAttributeNames.contains(attrName)) {
 					nonHiddenAttributeNames.add(attrName);

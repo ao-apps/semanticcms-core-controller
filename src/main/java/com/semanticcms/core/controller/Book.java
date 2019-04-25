@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.lang.NullArgumentException;
 import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.BookRef;
@@ -97,16 +96,19 @@ abstract public class Book implements Comparable<Book> {
 	 */
 	abstract public boolean isAccessible();
 
+	@SuppressWarnings("deprecation")
 	public boolean isProtected() {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean isPassThroughEnabled() {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean isLocal() {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	/**

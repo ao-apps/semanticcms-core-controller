@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -23,7 +23,6 @@
 package com.semanticcms.core.controller.subrequest;
 
 import com.aoindustries.io.buffer.BufferWriter;
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.taglib.AutoEncodingBufferedTag;
 import com.aoindustries.tempfiles.TempFileContext;
 import com.aoindustries.util.WrappedException;
@@ -80,8 +79,9 @@ public class ServletSubResponseWrapper extends ServletResponseWrapper {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public ServletOutputStream getOutputStream() throws IOException {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	private BufferWriter capturedOut;

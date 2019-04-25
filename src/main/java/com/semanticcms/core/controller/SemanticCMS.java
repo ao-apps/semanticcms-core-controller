@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -85,15 +85,7 @@ public class SemanticCMS {
 				}
 				return semanticCMS;
 			}
-		} catch(IOException e) {
-			throw new WrappedException(e);
-		} catch(SAXException e) {
-			throw new WrappedException(e);
-		} catch(ParserConfigurationException e) {
-			throw new WrappedException(e);
-		} catch(XPathExpressionException e) {
-			throw new WrappedException(e);
-		} catch(ValidationException e) {
+		} catch(IOException | SAXException | ParserConfigurationException | XPathExpressionException | ValidationException e) {
 			throw new WrappedException(e);
 		}
 	}
@@ -150,10 +142,10 @@ public class SemanticCMS {
 	private static final String ROOT_DOMAIN_ATTRIBUTE_NAME = "rootDomain";
 	private static final String ROOT_BOOK_ATTRIBUTE_NAME = "rootBook";
 
-	private final Map<BookRef,Book> books = new LinkedHashMap<BookRef,Book>();
+	private final Map<BookRef,Book> books = new LinkedHashMap<>();
 	private final Map<BookRef,Book> unmodifiableBooks = Collections.unmodifiableMap(books);
 
-	private final Map<Path,Book> publishedBooks = new LinkedHashMap<Path,Book>();
+	private final Map<Path,Book> publishedBooks = new LinkedHashMap<>();
 	private final Map<Path,Book> unmodifiablePublishedBooks = Collections.unmodifiableMap(publishedBooks);
 
 	private final Book rootBook;
@@ -241,7 +233,7 @@ public class SemanticCMS {
 					Path.valueOf(bookElem.getAttribute("name"))
 				);
 			}
-			Set<ParentRef> parentRefs = new LinkedHashSet<ParentRef>();
+			Set<ParentRef> parentRefs = new LinkedHashSet<>();
 			for(org.w3c.dom.Element parentElem : XmlUtils.iterableChildElementsByTagName(bookElem, PARENT_TAG_NAME)) {
 				String domainStr = parentElem.getAttribute("domain");
 				BookRef parentBookRef = new BookRef(
@@ -471,7 +463,7 @@ public class SemanticCMS {
 
 	// <editor-fold defaultstate="collapsed" desc="Renderers">
 
-	private final SortedMap<String,Renderer> renderers = new TreeMap<String,Renderer>(
+	private final SortedMap<String,Renderer> renderers = new TreeMap<>(
 		new Comparator<String>() {
 			@Override
 			public int compare(String s1, String s2) {
@@ -540,7 +532,7 @@ public class SemanticCMS {
 			if(pathStr.regionMatches(pathLen - END_INDEX_LEN, END_INDEX, 0, END_INDEX_LEN)) {
 				pathLen -= END_INDEX.length() - 1;
 			}
-			return new Tuple2<Renderer, Path>(
+			return new Tuple2<>(
 				renderer,
 				path.prefix(pathLen)
 			);

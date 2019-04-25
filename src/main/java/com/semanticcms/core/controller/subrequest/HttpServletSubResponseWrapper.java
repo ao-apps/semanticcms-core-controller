@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.controller.subrequest;
 
-import com.aoindustries.lang.NotImplementedException;
 import com.aoindustries.tempfiles.TempFileContext;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 
 	@Override
 	public void addCookie(Cookie cookie) {
-		if(cookies == null) cookies = new LinkedHashMap<String,Cookie>();
+		if(cookies == null) cookies = new LinkedHashMap<>();
 		cookies.put(cookie.getName(), cookie);
 	}
 
@@ -140,18 +139,20 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void setDateHeader(String name, long date) {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void addDateHeader(String name, long date) {
-		throw new NotImplementedException();
+		throw new com.aoindustries.lang.NotImplementedException();
 	}
 
 	@Override
 	public void setHeader(String name, String value) {
-		if(headers == null) headers = new LinkedHashMap<String,List<String>>();
+		if(headers == null) headers = new LinkedHashMap<>();
 		headers.put(name, Collections.singletonList(value));
 	}
 
@@ -159,7 +160,7 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 	public void addHeader(String name, String value) {
 		List<String> values;
 		if(headers == null) {
-			headers = new LinkedHashMap<String,List<String>>();
+			headers = new LinkedHashMap<>();
 			values = null;
 		} else {
 			values = headers.get(name);
@@ -169,13 +170,13 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 			if(existing.isEmpty()) {
 				headers.put(name, Collections.singletonList(value));
 			} else {
-				List<String> newValues = new ArrayList<String>();
+				List<String> newValues = new ArrayList<>();
 				newValues.addAll(existing);
 				newValues.add(value);
 				headers.put(name, newValues);
 			}
 		} else if(values.size() == 1) {
-			List<String> newValues = new ArrayList<String>();
+			List<String> newValues = new ArrayList<>();
 			newValues.addAll(values);
 			newValues.add(value);
 			headers.put(name, newValues);
@@ -243,7 +244,7 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 		if(headers != null) {
 			List<String> values = headers.get(name);
 			if(values != null) {
-				return new ArrayList<String>(values);
+				return new ArrayList<>(values);
 			}
 		}
 		return resp.getHeaders(name);
@@ -257,10 +258,10 @@ public class HttpServletSubResponseWrapper extends ServletSubResponseWrapper imp
 		Collection<String> existingHeaderNames = resp.getHeaderNames();
 		if(headers != null) {
 			if(existingHeaderNames.isEmpty()) {
-				return new ArrayList<String>(headers.keySet());
+				return new ArrayList<>(headers.keySet());
 			} else {
 				// Combine all header names
-				Set<String> headerNames = new LinkedHashSet<String>(
+				Set<String> headerNames = new LinkedHashSet<>(
 					(existingHeaderNames.size() + headers.size()) *4/3+1
 				);
 				headerNames.addAll(existingHeaderNames);

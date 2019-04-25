@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -68,7 +68,7 @@ public class ServletSubRequestWrapper extends ServletRequestWrapper {
 	 * but are not returned as part of all attribute names.
 	 */
 	private static final Set<String> hiddenAttributeNames = Collections.unmodifiableSet(
-		new HashSet<String>(
+		new HashSet<>(
 			Arrays.asList(
 				"org.apache.catalina.core.DISPATCHER_TYPE",
 				"org.apache.catalina.core.DISPATCHER_REQUEST_PATH",
@@ -101,7 +101,7 @@ public class ServletSubRequestWrapper extends ServletRequestWrapper {
 		if(DEBUG) System.out.println("DEBUG: getAttributeNames");
 		if(attributes != null) {
 			Set<String> attrNames = attributes.keySet();
-			List<String> nonHiddenAttributeNames = new ArrayList<String>(attrNames.size());
+			List<String> nonHiddenAttributeNames = new ArrayList<>(attrNames.size());
 			for(String attrName : attrNames) {
 				if(!hiddenAttributeNames.contains(attrName)) {
 					nonHiddenAttributeNames.add(attrName);
@@ -123,7 +123,7 @@ public class ServletSubRequestWrapper extends ServletRequestWrapper {
 			}
 		}
 		if(attributes == null) {
-			Map<String,Object> newAttributes = new LinkedHashMap<String,Object>();
+			Map<String,Object> newAttributes = new LinkedHashMap<>();
 			for(String hiddenAttrName : hiddenAttributeNames) {
 				if(DEBUG) System.out.println("DEBUG: setAttribute: hiddenAttrName: " + hiddenAttrName);
 				Object hiddenAttrVal = super.getAttribute(hiddenAttrName);

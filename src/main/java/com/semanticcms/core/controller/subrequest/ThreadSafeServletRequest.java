@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -74,7 +74,7 @@ public class ThreadSafeServletRequest extends ServletRequestWrapper {
 
 	@Override
 	public Enumeration<String> getAttributeNames() {
-		List<String> attributeNames = new ArrayList<String>();
+		List<String> attributeNames = new ArrayList<>();
 		synchronized(lock) {
 			Enumeration<String> e = super.getAttributeNames();
 			while(e.hasMoreElements()) attributeNames.add(e.nextElement());

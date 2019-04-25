@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -90,11 +90,10 @@ public class RendererServlet extends HttpServlet {
 		if(renderer == null) throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER);
 		Page page = (Page)request.getAttribute(PAGE_REQUEST_PARAMETER);
 		if(page == null) throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER);
-		Map<String,Object> pageRendererAttributes = new HashMap<String,Object>();
+		Map<String,Object> pageRendererAttributes = new HashMap<>();
 		pageRendererAttributes.put(ServletPageRenderer.REQUEST_RENDERER_ATTRIBUTE, request);
 		pageRendererAttributes.put(ServletPageRenderer.RESPONSE_RENDERER_ATTRIBUTE, response);
-		PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes);
-		try {
+		try (PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes)) {
 			Object oldPageRenderer = request.getAttribute(PAGE_RENDERER_REQUEST_PARAMETER);
 			try {
 				request.setAttribute(PAGE_RENDERER_REQUEST_PARAMETER, pageRenderer);
@@ -102,8 +101,6 @@ public class RendererServlet extends HttpServlet {
 			} finally {
 				request.setAttribute(PAGE_RENDERER_REQUEST_PARAMETER, oldPageRenderer);
 			}
-		} finally {
-			pageRenderer.close();
 		}
 	}
 
@@ -112,10 +109,7 @@ public class RendererServlet extends HttpServlet {
 		try {
 			long lastModified = getPageRenderer(request).getLastModified();
 			return lastModified == 0 ? -1 : lastModified;
-		} catch(IOException e) {
-			log(null, e);
-			return -1;
-		} catch(ServletException e) {
+		} catch(IOException | ServletException e) {
 			log(null, e);
 			return -1;
 		}

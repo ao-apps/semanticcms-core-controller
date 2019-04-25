@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2018  AO Industries, Inc.
+ * Copyright (C) 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -78,10 +78,7 @@ public class ResourceServlet extends HttpServlet {
 			ResourceConnection resourceConn = getResourceConn(request);
 			long lastModified = resourceConn.getLastModified();
 			return lastModified == 0 ? -1 : lastModified;
-		} catch(IOException e) {
-			log(null, e);
-			return -1;
-		} catch(ServletException e) {
+		} catch(IOException | ServletException e) {
 			log(null, e);
 			return -1;
 		}
@@ -110,12 +107,9 @@ public class ResourceServlet extends HttpServlet {
 			}
 		}
 		ServletOutputStream out = response.getOutputStream();
-		InputStream in = resourceConn.getInputStream();
-		try {
+		try (InputStream in = resourceConn.getInputStream()) {
 			long copied = IoUtils.copy(in, out);
 			if(length != -1 && copied != length) throw new ServletException("Wrong number of bytes copied for " + resourceConn + ": length = " + length + ", copied = " + copied);
-		} finally {
-			in.close();
 		}
 	}
 }

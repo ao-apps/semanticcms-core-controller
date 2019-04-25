@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,11 +22,11 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.lang.ObjectUtils;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.ServletException;
 
 /**
@@ -119,17 +119,17 @@ public abstract class Cache {
 		public boolean equals(Object o) {
 			if(!(o instanceof CaptureResult)) return false;
 			CaptureResult other = (CaptureResult)o;
-			return ObjectUtils.equals(page, other.page);
+			return Objects.equals(page, other.page);
 		}
 
 		@Override
 		public int hashCode() {
-			return ObjectUtils.hash(page);
+			return Objects.hash(page);
 		}
 
 		@Override
 		public String toString() {
-			return "CaptureResult(" + ObjectUtils.toString(page) + ')';
+			return "CaptureResult(" + Objects.toString(page, null) + ')';
 		}
 	}
 

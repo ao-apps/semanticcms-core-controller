@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -67,13 +67,13 @@ class SingleThreadCache extends MapCache {
 	@Override
 	public <K,V> Map<K,V> newMap() {
 		assert assertingThread == Thread.currentThread();
-		return new HashMap<K,V>();
+		return new HashMap<>();
 	}
 
 	@Override
 	public <K,V> Map<K,V> newMap(int size) {
 		assert assertingThread == Thread.currentThread();
-		return new HashMap<K,V>(size *4/3+1);
+		return new HashMap<>(size *4/3+1);
 	}
 
 	@Override
