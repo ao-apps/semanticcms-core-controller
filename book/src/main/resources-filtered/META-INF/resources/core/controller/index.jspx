@@ -34,7 +34,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="@{documented.shortTitle}"
 		description="@{documented.description}"
 		datePublished="2017-08-26T19:19:43-0500"
-		dateModified="2019-06-01T00:46:53-0500"
+		dateModified="2019-06-01T18:51:51-0500"
 	>
 		<core:child page="url-space" />
 		<core:child page="servlet-space" />
@@ -55,7 +55,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<p>
 			Serves <core:link book="/" page="/" /> content from a Servlet environment.
 		</p>
-		<section:section label="Project Links">
+		<section:nav label="Project Links">
 			<ul>
 				<li><core:link page="/">Project Home</core:link></li>
 				<li><core:link page="changelog">Changelog</core:link></li>
@@ -63,7 +63,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 				<li><ao:a href="https://search.maven.org/#search%7Cgav%7C1%7Cg:%22@{documented.groupId}%22%20AND%20a:%22@{documented.artifactId}%22">Maven Central Repository</ao:a></li>
 				<li><ao:a href="@{documented.scm.url}">GitHub</ao:a></li>
 			</ul>
-		</section:section>
+		</section:nav>
 		<section:section label="XML Schemas">
 			<!-- TODO: file:file once cvsworkDirectory no longer required -->
 			<ul>
