@@ -224,6 +224,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 			<type>pom</type>
 			<scope>provided</scope>
 			<optional>true</optional>
+			<exclusions><exclusion><groupId>*</groupId><artifactId>*</artifactId></exclusion></exclusions>
 		</dependency>
 	</dependencies>
 </project>
