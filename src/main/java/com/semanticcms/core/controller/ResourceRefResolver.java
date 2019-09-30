@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017  AO Industries, Inc.
+ * Copyright (C) 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -25,8 +25,8 @@ package com.semanticcms.core.controller;
 import com.aoindustries.lang.NullArgumentException;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
+import com.aoindustries.net.URIResolver;
 import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.servlet.http.ServletUtil;
 import com.aoindustries.validation.ValidationException;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.ResourceRef;
@@ -93,7 +93,7 @@ public class ResourceRefResolver {
 					return new ResourceRef(
 						currentBookRef,
 						Path.valueOf(
-							ServletUtil.getAbsolutePath(
+							URIResolver.getAbsolutePath(
 								currentPagePath.substring(bookPrefix.length()),
 								path
 							)

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2018  AO Industries, Inc.
+ * Copyright (C) 2017, 2018, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -24,7 +24,7 @@ package com.semanticcms.core.controller;
 
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.servlet.http.ServletUtil;
+import com.aoindustries.servlet.http.HttpServletUtil;
 import com.aoindustries.util.Tuple2;
 import com.aoindustries.validation.ValidationException;
 import com.semanticcms.core.model.Page;
@@ -143,9 +143,9 @@ public class Controller implements Filter {
 	) throws IOException, ServletException {
 		String method = request.getMethod();
 		if(
-			ServletUtil.METHOD_GET.equalsIgnoreCase(method)
-			|| ServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
-			|| ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
+			HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
+			|| HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
+			|| HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
 		) {
 			doNotFound(request, response);
 		} else {
@@ -182,7 +182,7 @@ public class Controller implements Filter {
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setHeader(
 			"Allow",
-			ServletUtil.METHOD_GET + ", " + ServletUtil.METHOD_HEAD + ", " + ServletUtil.METHOD_OPTIONS
+			HttpServletUtil.METHOD_GET + ", " + HttpServletUtil.METHOD_HEAD + ", " + HttpServletUtil.METHOD_OPTIONS
 		);
 	}
 
@@ -349,9 +349,9 @@ public class Controller implements Filter {
 	) throws IOException, ServletException {
 		String method = request.getMethod();
 		if(
-			ServletUtil.METHOD_GET.equalsIgnoreCase(method)
-			|| ServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
-			|| ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
+			HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
+			|| HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
+			|| HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
 		) {
 			doPublishedBookExpectedMethods(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
 		} else {
@@ -464,9 +464,9 @@ public class Controller implements Filter {
 			doPassThrough(request, response, chain);
 		} else {
 			assert
-				!ServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
-				&& !ServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-				&& !ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
+				!HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
+				&& !HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
+				&& !HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
 			;
 			doMethodNotAllowed(request, response);
 		}
@@ -490,7 +490,7 @@ public class Controller implements Filter {
 		} else {
 			Renderer renderer = rendererAndPath.getElement1();
 			Path pagePath = rendererAndPath.getElement2();
-			if(ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
+			if(HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
 				doPublishedBookOptions(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
 			} else {
 				doPublishedBookGetHead(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
@@ -649,7 +649,7 @@ public class Controller implements Filter {
 					resourceConn = null;
 					doPublishedBookResourceNotExists(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resource);
 				} else {
-					if(ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
+					if(HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
 						resourceConn.close();
 						resourceConn = null;
 						doPublishedBookResourceExistsOptions(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resource);
@@ -733,9 +733,9 @@ public class Controller implements Filter {
 			doPassThrough(request, response, chain);
 		} else {
 			assert
-				ServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
-				|| ServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-				|| ServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
+				HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
+				|| HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
+				|| HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
 			;
 			doNotFound(request, response);
 		}

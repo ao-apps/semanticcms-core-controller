@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.servlet.http.ServletUtil;
+import com.aoindustries.servlet.http.HttpServletUtil;
 import com.semanticcms.core.model.BookRef;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
@@ -55,7 +55,7 @@ final public class BookUtils {
 		String canonicalBase = book.getCanonicalBase();
 		if(canonicalBase == null) {
 			BookRef bookRef = book.getBookRef();
-			String autoCanonical = ServletUtil.getAbsoluteURL(request, bookRef.getPrefix());
+			String autoCanonical = HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix());
 			if(
 				// Logger checked first, so if warnings enabled mid-run, will get first warning still
 				logger.isLoggable(Level.WARNING)

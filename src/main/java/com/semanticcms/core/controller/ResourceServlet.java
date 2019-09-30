@@ -89,7 +89,7 @@ public class ResourceServlet extends HttpServlet {
 		ResourceConnection resourceConn = getResourceConn(request);
 		// TODO: checkIfHeaders
 		// Get content type
-		String contentType = "text/plain"; // TODO: Get from resourceConnection
+		String contentType = "text/plain"; // TODO: Get from resourceConnection, making sure it includes any charset
 		response.setContentType(contentType);
 		// TODO: eTag
 		// TODO: Support pre-compression?
