@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.net.URIDecoder;
 import com.aoindustries.servlet.http.HttpServletUtil;
 import com.semanticcms.core.model.BookRef;
 import java.net.MalformedURLException;
@@ -55,7 +56,7 @@ final public class BookUtils {
 		String canonicalBase = book.getCanonicalBase();
 		if(canonicalBase == null) {
 			BookRef bookRef = book.getBookRef();
-			String autoCanonical = HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix());
+			String autoCanonical = URIDecoder.decodeURI(HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix()));
 			if(
 				// Logger checked first, so if warnings enabled mid-run, will get first warning still
 				logger.isLoggable(Level.WARNING)
