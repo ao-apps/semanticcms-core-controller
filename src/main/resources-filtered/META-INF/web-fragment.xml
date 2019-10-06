@@ -27,12 +27,12 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
                       http://java.sun.com/xml/ns/javaee/web-fragment_3_0.xsd"
   version="3.0"
   metadata-complete="false">
-	<name>semanticcms-core-controller</name>
-	<!-- Causes: The display name was defined in multiple fragments with different value
-    <display-name>SemanticCMS Core Controller</display-name>
+	<name>@{project.artifactId}-@{project.version}</name>
+	<!-- Causes error: "The display name was defined in multiple fragments with different value"
+    <display-name>@{project.name}</display-name>
 	-->
 	<!-- TODO: Move to resources-filtered and use property? -->
-	<description>Serves SemanticCMS content from a Servlet environment.</description>
+	<description>@{project.description}</description>
 	<!-- The UTF-8 filter must be first, declare before all other fragments -->
 	<ordering>
 		<before>
