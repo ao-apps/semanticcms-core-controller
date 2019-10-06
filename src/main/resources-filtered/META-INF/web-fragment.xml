@@ -29,7 +29,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
   metadata-complete="false">
 	<name>@{project.artifactId}-@{project.version}</name>
 	<!-- Causes error: "The display name was defined in multiple fragments with different value"
-    <display-name>@{project.name}</display-name>
+	<display-name>@{project.name}</display-name>
 	-->
 	<!-- TODO: Move to resources-filtered and use property? -->
 	<description>@{project.description}</description>
