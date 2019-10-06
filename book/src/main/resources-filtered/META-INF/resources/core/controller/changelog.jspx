@@ -36,7 +36,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2017-08-26T19:19:43-0500"
-		dateModified="2019-10-06T10:04:42-0500"
+		dateModified="2019-10-06T15:47:38-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-controller:pom.version}" />
@@ -84,6 +84,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 						<ao:a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</ao:a>
 						parameter.  Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
 					</li>
+					<li>Defined MIME types, with a <code>UTF-8</code> default, in shared <code>web-fragment.xml</code></li>
 				</ul>
 			</changelog:release>
 		</c:if>
