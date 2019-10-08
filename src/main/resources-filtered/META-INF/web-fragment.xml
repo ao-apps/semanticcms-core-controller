@@ -39,16 +39,6 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 			<others />
 		</before>
 	</ordering>
-	<!-- Filter to set request character encoding to UTF-8 -->
-	<filter>
-		<filter-name>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-name>
-		<filter-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-	</filter-mapping>
 	<!-- Filter to strip invalid XML characters from incoming parameters -->
 	<filter>
 		<filter-name>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-name>
@@ -130,6 +120,10 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
 	<listener>
 		<listener-class>com.semanticcms.core.controller.CountConcurrencyListener</listener-class>
+	</listener>
+	<!-- Sets request character encoding to UTF-8 when not provided by client -->
+	<listener>
+		<listener-class>com.aoindustries.servlet.filter.Utf8RequestCharacterEncodingListener</listener-class>
 	</listener>
 
 	<!--
