@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Resolves the cache to use for the current request.
  *
- * @see  CountConcurrencyFilter  This must come after CountConcurrencyFilter
+ * @see  CountConcurrencyListener
  */
 public class CacheFilter implements Filter {
 
@@ -172,7 +172,7 @@ public class CacheFilter implements Filter {
 			if(cache == null) {
 				// Request-level cache when not exporting
 				SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
-				if(CountConcurrencyFilter.useConcurrentSubrequests(request)) {
+				if(CountConcurrencyListener.useConcurrentSubrequests(request)) {
 					cache = new ConcurrentCache(semanticCMS);
 				} else {
 					cache = new SingleThreadCache(semanticCMS);

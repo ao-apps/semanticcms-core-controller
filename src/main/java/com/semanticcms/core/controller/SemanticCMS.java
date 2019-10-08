@@ -453,7 +453,7 @@ public class SemanticCMS {
 	/**
 	 * A shared executor available to all components.
 	 *
-	 * @see  CountConcurrencyFilter#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
+	 * @see  CountConcurrencyListener#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
 	 *       Consider selecting concurrent or sequential implementations based on overall system load.
 	 */
 	public Executors getExecutors() {

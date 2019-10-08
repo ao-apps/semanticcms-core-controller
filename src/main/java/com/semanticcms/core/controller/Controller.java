@@ -53,7 +53,7 @@ import javax.servlet.http.HttpServletResponse;
  * See <a href="https://semanticcms.com/core/controller/request-flow.dia">request-flow.dia</a>.
  * </p>
  * <p>
- * This must follow {@link CountConcurrencyFilter} and {@link CacheFilter} in the filter chain.  TODO: Why?
+ * This must follow {@link CacheFilter} in the filter chain.  TODO: Why?
  * </p>
  * <p>
  * This must be on the <code>REQUEST</code> dispatcher only.

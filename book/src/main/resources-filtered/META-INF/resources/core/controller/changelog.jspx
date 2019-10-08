@@ -36,7 +36,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2017-08-26T19:19:43-0500"
-		dateModified="2019-10-06T15:47:38-0500"
+		dateModified="2019-10-08T01:38:29-0500"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-controller:pom.version}" />
@@ -85,6 +85,11 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 						parameter.  Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
 					</li>
 					<li>Defined MIME types, with a <code>UTF-8</code> default, in shared <code>web-fragment.xml</code></li>
+					<li>
+						Changed <code>CountConcurrencyFilter</code> from a <code><![CDATA[&lt;filter&gt;]]></code>
+						to a <code><![CDATA[&lt;listener&gt;]]></code> named
+						<ao:a href="apidocs/com/semanticcms/core/controller/CountConcurrencyListener.html">CountConcurrencyListener</ao:a>.
+					</li>
 				</ul>
 			</changelog:release>
 		</c:if>

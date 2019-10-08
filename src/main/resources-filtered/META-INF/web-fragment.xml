@@ -59,17 +59,6 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
-	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
-	<filter>
-		<filter-name>com.semanticcms.core.controller.CountConcurrencyFilter</filter-name>
-		<filter-class>com.semanticcms.core.controller.CountConcurrencyFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>com.semanticcms.core.controller.CountConcurrencyFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
 	<!-- Sets up the cache for the request. -->
 	<filter>
 		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
@@ -138,6 +127,10 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<servlet-name>com.semanticcms.core.controller.ResourceServlet</servlet-name>
 		<servlet-class>com.semanticcms.core.controller.ResourceServlet</servlet-class>
 	</servlet>
+	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
+	<listener>
+		<listener-class>com.semanticcms.core.controller.CountConcurrencyListener</listener-class>
+	</listener>
 
 	<!--
 		MIME types, with UTF-8 defaults where appropriate.
