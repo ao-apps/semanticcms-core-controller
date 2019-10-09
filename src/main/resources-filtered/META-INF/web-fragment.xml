@@ -158,11 +158,13 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<!-- JavaScript -->
 	<mime-mapping>
 		<extension>js</extension>
-		<mime-type>application/javascript;charset=UTF-8</mime-type>
+		<!-- // TODO: application/javascript once we don't care about IE <= 8 -->
+		<mime-type>text/javascript;charset=UTF-8</mime-type>
 	</mime-mapping>
 	<mime-mapping>
 		<extension>spt</extension>
-		<mime-type>application/javascript;charset=UTF-8</mime-type>
+		<!-- // TODO: application/javascript once we don't care about IE <= 8 -->
+		<mime-type>text/javascript;charset=UTF-8</mime-type>
 	</mime-mapping>
 	<mime-mapping>
 		<extension>jsfl</extension>
