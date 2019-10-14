@@ -102,6 +102,14 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<servlet>
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<servlet-class>com.aoindustries.servlet.http.LastModifiedServlet</servlet-class>
+		<init-param>
+			<description><![CDATA[
+				The value for the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control</a> header.
+				Defaults to a short-term setting of public, five-minute, and allowing stale.
+			]]></description>
+			<param-name>Cache-Control</param-name>
+			<param-value>public,max-age=300,max-stale=300,stale-while-revalidate=300,stale-if-error=300</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
