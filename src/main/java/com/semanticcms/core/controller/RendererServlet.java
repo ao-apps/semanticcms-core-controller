@@ -118,6 +118,7 @@ public class RendererServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PageRenderer pageRenderer = getPageRenderer(request);
+		// TODO: Doctype and Serialization stuff here, or somewhere appropriate before Theme.doTheme is called (like in 1.x branch PageImpl.java)
 		response.setContentType(pageRenderer.getContentType());
 		long length = pageRenderer.getLength();
 		if(length != -1) {
