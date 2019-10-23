@@ -24,7 +24,11 @@ package com.semanticcms.core.controller;
 
 import com.aoindustries.lang.NullArgumentException;
 import com.aoindustries.servlet.subrequest.HttpServletSubRequest;
+import com.aoindustries.servlet.subrequest.HttpServletSubRequestWrapper;
 import com.aoindustries.servlet.subrequest.HttpServletSubResponse;
+import com.aoindustries.servlet.subrequest.HttpServletSubResponseWrapper;
+import com.aoindustries.servlet.subrequest.IHttpServletSubRequest;
+import com.aoindustries.servlet.subrequest.IHttpServletSubResponse;
 import com.aoindustries.servlet.subrequest.UnmodifiableCopyHttpServletRequest;
 import com.aoindustries.servlet.subrequest.UnmodifiableCopyHttpServletResponse;
 import com.aoindustries.tempfiles.TempFileContext;
@@ -102,9 +106,31 @@ public class CapturePage {
 	 * @return  The captured page or {@code null} if page does not exist.
 	 */
 	public static Page capturePage(
+		ServletContext servletContext,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		PageReferrer pageReferrer,
+		CaptureLevel level,
+		Cache cache
+	) throws ServletException, IOException {
+		return capturePage(
+			servletContext,
+			request,
+			response,
+			new HttpServletSubRequestWrapper(request),
+			new HttpServletSubResponseWrapper(response, ServletTempFileContext.getTempFileContext(request)),
+			pageReferrer,
+			level,
+			cache
+		);
+	}
+
+	private static Page capturePage(
 		final ServletContext servletContext,
-		final HttpServletRequest request,
-		final HttpServletResponse response,
+		HttpServletRequest request,
+		HttpServletResponse response,
+		final IHttpServletSubRequest subRequest,
+		final IHttpServletSubResponse subResponse,
 		PageReferrer pageReferrer,
 		final CaptureLevel level,
 		Cache cache
@@ -146,8 +172,8 @@ public class CapturePage {
 			// TODO: A way to do this without a hard dependency on LocalPageRepository?
 			capturedPage = PageContext.newPageContext(
 				servletContext,
-				request,
-				response,
+				subRequest,
+				subResponse,
 				new PageContext.PageContextCallable<Page>() {
 					@Override
 					public Page call() throws ServletException, IOException {
@@ -272,6 +298,8 @@ public class CapturePage {
 							public Page call() throws ServletException, IOException {
 								return capturePage(
 									servletContext,
+									threadSafeReq,
+									threadSafeResp,
 									new HttpServletSubRequest(threadSafeReq),
 									new HttpServletSubResponse(threadSafeResp, tempFileContext),
 									pageRef,
@@ -665,6 +693,8 @@ public class CapturePage {
 												// TODO: What to do when returns null?
 												return capturePage(
 													servletContext,
+													finalThreadSafeReq,
+													finalThreadSafeResp,
 													new HttpServletSubRequest(finalThreadSafeReq),
 													new HttpServletSubResponse(finalThreadSafeResp, tempFileContext),
 													edge,
