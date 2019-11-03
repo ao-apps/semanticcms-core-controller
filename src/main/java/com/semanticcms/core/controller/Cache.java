@@ -188,6 +188,7 @@ public abstract class Cache {
 	/**
 	 * Constrains allowed exception type.
 	 */
+	@FunctionalInterface
 	public static interface Callable<V,E extends Exception> extends java.util.concurrent.Callable<V> {
 		@Override
 		public V call() throws E;
