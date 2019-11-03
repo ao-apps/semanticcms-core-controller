@@ -32,7 +32,6 @@ import com.semanticcms.core.model.PageReferrer;
 import com.semanticcms.core.model.ParentRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -78,30 +77,17 @@ final public class PageUtils {
 				response,
 				page,
 				CaptureLevel.META,
-				new CapturePage.PageHandler<Boolean>() {
-					@Override
-					public Boolean handlePage(Page page) {
-						for(Element element : page.getElements()) {
-							if(elementType.isAssignableFrom(element.getClass())) {
-								return true;
-							}
+				(Page page1) -> {
+					for(Element element : page1.getElements()) {
+						if(elementType.isAssignableFrom(element.getClass())) {
+							return true;
 						}
-						return null;
 					}
+					return null;
 				},
-				new CapturePage.TraversalEdges() {
-					@Override
-					public Collection<ChildRef> getEdges(Page page) {
-						return page.getChildRefs();
-					}
-				},
-				new CapturePage.EdgeFilter() {
-					@Override
-					public boolean applyEdge(PageRef childPage) {
-						// Child is in an accessible book
-						return semanticCMS.getBook(childPage.getBookRef()).isAccessible();
-					}
-				}
+				Page::getChildRefs,
+				// Child is in an accessible book
+				(PageRef childPage) -> semanticCMS.getBook(childPage.getBookRef()).isAccessible()
 			) != null;
 		} else {
 			for(Element element : page.getElements()) {
@@ -142,7 +128,7 @@ final public class PageUtils {
 			response,
 			SemanticCMS.getInstance(servletContext),
 			page,
-			new HashMap<PageRef,Boolean>()
+			new HashMap<>()
 		);
 	}
 

@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -464,17 +463,14 @@ public class SemanticCMS {
 	// <editor-fold defaultstate="collapsed" desc="Renderers">
 
 	private final SortedMap<String,Renderer> renderers = new TreeMap<>(
-		new Comparator<String>() {
-			@Override
-			public int compare(String s1, String s2) {
-				// Order by length descending
-				int len1 = s1.length();
-				int len2 = s2.length();
-				if(len1 < len2) return 1;
-				if(len1 > len2) return -1;
-				// Then order by suffix, case-insensitive ascending
-				return s1.compareToIgnoreCase(s2);
-			}
+		(String s1, String s2) -> {
+			// Order by length descending
+			int len1 = s1.length();
+			int len2 = s2.length();
+			if(len1 < len2) return 1;
+			if(len1 > len2) return -1;
+			// Then order by suffix, case-insensitive ascending
+			return s1.compareToIgnoreCase(s2);
 		}
 	);
 	private final SortedMap<String,Renderer> unmodifiableRenderers = Collections.unmodifiableSortedMap(renderers);

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -72,7 +72,7 @@ public class CopyrightUtils {
 			response,
 			SemanticCMS.getInstance(servletContext),
 			page,
-			new HashMap<PageRef,Copyright>()
+			new HashMap<>()
 		);
 		assert copyright==null || !copyright.isEmpty();
 		return copyright;

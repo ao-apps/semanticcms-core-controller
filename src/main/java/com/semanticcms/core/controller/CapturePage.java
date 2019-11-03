@@ -174,12 +174,7 @@ public class CapturePage {
 				servletContext,
 				subRequest,
 				subResponse,
-				new PageContext.PageContextCallable<Page>() {
-					@Override
-					public Page call() throws ServletException, IOException {
-						return repository.getPage(pageRef.getPath(), level);
-					}
-				}
+				() -> repository.getPage(pageRef.getPath(), level)
 			);
 			if(capturedPage != null) {
 				PageRef capturedPageRef = capturedPage.getPageRef();
@@ -293,21 +288,16 @@ public class CapturePage {
 				for(int i=0; i<notCachedSize; i++) {
 					final PageRef pageRef = notCachedList.get(i).getPageRef();
 					tasks.add(
-						new Callable<Page>() {
-							@Override
-							public Page call() throws ServletException, IOException {
-								return capturePage(
-									servletContext,
-									threadSafeReq,
-									threadSafeResp,
-									new HttpServletSubRequest(threadSafeReq),
-									new HttpServletSubResponse(threadSafeResp, tempFileContext),
-									pageRef,
-									level,
-									cache
-								);
-							}
-						}
+						() -> capturePage(
+							servletContext,
+							threadSafeReq,
+							threadSafeResp,
+							new HttpServletSubRequest(threadSafeReq),
+							new HttpServletSubResponse(threadSafeResp, tempFileContext),
+							pageRef,
+							level,
+							cache
+						)
 					);
 				}
 				List<Page> notCachedResults;
@@ -507,18 +497,13 @@ public class CapturePage {
 				root,
 				0,
 				level,
-				new PageDepthHandler<T>() {
-					@Override
-					public T handlePage(Page page, int depth) throws ServletException, IOException {
-						return pageHandler.handlePage(page);
-					}
-				},
+				(Page page, int depth) -> pageHandler.handlePage(page),
 				edges,
 				edgeFilter,
 				null,
 				ServletTempFileContext.getTempFileContext(request),
 				cache,
-				new HashSet<PageRef>()
+				new HashSet<>()
 			);
 		}
 	}
@@ -685,30 +670,25 @@ public class CapturePage {
 							final PageRef edge = edgesToAdd.remove(edgesToAdd.size() - 1);
 							futures.put(
 								edge,
-								concurrentSubrequestExecutor.submit(
-									new Callable<Page>() {
-										@Override
-										public Page call() throws ServletException, IOException, InterruptedException {
-											try {
-												// TODO: What to do when returns null?
-												return capturePage(
-													servletContext,
-													finalThreadSafeReq,
-													finalThreadSafeResp,
-													new HttpServletSubRequest(finalThreadSafeReq),
-													new HttpServletSubResponse(finalThreadSafeResp, tempFileContext),
-													edge,
-													level,
-													cache
-												);
-											} finally {
-												// This one is ready now
-												// There should always be enough room in the queue since the futures are limited going in
-												finishedFutures.add(edge);
-											}
-										}
+								concurrentSubrequestExecutor.submit(() -> {
+									try {
+										// TODO: What to do when returns null?
+										return capturePage(
+											servletContext,
+											finalThreadSafeReq,
+											finalThreadSafeResp,
+											new HttpServletSubRequest(finalThreadSafeReq),
+											new HttpServletSubResponse(finalThreadSafeResp, tempFileContext),
+											edge,
+											level,
+											cache
+										);
+									} finally {
+										// This one is ready now
+										// There should always be enough room in the queue since the futures are limited going in
+										finishedFutures.add(edge);
 									}
-								)
+								})
 							);
 						}
 						if(DEBUG) {
@@ -881,7 +861,7 @@ public class CapturePage {
 				postHandler,
 				ServletTempFileContext.getTempFileContext(request),
 				cache,
-				new HashSet<PageRef>()
+				new HashSet<>()
 			);
 		}
 	}
