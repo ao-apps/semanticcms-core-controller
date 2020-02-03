@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2017, 2019  AO Industries, Inc.
+Copyright (C) 2017, 2019, 2020  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -36,7 +36,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2017-08-26T19:19:43-0500"
-		dateModified="2019-10-08T01:38:29-0500"
+		dateModified="2020-02-03T02:56:16-0600"
 	>
 		<!-- The current snapshot, unreleased version -->
 		<c:set var="version" value="@{com.semanticcms:semanticcms-core-controller:pom.version}" />
@@ -80,7 +80,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 					<li><code>book.cvsworkDirectory</code> is now optional in <code>books.xml</code></li>
 					<li>
 						Activated new filter <ao:a href="https://aoindustries.com/ao-servlet-filter/apidocs/com/aoindustries/servlet/filter/LastModifiedCacheControlFilter.html">LastModifiedCacheControlFilter</ao:a>
-						that adds a <ao:a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control</ao:a> header to any request with a 
+						that adds a <ao:a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</ao:a> header to any request with a 
 						<ao:a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</ao:a>
 						parameter.  Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
 					</li>
