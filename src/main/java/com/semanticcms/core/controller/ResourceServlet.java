@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.io.ContentType;
 import com.aoindustries.io.IoUtils;
 import com.semanticcms.core.resources.ResourceConnection;
 import java.io.IOException;
@@ -89,7 +90,7 @@ public class ResourceServlet extends HttpServlet {
 		ResourceConnection resourceConn = getResourceConn(request);
 		// TODO: checkIfHeaders
 		// Get content type
-		String contentType = "text/plain"; // TODO: Get from resourceConnection, making sure it includes any charset
+		String contentType = ContentType.TEXT; // TODO: Get from resourceConnection, making sure it includes any charset
 		response.setContentType(contentType);
 		// TODO: eTag
 		// TODO: Support pre-compression?
