@@ -138,6 +138,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		MIME types, with UTF-8 defaults where appropriate.
 		Note: This list is very similar to LastModifiedServlet.java
 	-->
+	<!-- TODO: Move these to a new shared "ao-mime-mappings" project -->
 	<!-- CSS -->
 	<mime-mapping>
 		<extension>css</extension>
