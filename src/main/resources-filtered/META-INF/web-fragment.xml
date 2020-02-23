@@ -77,13 +77,13 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<!-- Add cache-control header to requests with lastModified parameter -->
 	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
 	<filter>
-		<filter-name>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-name>
-		<filter-class>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-class>
 		<description><![CDATA[
 			Adds a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header to any request with a 
 			<a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</a>
 			parameter.
 		]]></description>
+		<filter-name>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-name>
+		<filter-class>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-class>
 		<init-param>
 			<description><![CDATA[
 				The value for the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header.
