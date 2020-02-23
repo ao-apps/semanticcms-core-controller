@@ -129,7 +129,6 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	</servlet>
 
 	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
-	<!-- TODO: via annotation -->
 	<listener>
 		<listener-class>com.semanticcms.core.controller.CountConcurrencyListener</listener-class>
 	</listener>
