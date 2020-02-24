@@ -35,6 +35,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<description>@{project.description}</description>
 
 	<!-- The UTF-8 filter must be first, declare before all other fragments -->
+	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
 	<ordering>
 		<before>
 			<others />
@@ -42,6 +43,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	</ordering>
 
 	<!-- Filter to strip invalid XML characters from incoming parameters -->
+	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
 	<filter>
 		<filter-name>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-name>
 		<filter-class>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-class>
@@ -81,6 +83,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 
 	<!-- Add cache-control header to requests with lastModified parameter -->
 	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
+	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
 	<filter>
 		<description><![CDATA[
 			Adds a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header to any request with a 
@@ -107,6 +110,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 
 	<!-- Servlet to rewrite CSS files to include lastModified parameters -->
 	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
+	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
 	<servlet>
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<servlet-class>com.aoindustries.servlet.http.LastModifiedServlet</servlet-class>
@@ -136,89 +140,9 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	</servlet>
 
 	<!-- Tracks the request concurrency, used to decide to use concurrent or sequential implementations. -->
+	<!-- TODO: Use annotations once no longer have a subclass implementation -->
 	<listener>
 		<listener-class>com.semanticcms.core.controller.CountConcurrencyListener</listener-class>
 	</listener>
-
-	<!--
-		MIME types, with UTF-8 defaults where appropriate.
-		Note: This list is very similar to LastModifiedServlet.java
-	-->
-	<!-- TODO: Move these to a new shared "ao-mime-mappings" project -->
-	<!-- CSS -->
-	<mime-mapping>
-		<extension>css</extension>
-		<mime-type>text/css;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<!-- Diagrams -->
-	<mime-mapping>
-		<!--
-			MIME type assigned to .dia files.
-			Consistent with <a href="https://www.mediawiki.org/wiki/Extension:Dia">Dia Extension for MediaWiki</a>.
-		-->
-		<extension>dia</extension>
-		<mime-type>application/x-dia-diagram</mime-type>
-	</mime-mapping>
-	<!-- Java -->
-	<!-- jar  : Default OK -->
-	<!-- class: Default OK -->
-	<mime-mapping>
-		<extension>jnlp</extension>
-		<mime-type>application/x-java-jnlp-file;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>tld</extension>
-		<mime-type>application/xml;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<!-- JavaScript -->
-	<mime-mapping>
-		<extension>js</extension>
-		<!-- // TODO: application/javascript once we don't care about IE <= 8 -->
-		<mime-type>text/javascript;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>spt</extension>
-		<!-- // TODO: application/javascript once we don't care about IE <= 8 -->
-		<mime-type>text/javascript;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>jsfl</extension>
-		<mime-type>text/x-actionscript</mime-type>
-	</mime-mapping>
-	<!-- Image types -->
-	<!-- All defaults OK -->
-	<!-- HTML document -->
-	<mime-mapping>
-		<extension>htm</extension>
-		<mime-type>text/html;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>html</extension>
-		<mime-type>text/html;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>xhtml</extension>
-		<mime-type>application/xhtml+xml;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<!-- https://stackoverflow.com/questions/31250/content-type-for-mht-files -->
-		<extension>mhtml</extension>
-		<mime-type>multipart/related;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<!-- PDF document -->
-	<!-- pdf: Default OK -->
-	<!-- XML document -->
-	<mime-mapping>
-		<extension>xml</extension>
-		<mime-type>application/xml;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>xsd</extension>
-		<mime-type>application/xml;charset=UTF-8</mime-type>
-	</mime-mapping>
-	<mime-mapping>
-		<extension>rss</extension>
-		<mime-type>application/rss+xml;charset=UTF-8</mime-type>
-	</mime-mapping>
 
 </web-fragment>
