@@ -33,12 +33,14 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	-->
 	<!-- TODO: Move to resources-filtered and use property? -->
 	<description>@{project.description}</description>
+
 	<!-- The UTF-8 filter must be first, declare before all other fragments -->
 	<ordering>
 		<before>
 			<others />
 		</before>
 	</ordering>
+
 	<!-- Filter to strip invalid XML characters from incoming parameters -->
 	<filter>
 		<filter-name>com.aoindustries.servlet.filter.StripInvalidXmlCharactersFilter</filter-name>
@@ -50,6 +52,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+
 	<!-- Sets up the cache for the request. -->
 	<filter>
 		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
@@ -61,6 +64,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+
 	<!-- Main SemanticCMS Controller -->
 	<filter>
 		<filter-name>com.semanticcms.core.controller.Controller</filter-name>
@@ -74,6 +78,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<dispatcher>ERROR</dispatcher>
 		-->
 	</filter-mapping>
+
 	<!-- Add cache-control header to requests with lastModified parameter -->
 	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
 	<filter>
@@ -99,6 +104,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+
 	<!-- Servlet to rewrite CSS files to include lastModified parameters -->
 	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
 	<servlet>
@@ -117,6 +123,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
 		<url-pattern>*.css</url-pattern>
 	</servlet-mapping>
+
 	<!-- TODO: Why is this required when have @WebServlet annotation? -->
 	<servlet>
 		<servlet-name>com.semanticcms.core.controller.RendererServlet</servlet-name>
@@ -213,4 +220,5 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<extension>rss</extension>
 		<mime-type>application/rss+xml;charset=UTF-8</mime-type>
 	</mime-mapping>
+
 </web-fragment>
