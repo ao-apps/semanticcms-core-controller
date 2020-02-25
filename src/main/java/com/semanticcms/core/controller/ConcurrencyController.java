@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,55 +22,77 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.servlet.filter.CountConcurrencyListener;
 import com.aoindustries.util.concurrent.Executor;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestAttributeEvent;
+import javax.servlet.ServletRequestAttributeListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * Determines if concurrent processing is recommended for the current request.
  *
- * @see  com.aoindustries.servlet.filter.CountConcurrencyListener
+ * @see  CountConcurrencyListener
  */
-public class CountConcurrencyListener extends com.aoindustries.servlet.filter.CountConcurrencyListener
-	implements ServletContextListener {
+@WebListener("Tracks the request concurrency, used to decide to use concurrent or sequential implementations.")
+public class ConcurrencyController implements ServletContextListener, ServletRequestAttributeListener {
 
-	private static final String CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = CountConcurrencyListener.class.getName()+".concurrentProcessingRecommended";
-	private static final String CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = CountConcurrencyListener.class.getName()+".concurrentSubrequestsRecommended";
+	private static final String CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = ConcurrencyController.class.getName() + ".concurrentProcessingRecommended";
+	private static final String CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = ConcurrencyController.class.getName() + ".concurrentSubrequestsRecommended";
 
 	private boolean concurrentSubrequests;
 	private int preferredConcurrency;
 
 	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-		SemanticCMS semanticCMS = SemanticCMS.getInstance(sce.getServletContext());
+	public void contextInitialized(ServletContextEvent event) {
+		SemanticCMS semanticCMS = SemanticCMS.getInstance(event.getServletContext());
 		concurrentSubrequests = semanticCMS.getConcurrentSubrequests();
 		preferredConcurrency = semanticCMS.getExecutors().getPreferredConcurrency();
 	}
 
 	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
+	public void contextDestroyed(ServletContextEvent event) {
 		// Do nothing
 	}
 
 	@Override
-	protected void onConcurrencySet(ServletRequest request, int newConcurrency) {
-		assert request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
-		assert request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
+	public void attributeAdded(ServletRequestAttributeEvent event) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+			ServletRequest request = event.getServletRequest();
+			int newConcurrency = (Integer)event.getValue();
 
-		// One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
-		boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
-		boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
+			assert request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
+			assert request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
 
-		request.setAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentProcessingRecommended);
-		request.setAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentSubrequestsRecommended);
+			// One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
+			boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
+			boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
+
+			request.setAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentProcessingRecommended);
+			request.setAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentSubrequestsRecommended);
+		}
 	}
 
 	@Override
-	protected void onConcurrencyRemove(ServletRequest request) {
-		request.removeAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-		request.removeAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
+	public void attributeRemoved(ServletRequestAttributeEvent event) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+			ServletRequest request = event.getServletRequest();
+			request.removeAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
+			request.removeAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
+		}
+	}
+
+	@Override
+	public void attributeReplaced(ServletRequestAttributeEvent event) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+			throw new IllegalStateException(
+				"The attribute is only expected to e added or removed, never replaced: "
+				+ CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME
+			);
+		}
 	}
 
 	/**
@@ -82,7 +104,7 @@ public class CountConcurrencyListener extends com.aoindustries.servlet.filter.Co
 	 */
 	public static boolean isConcurrentProcessingRecommended(ServletRequest request) {
 		Boolean concurrentProcessingRecommended = (Boolean)request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-		if(concurrentProcessingRecommended == null) throw new IllegalStateException(CountConcurrencyListener.class.getName() + " filter not active on request");
+		if(concurrentProcessingRecommended == null) throw new IllegalStateException(ConcurrencyController.class.getName() + " listener not active on request");
 		return concurrentProcessingRecommended;
 	}
 
@@ -95,7 +117,7 @@ public class CountConcurrencyListener extends com.aoindustries.servlet.filter.Co
 	 */
 	public static boolean useConcurrentSubrequests(ServletRequest request) {
 		Boolean concurrentSubrequestsRecommended = (Boolean)request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-		if(concurrentSubrequestsRecommended == null) throw new IllegalStateException(CountConcurrencyListener.class.getName() + " filter not active on request");
+		if(concurrentSubrequestsRecommended == null) throw new IllegalStateException(ConcurrencyController.class.getName() + " listener not active on request");
 		return concurrentSubrequestsRecommended;
 	}
 

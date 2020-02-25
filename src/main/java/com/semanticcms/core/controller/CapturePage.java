@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -277,7 +277,7 @@ public class CapturePage {
 			int notCachedSize = notCachedList.size();
 			if(
 				notCachedSize > 1
-				&& CountConcurrencyListener.useConcurrentSubrequests(request)
+				&& ConcurrencyController.useConcurrentSubrequests(request)
 			) {
 				// Concurrent implementation
 				final TempFileContext tempFileContext = ServletTempFileContext.getTempFileContext(request);
@@ -479,7 +479,7 @@ public class CapturePage {
 		Cache cache = level == CaptureLevel.BODY ? null : CacheFilter.getCache(request);
 		if(
 			CONCURRENT_TRAVERSALS_ENABLED
-			&& CountConcurrencyListener.useConcurrentSubrequests(request)
+			&& ConcurrencyController.useConcurrentSubrequests(request)
 		) {
 			return traversePagesAnyOrderConcurrent(
 				servletContext,
@@ -837,7 +837,7 @@ public class CapturePage {
 		Cache cache = level == CaptureLevel.BODY ? null : CacheFilter.getCache(request);
 		if(
 			CONCURRENT_TRAVERSALS_ENABLED
-			&& CountConcurrencyListener.useConcurrentSubrequests(request)
+			&& ConcurrencyController.useConcurrentSubrequests(request)
 		) {
 			return traversePagesDepthFirstConcurrent(
 				servletContext,
