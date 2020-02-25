@@ -36,8 +36,9 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		title="@{documented.name} URL Space"
 		shortTitle="URL Space"
 		datePublished="2018-05-31T04:10:51-0500"
+		dateModified="2020-02-25T13:48:17-0600"
 	>
-		<table class="thinTable">
+		<table class="ao-grid">
 			<thead>
 				<tr>
 					<th>Path (after Renderer suffix stripped)</th>
