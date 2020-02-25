@@ -81,53 +81,6 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		-->
 	</filter-mapping>
 
-	<!-- Add cache-control header to requests with lastModified parameter -->
-	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
-	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
-	<filter>
-		<description><![CDATA[
-			Adds a <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header to any request with a 
-			<a href="https://aoindustries.com/ao-servlet-util/apidocs/com/aoindustries/servlet/http/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</a>
-			parameter.
-		]]></description>
-		<filter-name>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-name>
-		<filter-class>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-class>
-		<init-param>
-			<description><![CDATA[
-				The value for the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header.
-				Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
-			]]></description>
-			<param-name>cache-control</param-name>
-			<param-value>public,max-age=31536000,max-stale=31536000,stale-while-revalidate=31536000,stale-if-error=31536000,immutable</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>com.aoindustries.servlet.filter.LastModifiedCacheControlFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<!-- Servlet to rewrite CSS files to include lastModified parameters -->
-	<!-- TODO: A version of this for SemanticCMS resources, unless pass-through on resources handles it? -->
-	<!-- TODO: Move to ao-servlet-util web-fragment.xml? -->
-	<servlet>
-		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
-		<servlet-class>com.aoindustries.servlet.http.LastModifiedServlet</servlet-class>
-		<init-param>
-			<description><![CDATA[
-				The value for the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</a> header.
-				Defaults to a short-term setting of public, five-minute, and allowing stale.
-			]]></description>
-			<param-name>cache-control</param-name>
-			<param-value>public,max-age=300,max-stale=300,stale-while-revalidate=300,stale-if-error=300</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>com.aoindustries.servlet.http.LastModifiedServlet</servlet-name>
-		<url-pattern>*.css</url-pattern>
-	</servlet-mapping>
-
 	<!-- TODO: Why is this required when have @WebServlet annotation? -->
 	<servlet>
 		<servlet-name>com.semanticcms.core.controller.RendererServlet</servlet-name>
