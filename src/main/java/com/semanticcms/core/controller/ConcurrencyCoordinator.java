@@ -37,11 +37,11 @@ import javax.servlet.annotation.WebListener;
  *
  * @see  CountConcurrencyListener
  */
-@WebListener("Tracks the request concurrency, used to decide to use concurrent or sequential implementations.")
-public class ConcurrencyController implements ServletContextListener, ServletRequestAttributeListener {
+@WebListener("Decides whether to use concurrent or sequential implementations.")
+public class ConcurrencyCoordinator implements ServletContextListener, ServletRequestAttributeListener {
 
-	private static final String CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = ConcurrencyController.class.getName() + ".concurrentProcessingRecommended";
-	private static final String CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME = ConcurrencyController.class.getName() + ".concurrentSubrequestsRecommended";
+	private static final String CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE = ConcurrencyCoordinator.class.getName() + ".concurrentProcessingRecommended";
+	private static final String CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE = ConcurrencyCoordinator.class.getName() + ".concurrentSubrequestsRecommended";
 
 	private boolean concurrentSubrequests;
 	private int preferredConcurrency;
@@ -60,37 +60,37 @@ public class ConcurrencyController implements ServletContextListener, ServletReq
 
 	@Override
 	public void attributeAdded(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.equals(event.getName())) {
 			ServletRequest request = event.getServletRequest();
 			int newConcurrency = (Integer)event.getValue();
 
-			assert request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
-			assert request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME) == null;
+			assert request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE) == null;
+			assert request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE) == null;
 
 			// One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
 			boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
 			boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
 
-			request.setAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentProcessingRecommended);
-			request.setAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME, concurrentSubrequestsRecommended);
+			request.setAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE, concurrentProcessingRecommended);
+			request.setAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE, concurrentSubrequestsRecommended);
 		}
 	}
 
 	@Override
 	public void attributeRemoved(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.equals(event.getName())) {
 			ServletRequest request = event.getServletRequest();
-			request.removeAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-			request.removeAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
+			request.removeAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE);
+			request.removeAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE);
 		}
 	}
 
 	@Override
 	public void attributeReplaced(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME.equals(event.getName())) {
+		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.equals(event.getName())) {
 			throw new IllegalStateException(
 				"The attribute is only expected to e added or removed, never replaced: "
-				+ CountConcurrencyListener.REQUEST_ATTRIBUTE_NAME
+				+ CountConcurrencyListener.REQUEST_ATTRIBUTE
 			);
 		}
 	}
@@ -103,8 +103,8 @@ public class ConcurrencyController implements ServletContextListener, ServletReq
 	 * @see  Executors#getPreferredConcurrency()
 	 */
 	public static boolean isConcurrentProcessingRecommended(ServletRequest request) {
-		Boolean concurrentProcessingRecommended = (Boolean)request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-		if(concurrentProcessingRecommended == null) throw new IllegalStateException(ConcurrencyController.class.getName() + " listener not active on request");
+		Boolean concurrentProcessingRecommended = (Boolean)request.getAttribute(CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE);
+		if(concurrentProcessingRecommended == null) throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
 		return concurrentProcessingRecommended;
 	}
 
@@ -116,8 +116,8 @@ public class ConcurrencyController implements ServletContextListener, ServletReq
 	 * </ol>
 	 */
 	public static boolean useConcurrentSubrequests(ServletRequest request) {
-		Boolean concurrentSubrequestsRecommended = (Boolean)request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE_NAME);
-		if(concurrentSubrequestsRecommended == null) throw new IllegalStateException(ConcurrencyController.class.getName() + " listener not active on request");
+		Boolean concurrentSubrequestsRecommended = (Boolean)request.getAttribute(CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE);
+		if(concurrentSubrequestsRecommended == null) throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
 		return concurrentSubrequestsRecommended;
 	}
 

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -62,6 +62,7 @@ final public class BookUtils {
 				logger.isLoggable(Level.WARNING)
 			) {
 				String warningAttribute = CANONICAL_BASE_WARNED_ATTRIBUTE + bookRef;
+				// Acceptable race condition: logging multiple times would not cause any harm
 				if(servletContext.getAttribute(warningAttribute) == null) {
 					servletContext.setAttribute(warningAttribute, true);
 					logger.warning("Using generated canonical base URL, please configure the \"canonicalBase\" setting in the \"" + bookRef + "\" book: " + autoCanonical);

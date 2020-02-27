@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -47,7 +47,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -66,24 +69,41 @@ import org.xml.sax.SAXException;
 public class SemanticCMS {
 
 	// <editor-fold defaultstate="collapsed" desc="Singleton Instance (per application)">
-	static final String ATTRIBUTE_NAME = "semanticCMS";
 
-	private static class InstanceLock {}
-	private static final InstanceLock instanceLock = new InstanceLock();
+	@WebListener("Exposes the application context as an application-scope SemanticCMS instance named \"" + APPLICATION_ATTRIBUTE + "\".")
+	public static class Initializer implements ServletContextListener {
+
+		private SemanticCMS instance;
+
+		@Override
+		public void contextInitialized(ServletContextEvent event) {
+			instance = getInstance(event.getServletContext());
+		}
+
+		@Override
+		public void contextDestroyed(ServletContextEvent event) {
+			if(instance != null) {
+				instance.destroy();
+				instance = null;
+			}
+			event.getServletContext().removeAttribute(APPLICATION_ATTRIBUTE);
+		}
+	}
+
+	public static final String APPLICATION_ATTRIBUTE = "semanticCMS";
 
 	/**
 	 * Gets the SemanticCMS instance, creating it if necessary.
 	 */
 	public static SemanticCMS getInstance(ServletContext servletContext) {
 		try {
-			synchronized(instanceLock) {
-				SemanticCMS semanticCMS = (SemanticCMS)servletContext.getAttribute(SemanticCMS.ATTRIBUTE_NAME);
-				if(semanticCMS == null) {
-					semanticCMS = new SemanticCMS(servletContext);
-					servletContext.setAttribute(SemanticCMS.ATTRIBUTE_NAME, semanticCMS);
-				}
-				return semanticCMS;
+			SemanticCMS semanticCMS = (SemanticCMS)servletContext.getAttribute(APPLICATION_ATTRIBUTE);
+			if(semanticCMS == null) {
+				// TODO: Support custom implementations via context-param?
+				semanticCMS = new SemanticCMS(servletContext);
+				servletContext.setAttribute(APPLICATION_ATTRIBUTE, semanticCMS);
 			}
+			return semanticCMS;
 		} catch(IOException | SAXException | ParserConfigurationException | XPathExpressionException | ValidationException e) {
 			throw new WrappedException(e);
 		}
@@ -91,7 +111,7 @@ public class SemanticCMS {
 
 	private final ServletContext servletContext;
 
-	private SemanticCMS(ServletContext servletContext) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException, ValidationException {
+	protected SemanticCMS(ServletContext servletContext) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException, ValidationException {
 		this.servletContext = servletContext;
 		this.demoMode = Boolean.parseBoolean(servletContext.getInitParameter(DEMO_MODE_INIT_PARAM));
 		int numProcessors = Runtime.getRuntime().availableProcessors();
@@ -106,10 +126,7 @@ public class SemanticCMS {
 	/**
 	 * Called when the context is shutting down.
 	 */
-	void destroy() {
-		synchronized(instanceLock) {
-			servletContext.removeAttribute(SemanticCMS.ATTRIBUTE_NAME);
-		}
+	protected void destroy() {
 	}
 	// </editor-fold>
 
@@ -135,11 +152,11 @@ public class SemanticCMS {
 	private static final String BOOKS_XML_SCHEMA_1_0_RESOURCE = "/com/semanticcms/core/servlet/books-1.0.xsd";
 	private static final String BOOKS_XML_SCHEMA_1_1_RESOURCE = "books-1.1.xsd";
 
-	private static final String MISSING_BOOK_TAG_NAME = "missingBook";
-	private static final String BOOK_TAG_NAME = "book";
-	private static final String PARENT_TAG_NAME = "parent";
-	private static final String ROOT_DOMAIN_ATTRIBUTE_NAME = "rootDomain";
-	private static final String ROOT_BOOK_ATTRIBUTE_NAME = "rootBook";
+	private static final String MISSING_BOOK_TAG = "missingBook";
+	private static final String BOOK_TAG = "book";
+	private static final String PARENT_TAG = "parent";
+	private static final String ROOT_DOMAIN_ATTRIBUTE = "rootDomain";
+	private static final String ROOT_BOOK_ATTRIBUTE = "rootBook";
 
 	private final Map<BookRef,Book> books = new LinkedHashMap<>();
 	private final Map<BookRef,Book> unmodifiableBooks = Collections.unmodifiableMap(books);
@@ -186,7 +203,7 @@ public class SemanticCMS {
 		}
 		org.w3c.dom.Element booksElem = booksXml.getDocumentElement();
 		// Load missingBooks
-		for(org.w3c.dom.Element missingBookElem : XmlUtils.iterableChildElementsByTagName(booksElem, MISSING_BOOK_TAG_NAME)) {
+		for(org.w3c.dom.Element missingBookElem : XmlUtils.iterableChildElementsByTagName(booksElem, MISSING_BOOK_TAG)) {
 			String domainStr = missingBookElem.getAttribute("domain");
 			BookRef missingBookRef = new BookRef(
 				domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
@@ -200,30 +217,30 @@ public class SemanticCMS {
 				StringUtility.nullIfEmpty(missingBookElem.getAttribute("base"))
 			);
 			if(books.put(missingBookRef, book) != null) {
-				throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + MISSING_BOOK_TAG_NAME + "\": " + missingBookRef);
+				throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
 			}
 			if(published) {
 				if(publishedBooks.put(missingBookRef.getPath(), book) != null) {
-					throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + MISSING_BOOK_TAG_NAME + "\": " + missingBookRef);
+					throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
 				}
 			}
 		}
 		// Load books
 		BookRef rootBookRef;
 		{
-			String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE_NAME);
+			String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE);
 			Path rootBookPath = Path.valueOf(
 				StringUtility.nullIfEmpty(
-					booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE_NAME)
+					booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
 				)
 			);
-			if(rootBookPath == null) throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE_NAME + "\" not found");
+			if(rootBookPath == null) throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE + "\" not found");
 			rootBookRef = new BookRef(
 				rootDomainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(rootDomainStr),
 				rootBookPath
 			);
 		}
-		for(org.w3c.dom.Element bookElem : XmlUtils.iterableChildElementsByTagName(booksElem, BOOK_TAG_NAME)) {
+		for(org.w3c.dom.Element bookElem : XmlUtils.iterableChildElementsByTagName(booksElem, BOOK_TAG)) {
 			BookRef bookRef;
 			{
 				String domainStr = bookElem.getAttribute("domain");
@@ -233,7 +250,7 @@ public class SemanticCMS {
 				);
 			}
 			Set<ParentRef> parentRefs = new LinkedHashSet<>();
-			for(org.w3c.dom.Element parentElem : XmlUtils.iterableChildElementsByTagName(bookElem, PARENT_TAG_NAME)) {
+			for(org.w3c.dom.Element parentElem : XmlUtils.iterableChildElementsByTagName(bookElem, PARENT_TAG)) {
 				String domainStr = parentElem.getAttribute("domain");
 				BookRef parentBookRef = new BookRef(
 					domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
@@ -249,7 +266,7 @@ public class SemanticCMS {
 			}
 			if(bookRef.equals(rootBookRef)) {
 				if(!parentRefs.isEmpty()) {
-					throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE_NAME + "\" may not have any parents: " + rootBookRef);
+					throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE + "\" may not have any parents: " + rootBookRef);
 				}
 			} else {
 				if(parentRefs.isEmpty()) {
@@ -277,11 +294,11 @@ public class SemanticCMS {
 				)
 			);
 			if(books.put(bookRef, book) != null) {
-				throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + BOOK_TAG_NAME + "\": " + bookRef);
+				throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + BOOK_TAG + "\": " + bookRef);
 			}
 			if(published) {
 				if(publishedBooks.put(bookRef.getPath(), book) != null) {
-					throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + BOOK_TAG_NAME + "\": " + bookRef);
+					throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + BOOK_TAG + "\": " + bookRef);
 				}
 			}
 		}
@@ -451,9 +468,11 @@ public class SemanticCMS {
 
 	/**
 	 * A shared executor available to all components.
-	 *
-	 * @see  CountConcurrencyListener#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
-	 *       Consider selecting concurrent or sequential implementations based on overall system load.
+	 * <p>
+	 * Consider selecting concurrent or sequential implementations based on overall system load.
+	 * See {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}.
+	 * </p>
+	 * @see  ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
 	 */
 	public Executors getExecutors() {
 		return executors;
