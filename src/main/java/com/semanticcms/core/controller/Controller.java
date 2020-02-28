@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -101,8 +101,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Passes the request, unaltered, for direct processing by the local servlet container.
-	 *
-	 * @implSpec  This default implementation simply calls {@link FilterChain#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation simply calls {@link FilterChain#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}
+	 * </p>
 	 */
 	protected void doPassThrough(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(request, response);
@@ -111,11 +113,13 @@ public class Controller implements Filter {
 	/**
 	 * Called for non-HTTP requests where request is not an {@link HttpServletRequest}
 	 * or response is not an {@link HttpServletResponse}.
-	 *
-	 * @implSpec  This default implementation will call {@link #doPassthrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
-	 *            when the servlet context init parameter named {@link #NON_HTTP_PASS_THROUGH_INIT_PARAM}
-	 *            exists and equals {@code true}.  Otherwise, throws {@link ServletException} indicating
-	 *            the request is not HTTP.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation will call {@link #doPassthrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
+	 * when the servlet context init parameter named {@link #NON_HTTP_PASS_THROUGH_INIT_PARAM}
+	 * exists and equals {@code true}.  Otherwise, throws {@link ServletException} indicating
+	 * the request is not HTTP.
+	 * </p>
 	 */
 	protected void doNotHttp(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO: Move to a /WEB-INF/semanticcms-core-controller.xml or books.xml?
@@ -128,9 +132,11 @@ public class Controller implements Filter {
 
 	/**
 	 * Called when a resource is not found, not published, or protected.
-	 *
-	 * @implSpec  For GET, HEAD, or OPTIONS requests, sends error {@link HttpServletResponse#SC_NOT_FOUND}.
-	 *            For all other requests, sends {@link HttpServletResponse#SC_METHOD_NOT_ALLOWED}.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * For GET, HEAD, or OPTIONS requests, sends error {@link HttpServletResponse#SC_NOT_FOUND}.
+	 * For all other requests, sends {@link HttpServletResponse#SC_METHOD_NOT_ALLOWED}.
+	 * </p>
 	 *
 	 * @see  HttpServletRequest#getMethod()
 	 * @see  HttpServletResponse#sendError(int)
@@ -188,8 +194,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Finds the published book for the given request, if any.
-	 *
-	 * @implSpec  This default implementation calls {@link SemanticCMS#getPublishedBook(java.lang.String)
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link SemanticCMS#getPublishedBook(java.lang.String)}
+	 * </p>
 	 */
 	protected Book getPublishedBook(SemanticCMS semanticCMS, String servletPath) {
 		return semanticCMS.getPublishedBook(servletPath);
@@ -227,8 +235,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Finds the local book for the given request, if any.
-	 *
-	 * @implSpec  This default implementation calls {@link SemanticCMS#getLocalBook(java.lang.String)
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link SemanticCMS#getLocalBook(java.lang.String)}
+	 * </p>
 	 */
 	protected Book getLocalBook(SemanticCMS semanticCMS, String servletPath) {
 		return semanticCMS.getLocalBook(servletPath);
@@ -266,10 +276,12 @@ public class Controller implements Filter {
 
 	/**
 	 * Called for HTTP requests that do not correspond to a published book and have no local book.
-	 *
-	 * @implSpec  This default implementation will call {@link #doPassthrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
-	 *            when the servlet context init parameter named {@link #NO_BOOK_PASS_THROUGH_INIT_PARAM}
-	 *            does not exist or does not equal {@code false}.  Otherwise, calls {@link #doNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation will call {@link #doPassthrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
+	 * when the servlet context init parameter named {@link #NO_BOOK_PASS_THROUGH_INIT_PARAM}
+	 * does not exist or does not equal {@code false}.  Otherwise, calls {@link #doNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.
+	 * </p>
 	 *
 	 * @see  #NO_BOOK_PASS_THROUGH_INIT_PARAM
 	 * @see  #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
@@ -292,8 +304,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if a local book is protected.
-	 *
-	 * @implSpec  This default implementation calls {@link Book#isProtected()
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link Book#isProtected()}
+	 * </p>
 	 */
 	protected boolean isLocalBookProtected(Book localBook, Path localPath, HttpServletRequest request) {
 		return localBook.isProtected();
@@ -301,8 +315,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if a local book has pass-through enabled.
-	 *
-	 * @implSpec  This default implementation calls {@link Book#isPassThroughEnabled()
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link Book#isPassThroughEnabled()}
+	 * </p>
 	 */
 	protected boolean isLocalBookPassThroughEnabled(Book localBook, Path localPath, HttpServletRequest request) {
 		return localBook.isPassThroughEnabled();
@@ -361,8 +377,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if a published book is protected.
-	 *
-	 * @implSpec  This default implementation calls {@link Book#isProtected()
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link Book#isProtected()}
+	 * </p>
 	 */
 	protected boolean isPublishedBookProtected(Book publishedBook, Path publishedPath, HttpServletRequest request) {
 		return publishedBook.isProtected();
@@ -370,8 +388,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if a published book has pass-through enabled.
-	 *
-	 * @implSpec  This default implementation calls {@link Book#isPassThroughEnabled()
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link Book#isPassThroughEnabled()}
+	 * </p>
 	 */
 	protected boolean isPublishedBookPassThroughEnabled(Book publishedBook, Path publishedPath, HttpServletRequest request) {
 		return publishedBook.isPassThroughEnabled();
@@ -379,8 +399,10 @@ public class Controller implements Filter {
 
 	/**
 	 * Checks if the published book is also a local book.
-	 *
-	 * @implSpec  This default implementation calls {@link Book#isLocal()}
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link Book#isLocal()}
+	 * </p>
 	 */
 	protected boolean isPublishedBookLocal(Book publishedBook) {
 		return publishedBook.isLocal();
@@ -607,8 +629,10 @@ public class Controller implements Filter {
 	/**
 	 * Called for HTTP requests that map onto a published book and are GET or HEAD methods
 	 * and has page found.
-	 *
-	 * @implNote  This default implementation calls {@link RendererServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.renderer.Renderer, com.semanticcms.core.model.Page)}
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link RendererServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.renderer.Renderer, com.semanticcms.core.model.Page)}
+	 * </p>
 	 */
 	protected void doRenderer(
 		HttpServletRequest request,
@@ -768,7 +792,10 @@ public class Controller implements Filter {
 	}
 
 	/**
-	 * @implSpec  This default implementation calls {@link ResourceServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}
+	 * <p>
+	 * <b>Implementation Note:</b><br />
+	 * This default implementation calls {@link ResourceServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}
+	 * </p>
 	 */
 	protected void doPublishedBookResourceExistsGetHead(
 		HttpServletRequest request,
