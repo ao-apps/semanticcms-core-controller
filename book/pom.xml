@@ -35,8 +35,6 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<properties>
 		<!-- These values are copied from the project being documented -->
 		<documented.artifactId>semanticcms-core-controller</documented.artifactId>
-		<documented.javaVersion>1.8</documented.javaVersion>
-		<documented.javac.link.javaApi>${javac.link.javaApi.jdk8}</documented.javac.link.javaApi>
 		<documented.name>SemanticCMS Core Controller²</documented.name>
 		<documented.shortTitle>Controller</documented.shortTitle>
 		<documented.description>Serves SemanticCMS content from a Servlet environment.</documented.description>
