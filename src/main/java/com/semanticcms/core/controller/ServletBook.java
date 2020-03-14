@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -270,13 +270,14 @@ public class ServletBook extends Book {
 				// Combine paths
 				rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);
 				// The canonical file must be in the cvswork directory
+				String cvsworkCanonical = cvsworkDirectory.getCanonicalPath();
+				String cvsworkCanonicalPrefix = cvsworkCanonical + File.separatorChar;
 				String canonicalPath = rf.getCanonicalPath();
 				if(
-					!canonicalPath.startsWith(
-						cvsworkDirectory.getCanonicalPath() + File.separatorChar
-					)
+					!canonicalPath.equals(cvsworkCanonical)
+					&& !canonicalPath.startsWith(cvsworkCanonicalPrefix)
 				) {
-					throw new SecurityException();
+					throw new SecurityException('"' + canonicalPath + "\" is not in \"" + cvsworkCanonicalPrefix);
 				}
 				this.resourceFile = rf;
 			}
