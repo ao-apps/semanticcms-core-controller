@@ -26,7 +26,7 @@ import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.servlet.PropertiesUtils;
 import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.util.Tuple2;
 import com.aoindustries.util.WrappedException;
 import com.aoindustries.validation.ValidationException;
@@ -209,12 +209,12 @@ public class SemanticCMS {
 				domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
 				Path.valueOf(missingBookElem.getAttribute("name"))
 			);
-			String publishedStr = StringUtility.nullIfEmpty(missingBookElem.getAttribute("published"));
+			String publishedStr = Strings.nullIfEmpty(missingBookElem.getAttribute("published"));
 			boolean published = publishedStr != null && Boolean.valueOf(publishedStr);
 			MissingBook book = new MissingBook(
 				missingBookRef,
 				null,
-				StringUtility.nullIfEmpty(missingBookElem.getAttribute("base"))
+				Strings.nullIfEmpty(missingBookElem.getAttribute("base"))
 			);
 			if(books.put(missingBookRef, book) != null) {
 				throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
@@ -230,7 +230,7 @@ public class SemanticCMS {
 		{
 			String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE);
 			Path rootBookPath = Path.valueOf(
-				StringUtility.nullIfEmpty(
+				Strings.nullIfEmpty(
 					booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
 				)
 			);
@@ -273,9 +273,9 @@ public class SemanticCMS {
 					throw new IllegalStateException(BOOKS_XML_RESOURCE + ": Non-root books must have at least one parent: " + bookRef);
 				}
 			}
-			String publishedStr = StringUtility.nullIfEmpty(bookElem.getAttribute("published"));
+			String publishedStr = Strings.nullIfEmpty(bookElem.getAttribute("published"));
 			boolean published = publishedStr == null || Boolean.valueOf(publishedStr);
-			String cvsworkDirectory = StringUtility.nullIfEmpty(bookElem.getAttribute("cvsworkDirectory"));
+			String cvsworkDirectory = Strings.nullIfEmpty(bookElem.getAttribute("cvsworkDirectory"));
 			Collection<String> resourceDirectories;
 			if(cvsworkDirectory == null) {
 				resourceDirectories = Collections.emptySet();

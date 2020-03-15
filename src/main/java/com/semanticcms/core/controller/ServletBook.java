@@ -25,7 +25,7 @@ package com.semanticcms.core.controller;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
 import com.aoindustries.util.AoCollections;
-import com.aoindustries.util.StringUtility;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.validation.ValidationException;
 import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.BookRef;
@@ -78,9 +78,9 @@ public class ServletBook extends Book {
 	private final ResourceStore resources;
 
 	private static String getCanonicalBase(Properties bookProps) {
-		String cb = StringUtility.nullIfEmpty(bookProps.getProperty("canonicalBase"));
+		String cb = Strings.nullIfEmpty(bookProps.getProperty("canonicalBase"));
 		while(cb != null && cb.endsWith("/")) {
-			cb = StringUtility.nullIfEmpty(cb.substring(0, cb.length() - 1));
+			cb = Strings.nullIfEmpty(cb.substring(0, cb.length() - 1));
 		}
 		return cb;
 	}
