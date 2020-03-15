@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -39,7 +39,7 @@ import java.util.concurrent.Callable;
  *   <li>PageContext: {@link PageContextCallable} and {@link PageContextRunnable}</li>
  * </ul>
  */
-public class Executors extends com.aoindustries.util.concurrent.Executors {
+public class Executors extends com.aoindustries.concurrent.Executors {
 
 	/**
 	 * Should only be created by SemanticCMS to control life cycle.
