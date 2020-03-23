@@ -316,7 +316,7 @@ public class SemanticCMS {
 	 * {@link #getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
 	 *
 	 * @see  #getBook(com.semanticcms.core.model.BookRef)
-	 * @see  #getBook(java.lang.String, java.lang.String)
+	 * @see  #getBook(com.aoindustries.net.DomainName, com.aoindustries.net.Path)
 	 */
 	public Map<BookRef,Book> getBooks() {
 		return unmodifiableBooks;
@@ -502,8 +502,7 @@ public class SemanticCMS {
 	 * The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.
 	 * </p>
 	 *
-	 * @see  #getRendererAndPath(java.lang.String)
-	 * @see  #getRendererAndPath(javax.servlet.http.HttpServletRequest)
+	 * @see  #getRendererAndPath(com.aoindustries.net.Path)
 	 */
 	public SortedMap<String,Renderer> getRenderers() {
 		// Not synchronizing renderers where because they are normally only set on application start-up

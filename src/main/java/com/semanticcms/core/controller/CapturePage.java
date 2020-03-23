@@ -210,7 +210,7 @@ public class CapturePage {
 	 *
 	 * @return  The captured page or {@code null} if page does not exist.
 	 *
-	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageRef, com.semanticcms.core.servlet.CaptureLevel)
+	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.pages.CaptureLevel)
 	 * @see  PageContext
 	 */
 	public static Page capturePage(
@@ -229,12 +229,12 @@ public class CapturePage {
 	/**
 	 * Captures multiple pages.
 	 *
-	 * @param  pageRefs  The pages that should be captured.  This set will be iterated only once during this operation.
+	 * @param  pageReferrers  The pages that should be captured.  This set will be iterated only once during this operation.
 	 *
 	 * @return  map from pageRef to page, with iteration order equal to the provided pageRefs parameter.
 	 *          the map will contain {@code null} values for pages not found.
 	 *
-	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageRef, com.semanticcms.core.servlet.CaptureLevel)
+	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.pages.CaptureLevel)
 	 */
 	public static Map<PageRef,Page> capturePages(
 		final ServletContext servletContext,
@@ -751,7 +751,7 @@ public class CapturePage {
 	}
 
 	/**
-	 * @see  #traversePagesDepthFirst(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.CapturePage.PageHandler, com.semanticcms.core.servlet.CapturePage.TraversalEdges, com.semanticcms.core.servlet.CapturePage.PageHandler)
+	 * @see  #traversePagesDepthFirst(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.pages.CaptureLevel, com.semanticcms.core.controller.CapturePage.PageDepthHandler, com.semanticcms.core.controller.CapturePage.TraversalEdges, com.semanticcms.core.controller.CapturePage.EdgeFilter, com.semanticcms.core.controller.CapturePage.PageDepthHandler)
 	 */
 	public static <T> T traversePagesDepthFirst(
 		ServletContext servletContext,
