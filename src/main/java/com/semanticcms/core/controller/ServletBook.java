@@ -22,10 +22,10 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.collections.AoCollections;
+import com.aoindustries.lang.Strings;
 import com.aoindustries.net.DomainName;
 import com.aoindustries.net.Path;
-import com.aoindustries.util.AoCollections;
-import com.aoindustries.lang.Strings;
 import com.aoindustries.validation.ValidationException;
 import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.BookRef;
