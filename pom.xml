@@ -39,7 +39,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<shortTitle>Controller</shortTitle>
 		<description.html><![CDATA[Serves <a target="_top" href="https://semanticcms.com/">SemanticCMS</a> content from a Servlet environment.]]></description.html>
 		<!-- Dependencies -->
-		<org.apache.commons:commons-lang3:version>3.9</org.apache.commons:commons-lang3:version>
+		<org.apache.commons.commons-lang3.version>3.9</org.apache.commons.commons-lang3.version>
 	</properties>
 
 	<name>SemanticCMS Core Controller²</name>
@@ -79,7 +79,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 								<link>https://aoindustries.com/ao-tempfiles/apidocs/</link>
 								<link>https://aoindustries.com/ao-tempfiles/servlet/apidocs/</link>
 								<link>https://aoindustries.com/aocode-public/apidocs/</link>
-								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-${org.apache.commons:commons-lang3:version}/</link>
+								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-${org.apache.commons.commons-lang3.version}/</link>
 								<link>https://www.joda.org/joda-time/apidocs/</link>
 								<link>https://semanticcms.com/core/model/apidocs/</link>
 								<link>https://semanticcms.com/core/pages/apidocs/</link>
@@ -145,7 +145,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 				<groupId>com.aoindustries</groupId><artifactId>aocode-public</artifactId><version>4.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>${org.apache.commons:commons-lang3:version}</version>
+				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>${org.apache.commons.commons-lang3.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId><artifactId>joda-time</artifactId><version>2.10.5</version>
