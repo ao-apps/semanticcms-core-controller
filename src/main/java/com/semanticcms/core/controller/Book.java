@@ -99,17 +99,17 @@ abstract public class Book implements Comparable<Book> {
 
 	@SuppressWarnings("deprecation")
 	public boolean isProtected() {
-		throw new com.aoindustries.lang.NotImplementedException();
+		throw new com.aoindustries.exception.NotImplementedException();
 	}
 
 	@SuppressWarnings("deprecation")
 	public boolean isPassThroughEnabled() {
-		throw new com.aoindustries.lang.NotImplementedException();
+		throw new com.aoindustries.exception.NotImplementedException();
 	}
 
 	@SuppressWarnings("deprecation")
 	public boolean isLocal() {
-		throw new com.aoindustries.lang.NotImplementedException();
+		throw new com.aoindustries.exception.NotImplementedException();
 	}
 
 	/**
