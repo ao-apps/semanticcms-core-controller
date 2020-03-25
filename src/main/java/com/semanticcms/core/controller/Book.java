@@ -36,6 +36,7 @@ import com.semanticcms.core.resources.ResourceStore;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * A book contains {@link Page pages} and {@link Resource resources} and is the
@@ -97,19 +98,16 @@ abstract public class Book implements Comparable<Book> {
 	 */
 	abstract public boolean isAccessible();
 
-	@SuppressWarnings("deprecation")
 	public boolean isProtected() {
-		throw new com.aoindustries.exception.NotImplementedException();
+		throw new NotImplementedException("TODO");
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean isPassThroughEnabled() {
-		throw new com.aoindustries.exception.NotImplementedException();
+		throw new NotImplementedException("TODO");
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean isLocal() {
-		throw new com.aoindustries.exception.NotImplementedException();
+		throw new NotImplementedException("TODO");
 	}
 
 	/**
