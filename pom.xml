@@ -55,6 +55,11 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<tag>HEAD</tag>
 	</scm>
 
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/aoindustries/semanticcms-core-controller/issues</url>
+	</issueManagement>
+
 	<profiles>
 		<profile>
 			<id>release</id>
