@@ -39,7 +39,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<documented.shortTitle>Controller</documented.shortTitle>
 		<documented.description>Serves SemanticCMS content from a Servlet environment.</documented.description>
 
-		<description.html><![CDATA[Documentation for <a target="_top" href="${project.url}">${documented.name}</a> in <a target="_top" href="https://semanticcms.com/">SemanticCMS</a> format.]]></description.html>
+		<description.html><![CDATA[Documentation for <a target="${javadoc.target}" href="${project.url}">${documented.name}</a> in <a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a> format.]]></description.html>
 	</properties>
 
 	<name>SemanticCMS Core Controller² Book</name>
