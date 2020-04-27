@@ -86,18 +86,18 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 								<link>https://commons.apache.org/proper/commons-lang/javadocs/api-${org.apache.commons.commons-lang3.version}/</link>
 								<link>https://www.joda.org/joda-time/apidocs/</link>
 								<link>https://semanticcms.com/core/model/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/jsp/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/jspx/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/local/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/servlet/apidocs/</link>
-								<link>https://semanticcms.com/core/pages/union/apidocs/</link>
-								<link>https://semanticcms.com/core/renderer/apidocs/</link>
-								<link>https://semanticcms.com/core/renderer/servlet/apidocs/</link>
-								<link>https://semanticcms.com/core/resources/apidocs/</link>
-								<link>https://semanticcms.com/core/resources/servlet/apidocs/</link>
-								<link>https://semanticcms.com/resources/filesystem/apidocs/</link>
-								<link>https://semanticcms.com/resources/union/apidocs/</link>
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/jsp/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/jspx/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/local/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/servlet/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/pages/union/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/renderer/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/renderer/servlet/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/resources/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/core/resources/servlet/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/resources/filesystem/apidocs/</link> -->
+								<!-- TODO: Once published: <link>https://semanticcms.com/resources/union/apidocs/</link> -->
 							</links>
 						</configuration>
 					</plugin>
