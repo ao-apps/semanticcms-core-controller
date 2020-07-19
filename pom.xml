@@ -39,7 +39,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<shortTitle>Controller</shortTitle>
 		<description.html><![CDATA[Serves <a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a> content from a Servlet environment.]]></description.html>
 		<!-- Dependencies -->
-		<commons-lang3.version>3.10</commons-lang3.version>
+		<commons-lang3.version>3.11</commons-lang3.version>
 	</properties>
 
 	<name>SemanticCMS Core Controller²</name>
