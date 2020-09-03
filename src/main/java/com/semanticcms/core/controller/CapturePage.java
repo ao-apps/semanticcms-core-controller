@@ -62,6 +62,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@SuppressWarnings("UseOfSystemOutOrSystemErr")
 public class CapturePage {
 
 	private static final boolean CONCURRENT_TRAVERSALS_ENABLED = true;

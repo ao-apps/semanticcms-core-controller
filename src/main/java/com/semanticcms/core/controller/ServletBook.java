@@ -303,6 +303,7 @@ public class ServletBook extends Book {
 	}
 
 	@Override
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<ParentRef> getParentRefs() {
 		return unmodifiableParentRefs;
 	}
@@ -319,6 +320,7 @@ public class ServletBook extends Book {
 	}
 
 	@Override
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Set<Author> getAuthors() {
 		return unmodifiableAuthors;
 	}
@@ -334,6 +336,7 @@ public class ServletBook extends Book {
 	}
 
 	@Override
+	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
 	public Map<String,String> getParam() {
 		return unmodifiableParam;
 	}
