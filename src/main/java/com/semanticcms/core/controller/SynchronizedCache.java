@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.collections.AoCollections;
 import static com.semanticcms.core.controller.Cache.VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
@@ -69,7 +70,7 @@ class SynchronizedCache extends MapCache {
 
 	@Override
 	public <K,V> Map<K,V> newMap(int size) {
-		return Collections.synchronizedMap(new HashMap<>(size *4/3+1));
+		return Collections.synchronizedMap(AoCollections.newHashMap(size));
 	}
 
 	@Override

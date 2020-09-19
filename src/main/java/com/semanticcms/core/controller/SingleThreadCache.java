@@ -22,6 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoindustries.collections.AoCollections;
 import static com.semanticcms.core.controller.Cache.VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
@@ -74,7 +75,7 @@ class SingleThreadCache extends MapCache {
 	@Override
 	public <K,V> Map<K,V> newMap(int size) {
 		assert assertingThread == Thread.currentThread();
-		return new HashMap<>(size *4/3+1);
+		return AoCollections.newHashMap(size);
 	}
 
 	@Override

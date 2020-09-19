@@ -101,7 +101,7 @@ public class ServletBook extends Book {
 		super(bookRef, getCanonicalBase(bookProps));
 
 		// Tracks each properties key used, will throw exception if any key exists in the properties file that is not used
-		Set<Object> usedKeys = new HashSet<>(bookProps.size() * 4/3 + 1);
+		Set<Object> usedKeys = AoCollections.newHashSet(bookProps.size());
 
 		// Mark as used
 		getProperty(bookProps, usedKeys, "canonicalBase");
