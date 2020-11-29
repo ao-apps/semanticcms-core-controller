@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -79,9 +79,6 @@ abstract class MapCache extends Cache {
 		this.attributes = attributes;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	CaptureResult get(CaptureKey key) {
 		CaptureResult result = pageCache.get(key);
@@ -105,9 +102,6 @@ abstract class MapCache extends Cache {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	void put(CaptureKey key, Page page) throws ServletException {
 		// Check if found in other level, this is used to avoid verifying twice
