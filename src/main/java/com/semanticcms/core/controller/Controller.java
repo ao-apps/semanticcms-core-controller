@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -506,7 +506,7 @@ public class Controller implements Filter {
 		Book publishedBook,
 		Path publishedPath
 	) throws IOException, ServletException {
-		Tuple2<Renderer,Path> rendererAndPath = semanticCMS.getRendererAndPath(publishedPath);
+		Tuple2<Renderer, Path> rendererAndPath = semanticCMS.getRendererAndPath(publishedPath);
 		if(rendererAndPath == null) {
 			doPublishedBookNoRenderer(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
 		} else {

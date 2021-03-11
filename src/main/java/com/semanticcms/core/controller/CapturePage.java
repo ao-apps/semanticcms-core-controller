@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -238,7 +238,7 @@ public class CapturePage {
 	 *
 	 * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.pages.CaptureLevel)
 	 */
-	public static Map<PageRef,Page> capturePages(
+	public static Map<PageRef, Page> capturePages(
 		final ServletContext servletContext,
 		final HttpServletRequest request,
 		final HttpServletResponse response,
@@ -256,7 +256,7 @@ public class CapturePage {
 			);
 		} else {
 			final Cache cache = CacheFilter.getCache(request);
-			Map<PageRef,Page> results = AoCollections.newLinkedHashMap(size);
+			Map<PageRef, Page> results = AoCollections.newLinkedHashMap(size);
 			List<PageReferrer> notCachedList = new ArrayList<>(size);
 			if(level != CaptureLevel.BODY) {
 				// Check cache before queuing on different threads, building list of those not in cache
@@ -337,7 +337,7 @@ public class CapturePage {
 	 * @see  #capturePages(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.util.Set, com.semanticcms.core.servlet.CaptureLevel)
 	 * @see  PageContext
 	 */
-	public static Map<PageRef,Page> capturePages(
+	public static Map<PageRef, Page> capturePages(
 		Set<? extends PageReferrer> pageReferrers,
 		CaptureLevel level
 	) throws ServletException, IOException {
@@ -562,7 +562,7 @@ public class CapturePage {
 		// New edges to add, used to add in the correct order to edgesToAdd based on traversal direction hints
 		final List<PageRef> newEdgesToAdd = new ArrayList<>();
 		// The futures are queued, active, or finished but not yet processed by main thread
-		final Map<PageRef,Future<Page>> futures = AoCollections.newHashMap(preferredConcurrency);
+		final Map<PageRef, Future<Page>> futures = AoCollections.newHashMap(preferredConcurrency);
 		try {
 			// Kick it off
 			visited.add(page.getPageRef());
@@ -962,7 +962,7 @@ public class CapturePage {
 				// Those that are to be done after what is next
 				final List<Iterator<? extends PageReferrer>> afters = new ArrayList<>();
 				// The set of nodes we've received but are not yet ready to process
-				Map<PageRef,Page> received = null;
+				Map<PageRef, Page> received = null;
 
 				// Kick it off
 				{

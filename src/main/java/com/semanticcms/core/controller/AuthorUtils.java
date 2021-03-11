@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -97,7 +97,7 @@ public class AuthorUtils {
 		HttpServletResponse response,
 		SemanticCMS semanticCMS,
 		com.semanticcms.core.model.Page page,
-		Map<PageRef,Set<Author>> finished
+		Map<PageRef, Set<Author>> finished
 	) throws ServletException, IOException {
 		PageRef pageRef = page.getPageRef();
 		assert !finished.containsKey(pageRef);

@@ -138,7 +138,7 @@ final public class PageUtils {
 		HttpServletResponse response,
 		SemanticCMS semanticCMS,
 		com.semanticcms.core.model.Page page,
-		Map<PageRef,Boolean> finished
+		Map<PageRef, Boolean> finished
 	) throws ServletException, IOException {
 		PageRef pageRef = page.getPageRef();
 		assert !finished.containsKey(pageRef);
@@ -310,7 +310,7 @@ final public class PageUtils {
 	) throws ServletException, IOException {
 		// Verify parents
 		if(!page.getAllowParentMismatch()) {
-			Map<PageRef,Page> notMissingParents = CapturePage.capturePages(
+			Map<PageRef, Page> notMissingParents = CapturePage.capturePages(
 				servletContext,
 				request,
 				response,
@@ -318,13 +318,13 @@ final public class PageUtils {
 				CaptureLevel.PAGE
 			);
 			PageRef pageRef = page.getPageRef();
-			for(Map.Entry<PageRef,Page> entry : notMissingParents.entrySet()) {
+			for(Map.Entry<PageRef, Page> entry : notMissingParents.entrySet()) {
 				verifyChildToParent(pageRef, entry.getKey(), entry.getValue().getChildRefs());
 			}
 		}
 		// Verify children
 		if(!page.getAllowChildMismatch()) {
-			Map<PageRef,Page> notMissingChildren = CapturePage.capturePages(
+			Map<PageRef, Page> notMissingChildren = CapturePage.capturePages(
 				servletContext,
 				request,
 				response,
@@ -332,7 +332,7 @@ final public class PageUtils {
 				CaptureLevel.PAGE
 			);
 			PageRef pageRef = page.getPageRef();
-			for(Map.Entry<PageRef,Page> entry : notMissingChildren.entrySet()) {
+			for(Map.Entry<PageRef, Page> entry : notMissingChildren.entrySet()) {
 				verifyParentToChild(pageRef, entry.getKey(), entry.getValue().getParentRefs());
 			}
 		}

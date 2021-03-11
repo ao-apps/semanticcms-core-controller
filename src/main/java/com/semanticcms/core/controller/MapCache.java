@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -40,7 +40,7 @@ abstract class MapCache extends Cache {
 
 	protected final SemanticCMS semanticCMS;
 
-	private final Map<CaptureKey,CaptureResult> pageCache;
+	private final Map<CaptureKey, CaptureResult> pageCache;
 
 	/**
 	 * Tracks which parent pages are still not verified.
@@ -49,7 +49,7 @@ abstract class MapCache extends Cache {
 	 *   <li>Value: The page(s) that claim the pageRef as a parent but are still not verified.</li>
 	 * </ul>
 	 */
-	private final Map<PageRef,Set<PageRef>> unverifiedParentsByPageRef;
+	private final Map<PageRef, Set<PageRef>> unverifiedParentsByPageRef;
 
 	/**
 	 * Tracks which child pages are still not verified.
@@ -58,19 +58,19 @@ abstract class MapCache extends Cache {
 	 *   <li>Value: The page(s) that claim the pageRef as a child but are still not verified.</li>
 	 * </ul>
 	 */
-	private final Map<PageRef,Set<PageRef>> unverifiedChildrenByPageRef;
+	private final Map<PageRef, Set<PageRef>> unverifiedChildrenByPageRef;
 
 	/**
 	 * The map used to store attributes.
 	 */
-	protected final Map<String,Object> attributes;
+	protected final Map<String, Object> attributes;
 
 	MapCache(
 		SemanticCMS semanticCMS,
-		Map<CaptureKey,CaptureResult> pageCache,
-		Map<PageRef,Set<PageRef>> unverifiedParentsByPageRef,
-		Map<PageRef,Set<PageRef>> unverifiedChildrenByPageRef,
-		Map<String,Object> attributes
+		Map<CaptureKey, CaptureResult> pageCache,
+		Map<PageRef, Set<PageRef>> unverifiedParentsByPageRef,
+		Map<PageRef, Set<PageRef>> unverifiedChildrenByPageRef,
+		Map<String, Object> attributes
 	) {
 		this.semanticCMS = semanticCMS;
 		this.pageCache = pageCache;
@@ -89,7 +89,7 @@ abstract class MapCache extends Cache {
 		return result;
 	}
 
-	private static void addToSet(Map<PageRef,Set<PageRef>> map, PageRef key, PageRef pageRef) {
+	private static void addToSet(Map<PageRef, Set<PageRef>> map, PageRef key, PageRef pageRef) {
 		Set<PageRef> pageRefs = map.get(key);
 		if(pageRefs == null) {
 			map.put(key, Collections.singleton(pageRef));
@@ -187,12 +187,16 @@ abstract class MapCache extends Cache {
 		return attributes.get(key);
 	}
 
+	/**
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
+	 */
 	@Override
-	public <V,E extends Exception> V getAttribute(
+	// TODO: Ex extends Throwable
+	public <V, Ex extends Exception> V getAttribute(
 		String key,
 		Class<V> clazz,
-		Callable<? extends V,E> callable
-	) throws E {
+		Callable<? extends V, Ex> callable
+	) throws Ex {
 		V attribute = getAttribute(key, clazz);
 		if(attribute == null) {
 			attribute = callable.call();

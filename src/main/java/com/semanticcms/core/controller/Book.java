@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -193,5 +193,5 @@ abstract public class Book implements Comparable<Book> {
 	 * @return  The, possibly empty, map of parameters for an accessible book
 	 *          or {@code null} for an inaccessible book
 	 */
-	abstract public Map<String,String> getParam();
+	abstract public Map<String, String> getParam();
 }

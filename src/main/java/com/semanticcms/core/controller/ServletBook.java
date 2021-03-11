@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -72,7 +72,7 @@ public class ServletBook extends Book {
 	private final Set<Author> unmodifiableAuthors;
 	private final String title;
 	private final boolean allowRobots;
-	private final Map<String,String> unmodifiableParam;
+	private final Map<String, String> unmodifiableParam;
 
 	private final PageRepository pages;
 	private final ResourceStore resources;
@@ -167,7 +167,7 @@ public class ServletBook extends Book {
 		this.unmodifiableAuthors = AoCollections.optimalUnmodifiableSet(authors);
 		this.title = getProperty(bookProps, usedKeys, "title");
 		this.allowRobots = allowRobots;
-		Map<String,String> newParam = new LinkedHashMap<>();
+		Map<String, String> newParam = new LinkedHashMap<>();
 		@SuppressWarnings("unchecked")
 		Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
 		while(propertyNames.hasMoreElements()) {
@@ -337,7 +337,7 @@ public class ServletBook extends Book {
 
 	@Override
 	@SuppressWarnings("ReturnOfCollectionOrArrayField") // Returning unmodifiable
-	public Map<String,String> getParam() {
+	public Map<String, String> getParam() {
 		return unmodifiableParam;
 	}
 }

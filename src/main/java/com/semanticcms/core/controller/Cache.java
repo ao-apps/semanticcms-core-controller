@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -155,7 +155,7 @@ public abstract class Cache {
 	 * Creates a new map that is suitable for the expected thread safety requirements.
 	 * This map will itself be consistent with the thread safety guarantees of this cache overall.
 	 */
-	public abstract <K,V> Map<K,V> newMap();
+	public abstract <K, V> Map<K, V> newMap();
 
 	/**
 	 * Creates a new map that is suitable for the expected thread safety requirements.
@@ -164,7 +164,7 @@ public abstract class Cache {
 	 * @param  size  the number of elements the map can hold before internal resizing.
 	 *               this is the actual size, no need to consider load factor or other nonsense.
 	 */
-	public abstract <K,V> Map<K,V> newMap(int size);
+	public abstract <K, V> Map<K, V> newMap(int size);
 
 	/**
 	 * Sets a cache attribute.
@@ -187,11 +187,14 @@ public abstract class Cache {
 
 	/**
 	 * Constrains allowed exception type.
+	 *
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
 	 */
 	@FunctionalInterface
-	public static interface Callable<V,E extends Exception> extends java.util.concurrent.Callable<V> {
+	// TODO: Ex extends Throwable
+	public static interface Callable<V, Ex extends Exception> extends java.util.concurrent.Callable<V> {
 		@Override
-		public V call() throws E;
+		public V call() throws Ex;
 	}
 
 	/**
@@ -199,12 +202,15 @@ public abstract class Cache {
 	 * Note: It is possible the callable might be called and not used.  If
 	 * clean-up of unused callable is necessary, synchronize externally and use
 	 * regular getAttribute/setAttribute in sequence.
+	 *
+	 * @param  <Ex>  An arbitrary exception type that may be thrown
 	 */
-	public abstract <V,E extends Exception> V getAttribute(
+	// TODO: Ex extends Throwable
+	public abstract <V, Ex extends Exception> V getAttribute(
 		String key,
 		Class<V> clazz,
-		Callable<? extends V,E> callable
-	) throws E;
+		Callable<? extends V, Ex> callable
+	) throws Ex;
 
 	/**
 	 * Removes a cache attribute.

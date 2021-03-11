@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -158,11 +158,11 @@ public class SemanticCMS {
 	private static final String ROOT_DOMAIN_ATTRIBUTE = "rootDomain";
 	private static final String ROOT_BOOK_ATTRIBUTE = "rootBook";
 
-	private final Map<BookRef,Book> books = new LinkedHashMap<>();
-	private final Map<BookRef,Book> unmodifiableBooks = Collections.unmodifiableMap(books);
+	private final Map<BookRef, Book> books = new LinkedHashMap<>();
+	private final Map<BookRef, Book> unmodifiableBooks = Collections.unmodifiableMap(books);
 
-	private final Map<Path,Book> publishedBooks = new LinkedHashMap<>();
-	private final Map<Path,Book> unmodifiablePublishedBooks = Collections.unmodifiableMap(publishedBooks);
+	private final Map<Path, Book> publishedBooks = new LinkedHashMap<>();
+	private final Map<Path, Book> unmodifiablePublishedBooks = Collections.unmodifiableMap(publishedBooks);
 
 	private final Book rootBook;
 
@@ -318,7 +318,7 @@ public class SemanticCMS {
 	 * @see  #getBook(com.semanticcms.core.model.BookRef)
 	 * @see  #getBook(com.aoindustries.net.DomainName, com.aoindustries.net.Path)
 	 */
-	public Map<BookRef,Book> getBooks() {
+	public Map<BookRef, Book> getBooks() {
 		return unmodifiableBooks;
 	}
 
@@ -367,7 +367,7 @@ public class SemanticCMS {
 	 * @see  #getPublishedBook(java.lang.String)
 	 * @see  #getPublishedBook(javax.servlet.http.HttpServletRequest)
 	 */
-	public Map<Path,Book> getPublishedBooks() {
+	public Map<Path, Book> getPublishedBooks() {
 		return unmodifiablePublishedBooks;
 	}
 
@@ -481,7 +481,7 @@ public class SemanticCMS {
 
 	// <editor-fold defaultstate="collapsed" desc="Renderers">
 
-	private final SortedMap<String,Renderer> renderers = new TreeMap<>(
+	private final SortedMap<String, Renderer> renderers = new TreeMap<>(
 		(String s1, String s2) -> {
 			// Order by length descending
 			int len1 = s1.length();
@@ -492,7 +492,7 @@ public class SemanticCMS {
 			return s1.compareToIgnoreCase(s2);
 		}
 	);
-	private final SortedMap<String,Renderer> unmodifiableRenderers = Collections.unmodifiableSortedMap(renderers);
+	private final SortedMap<String, Renderer> unmodifiableRenderers = Collections.unmodifiableSortedMap(renderers);
 
 	/**
 	 * Gets the mapping of all configured renderers, key is suffix, value is renderer.
@@ -504,7 +504,7 @@ public class SemanticCMS {
 	 *
 	 * @see  #getRendererAndPath(com.aoindustries.net.Path)
 	 */
-	public SortedMap<String,Renderer> getRenderers() {
+	public SortedMap<String, Renderer> getRenderers() {
 		// Not synchronizing renderers where because they are normally only set on application start-up
 		return unmodifiableRenderers;
 	}
@@ -525,12 +525,12 @@ public class SemanticCMS {
 	 *
 	 * @return  The matched renderer and trimmed path, or {@code null} if none found
 	 */
-	public Tuple2<Renderer,Path> getRendererAndPath(Path path) throws ServletException {
+	public Tuple2<Renderer, Path> getRendererAndPath(Path path) throws ServletException {
 		final String pathStr = path.toString();
 		String suffix = null;
 		Renderer renderer = null;
 		synchronized(renderers) {
-			for(Map.Entry<String,Renderer> entry : renderers.entrySet()) {
+			for(Map.Entry<String, Renderer> entry : renderers.entrySet()) {
 				String s = entry.getKey();
 				if(pathStr.endsWith(s)) {
 					suffix = s;

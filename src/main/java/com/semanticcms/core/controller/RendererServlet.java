@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -90,7 +90,7 @@ public class RendererServlet extends HttpServlet {
 		if(renderer == null) throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER);
 		Page page = (Page)request.getAttribute(PAGE_REQUEST_PARAMETER);
 		if(page == null) throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER);
-		Map<String,Object> pageRendererAttributes = new HashMap<>();
+		Map<String, Object> pageRendererAttributes = new HashMap<>();
 		pageRendererAttributes.put(ServletPageRenderer.REQUEST_RENDERER_ATTRIBUTE, request);
 		pageRendererAttributes.put(ServletPageRenderer.RESPONSE_RENDERER_ATTRIBUTE, response);
 		try (PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes)) {
