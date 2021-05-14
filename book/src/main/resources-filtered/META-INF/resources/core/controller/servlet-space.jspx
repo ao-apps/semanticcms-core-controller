@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -36,6 +36,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		title="@{documented.name} Servlet Space"
 		shortTitle="Servlet Space"
 		datePublished="2018-06-01T21:04:31-0500"
+		dateModified="2021-05-13T21:21:00-05:00"
 	>
 		<p>
 			To protected against unintended direct access to the local servlet environment,
@@ -49,7 +50,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		</p>
 		<p>
 			A servlet space may end in multiple <code>/*/*</code>, creating a bounded multi-level space,
-			such as <code>/styles/*/* -& (*.css -&gt; pass-through)</code>.
+			such as <code>/styles/*/* → (*.css → pass-through)</code>.
 			This would allow any CSS files from <code>/styles/a/b/*.css</code>, but would not have any
 			affect on the <code>/styles/a/</code> directory or its direct contents.
 		</p>
@@ -67,15 +68,15 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<p>
 			When using <code>/path/**</code> for multi-level servlet spaces, it is possible for a sub-section of the servlet
 			space to be overlaid by a sub-space.  Consider an application that wants to have a fairly
-			default servlet environment, and so it adds <code>/** -&gt; pass-through</code>.  At
-			the same time, a component has protected itself with <code>/component/* -&gt; block</code>.
+			default servlet environment, and so it adds <code>/** → pass-through</code>.  At
+			the same time, a component has protected itself with <code>/component/* → block</code>.
 			A request to <code>/other</code> or <code>/component/*/other</code> would be passed-through, but
 			a request to <code>/component/other</code> would be blocked.
 		</p>
 		<p>
 			It is also possible to have a multi-level sub-space within a multi-level servlet space.
-			Consider an application enabling default pass-through with <code>/** -&gt; pass-through</code>,
-			while a component has registered <code>/component/** -&gt; block</code>.  In this case, the entire
+			Consider an application enabling default pass-through with <code>/** → pass-through</code>,
+			while a component has registered <code>/component/** → block</code>.  In this case, the entire
 			sub-space of <code>/component/…</code> is blocked (unless a sub-sub space is registered).
 		</p>
 		<p>
@@ -128,11 +129,11 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<p>
 			TODO: How to handle domains when a sub-part of the servlet space is expected
 			to be served for a single domain?  Should the domain be a part of the servlet space matching?
-			Would a space be <code>semanticcms.com/images/* -&gt; pass-through</code>, which
+			Would a space be <code>semanticcms.com/images/* → pass-through</code>, which
 			would allow those images to be accessed on semanticcms.com, but not on other domains.
 			Would the name-space be completely non-existent on other domains, possibly exposing content
-			that was expected to be blocked?  Would it have to be a combination of <code>*/images/* -&gt; block</code>
-			followed by <code>semanticcmscom/images/* -gt; pass-through</code>?  Would all servlet spaces
+			that was expected to be blocked?  Would it have to be a combination of <code>*/images/* → block</code>
+			followed by <code>semanticcmscom/images/* → pass-through</code>?  Would all servlet spaces
 			from non-matching domains still be applied but with block-all, to prevent inadvertent disclosure
 			or duplication of information across domains?
 		</p>
