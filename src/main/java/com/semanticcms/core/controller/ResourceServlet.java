@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2018, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -101,11 +101,7 @@ public class ResourceServlet extends HttpServlet {
 		long length = resourceConn.getLength();
 		if(length != -1) {
 			if(length < 0) throw new AssertionError();
-			if(length <= Integer.MAX_VALUE) {
-				response.setContentLength((int)length);
-			} else {
-				// TODO: Servlet 3.1: response.setContentLengthLong(length);
-			}
+			response.setContentLengthLong(length);
 		}
 		ServletOutputStream out = response.getOutputStream();
 		try (InputStream in = resourceConn.getInputStream()) {

@@ -35,7 +35,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 	<core:page
 		title="@{documented.name} Servlet Space"
 		shortTitle="Servlet Space"
-		datePublished="2018-06-01T21:04:31-0500"
+		datePublished="2018-06-01T21:04:31-05:00"
 		dateModified="2021-05-13T21:21:00-05:00"
 	>
 		<p>

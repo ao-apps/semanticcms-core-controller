@@ -123,11 +123,7 @@ public class RendererServlet extends HttpServlet {
 		long length = pageRenderer.getLength();
 		if(length != -1) {
 			if(length < 0) throw new AssertionError();
-			if(length <= Integer.MAX_VALUE) {
-				response.setContentLength((int)length);
-			} else {
-				// TODO: Servlet 3.1: response.setContentLengthLong(length);
-			}
+			response.setContentLengthLong(length);
 		}
 		pageRenderer.doRenderer(response.getWriter());
 	}
