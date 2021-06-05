@@ -22,11 +22,11 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.net.Path;
-import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.servlet.http.HttpServletUtil;
-import com.aoindustries.util.Tuple2;
-import com.aoindustries.validation.ValidationException;
+import com.aoapps.hodgepodge.util.Tuple2;
+import com.aoapps.lang.validation.ValidationException;
+import com.aoapps.net.Path;
+import com.aoapps.servlet.http.Dispatcher;
+import com.aoapps.servlet.http.HttpServletUtil;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
@@ -208,7 +208,7 @@ public class Controller implements Filter {
 	 *
 	 * @see  #getPublishedBook(com.semanticcms.core.controller.SemanticCMS, java.lang.String)
 	 * @see  #doNotPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String)
-	 * @see  #doPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoindustries.net.Path)
+	 * @see  #doPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
 	 */
 	protected void doHttp(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
@@ -327,8 +327,8 @@ public class Controller implements Filter {
 	/**
 	 * Called for HTTP requests that do not correspond to a published book but have a local book.
 	 *
-	 * @see  #isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoindustries.net.Path, javax.servlet.http.HttpServletRequest)
-	 * @see  #isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoindustries.net.Path, javax.servlet.http.HttpServletRequest)
+	 * @see  #isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
+	 * @see  #isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
 	 * @see  #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
 	 * @see  #doMethodCheckNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
@@ -411,8 +411,8 @@ public class Controller implements Filter {
 	/**
 	 * Called for HTTP requests that map onto a published book and are not GET, HEAD, or OPTIONS method.
 	 *
-	 * @see  #isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoindustries.net.Path, javax.servlet.http.HttpServletRequest)
-	 * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoindustries.net.Path, javax.servlet.http.HttpServletRequest)
+	 * @see  #isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
+	 * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
 	 */
 	protected void doPublishedBookOtherMethod(
 		HttpServletRequest request,

@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.collections.AoCollections;
-import com.aoindustries.lang.Coercion;
+import com.aoapps.collections.AoCollections;
+import com.aoapps.lang.Coercion;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.ChildRef;
 import com.semanticcms.core.model.Element;

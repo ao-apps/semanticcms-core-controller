@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2015, 2016, 2017, 2018, 2019  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,12 +22,12 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.lang.NullArgumentException;
-import com.aoindustries.net.DomainName;
-import com.aoindustries.net.Path;
-import com.aoindustries.net.URIResolver;
-import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.validation.ValidationException;
+import com.aoapps.lang.NullArgumentException;
+import com.aoapps.lang.validation.ValidationException;
+import com.aoapps.net.DomainName;
+import com.aoapps.net.Path;
+import com.aoapps.net.URIResolver;
+import com.aoapps.servlet.http.Dispatcher;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.local.PageContext;
@@ -107,8 +107,8 @@ public class PageRefResolver {
 	 *
 	 * @throws ServletException If no book provided and the current page is not within a book's content.
 	 *
-	 * @see  #getPageRef(com.aoindustries.net.DomainName, com.aoindustries.net.Path, java.lang.String)
-	 * @see  ResourceRefResolver#getResourceRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoindustries.net.DomainName, com.aoindustries.net.Path, java.lang.String)
+	 * @see  #getPageRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+	 * @see  ResourceRefResolver#getResourceRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
 	 */
 	public static PageRef getPageRef(
 		ServletContext servletContext,
@@ -172,9 +172,9 @@ public class PageRefResolver {
 	/**
 	 * Gets a {@link PageRef} in the current {@link PageContext page context}.
 	 *
-	 * @see  #getPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoindustries.net.DomainName, com.aoindustries.net.Path, java.lang.String)
+	 * @see  #getPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
 	 * @see  PageContext
-	 * @see  ResourceRefResolver#getResourceRef(com.aoindustries.net.DomainName, com.aoindustries.net.Path, java.lang.String)
+	 * @see  ResourceRefResolver#getResourceRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
 	 */
 	public static PageRef getPageRef(DomainName domain, Path book, String path) throws ServletException, MalformedURLException {
 		return getPageRef(

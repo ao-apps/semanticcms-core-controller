@@ -22,7 +22,7 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.lang.NullArgumentException;
+import com.aoapps.lang.NullArgumentException;
 import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.Copyright;

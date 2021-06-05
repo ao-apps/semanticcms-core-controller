@@ -22,15 +22,15 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.exception.WrappedException;
-import com.aoindustries.lang.Strings;
-import com.aoindustries.net.DomainName;
-import com.aoindustries.net.Path;
-import com.aoindustries.servlet.PropertiesUtils;
-import com.aoindustries.servlet.http.Dispatcher;
-import com.aoindustries.util.Tuple2;
-import com.aoindustries.validation.ValidationException;
-import com.aoindustries.xml.XmlUtils;
+import com.aoapps.hodgepodge.util.Tuple2;
+import com.aoapps.lang.Strings;
+import com.aoapps.lang.exception.WrappedException;
+import com.aoapps.lang.validation.ValidationException;
+import com.aoapps.lang.xml.XmlUtils;
+import com.aoapps.net.DomainName;
+import com.aoapps.net.Path;
+import com.aoapps.servlet.PropertiesUtils;
+import com.aoapps.servlet.http.Dispatcher;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.model.ParentRef;
@@ -316,7 +316,7 @@ public class SemanticCMS {
 	 * {@link #getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
 	 *
 	 * @see  #getBook(com.semanticcms.core.model.BookRef)
-	 * @see  #getBook(com.aoindustries.net.DomainName, com.aoindustries.net.Path)
+	 * @see  #getBook(com.aoapps.net.DomainName, com.aoapps.net.Path)
 	 */
 	public Map<BookRef, Book> getBooks() {
 		return unmodifiableBooks;
@@ -502,7 +502,7 @@ public class SemanticCMS {
 	 * The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.
 	 * </p>
 	 *
-	 * @see  #getRendererAndPath(com.aoindustries.net.Path)
+	 * @see  #getRendererAndPath(com.aoapps.net.Path)
 	 */
 	public SortedMap<String, Renderer> getRenderers() {
 		// Not synchronizing renderers where because they are normally only set on application start-up

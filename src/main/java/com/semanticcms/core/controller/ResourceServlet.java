@@ -22,8 +22,8 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoindustries.io.ContentType;
-import com.aoindustries.io.IoUtils;
+import com.aoapps.lang.io.ContentType;
+import com.aoapps.lang.io.IoUtils;
 import com.semanticcms.core.resources.ResourceConnection;
 import java.io.IOException;
 import java.io.InputStream;
