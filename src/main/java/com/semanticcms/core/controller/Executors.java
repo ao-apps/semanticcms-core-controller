@@ -22,8 +22,6 @@
  */
 package com.semanticcms.core.controller;
 
-import com.aoapps.hodgepodge.i18n.I18nThreadLocalCallable;
-import com.aoapps.hodgepodge.i18n.I18nThreadLocalRunnable;
 import com.aoapps.servlet.filter.FunctionContextCallable;
 import com.aoapps.servlet.filter.FunctionContextRunnable;
 import com.semanticcms.core.pages.local.PageContextCallable;
@@ -34,7 +32,7 @@ import java.util.concurrent.Callable;
  * Per-context executors for concurrent processing.
  * Passes the following {@link ThreadLocal}-based items to submitted tasks:
  * <ul>
- *   <li>Internationalization context (via parent class): {@link I18nThreadLocalCallable} and {@link I18nThreadLocalRunnable}</li>
+ *   <li>Internationalization context (via parent class): {@link com.aoapps.hodgepodge.i18n.I18nThreadLocalCallable} and {@link com.aoapps.hodgepodge.i18n.I18nThreadLocalRunnable}</li>
  *   <li>FunctionContext: {@link FunctionContextCallable} and {@link FunctionContextRunnable}</li>
  *   <li>PageContext: {@link PageContextCallable} and {@link PageContextRunnable}</li>
  * </ul>

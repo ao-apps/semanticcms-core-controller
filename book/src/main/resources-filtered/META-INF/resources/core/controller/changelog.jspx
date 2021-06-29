@@ -37,7 +37,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		shortTitle="Changelog"
 		tocLevels="1"
 		datePublished="2017-08-26T19:19:43-05:00"
-		dateModified="2021-06-03T22:53:21-05:00"
+		dateModified="2021-06-27T16:13:41-05:00"
 	>
 		<c:if test="${fn:endsWith('@{project.version}', '-SNAPSHOT') and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')}">
 			<changelog:release
@@ -54,7 +54,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 						<code:link book="/core/servlet" page="/" /> only to generate page content from servlets.
 					</li>
 					<li>
-						<code><ao:a href="apidocs/com/semanticcms/core/controller/PageRefResolver.html">PageRefResolver</ao:a>.getCurrentPageRef(…)</code>
+						<code><ao:a href="apidocs/com.semanticcms.core.controller/com/semanticcms/core/controller/PageRefResolver.html">PageRefResolver</ao:a>.getCurrentPageRef(…)</code>
 						now accepts an optional parameter to optionally return <code>null</code> on missing book instead of throwing
 						<code><ao:a rel="nofollow" href="@{javadoc.link.javaee}javax/servlet/ServletException.html">ServletException</ao:a></code>.
 					</li>
@@ -75,16 +75,16 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 					</li>
 					<li><code>book.cvsworkDirectory</code> is now optional in <code>books.xml</code></li>
 					<li>
-						Activated new filter <ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com/aoapps/servlet/lastmodified/LastModifiedCacheControlFilter.html">LastModifiedCacheControlFilter</ao:a>
+						Activated new filter <ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com.aoapps.servlet.lastmodified/com/aoapps/servlet/lastmodified/LastModifiedCacheControlFilter.html">LastModifiedCacheControlFilter</ao:a>
 						that adds a <ao:a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</ao:a> header to any request with a 
-						<ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com/aoapps/servlet/lastmodified/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</ao:a>
+						<ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com.aoapps.servlet.lastmodified/com/aoapps/servlet/lastmodified/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</ao:a>
 						parameter.  Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
 					</li>
 					<li>Defined MIME types, with a <code>UTF-8</code> default, in shared <code>web-fragment.xml</code></li>
 					<li>
 						Changed <code>CountConcurrencyFilter</code> from a <code><![CDATA[&lt;filter&gt;]]></code>
 						to a <code><![CDATA[&lt;listener&gt;]]></code> named
-						<ao:a href="apidocs/com/semanticcms/core/controller/CountConcurrencyListener.html">CountConcurrencyListener</ao:a>.
+						<ao:a href="apidocs/com.semanticcms.core.controller/com/semanticcms/core/controller/CountConcurrencyListener.html">CountConcurrencyListener</ao:a>.
 					</li>
 				</ul>
 			</changelog:release>
