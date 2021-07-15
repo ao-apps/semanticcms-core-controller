@@ -86,6 +86,11 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<url>https://github.com/aoindustries/semanticcms-core-controller/issues</url>
 	</issueManagement>
 
+	<ciManagement>
+		<system>GitHub Actions</system>
+		<url>https://github.com/aoindustries/semanticcms-core-controller/actions</url>
+	</ciManagement>
+
 	<repositories>
 		<!-- Repository required here, too, so can find parent -->
 		<repository>
