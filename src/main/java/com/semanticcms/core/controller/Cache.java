@@ -42,6 +42,7 @@ import javax.servlet.ServletException;
  *       much like request attributes).</li>
  * </ol>
  */
+// TODO: Make a Cache.Scope, Cache.Context, and Cache.Attribute that extends Scope, much like Scope.Request and Scope.REQUEST
 public abstract class Cache {
 
 	/**

@@ -390,7 +390,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 		<dependencies>
 			<!-- Direct -->
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-collections</artifactId><version>3.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-concurrent</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
@@ -399,25 +399,25 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 				<groupId>com.aoapps</groupId><artifactId>ao-hodgepodge</artifactId><version>5.0.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId><version>5.0.1${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-lang</artifactId><version>5.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId><version>2.0.1${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-net-types</artifactId><version>2.0.2-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-servlet-filter</artifactId><version>3.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-servlet-subrequest</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-servlet-util</artifactId><version>5.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-tempfiles</artifactId><version>3.0.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-tempfiles-servlet</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-tempfiles-servlet</artifactId><version>3.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId><artifactId>commons-lang3</artifactId><version>${commons-lang3.version}</version>
@@ -470,7 +470,7 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 				<groupId>com.aoapps</groupId><artifactId>ao-encoding</artifactId><version>6.0.0${POST-SNAPSHOT}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>ao-encoding-servlet</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>ao-encoding-servlet</artifactId><version>4.1.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 			</dependency>
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-io-buffer</artifactId><version>4.0.0${POST-SNAPSHOT}</version>
@@ -481,9 +481,10 @@ along with semanticcms-core-controller.  If not, see <http://www.gnu.org/license
 			<dependency>
 				<groupId>com.aoapps</groupId><artifactId>ao-web-resources-registry</artifactId><version>0.4.0${POST-SNAPSHOT}</version>
 			</dependency>
+			<!-- javaee-web-api-bom: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
 			<!-- BOM -->
 			<dependency>
-				<groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.0${POST-SNAPSHOT}</version>
+				<groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

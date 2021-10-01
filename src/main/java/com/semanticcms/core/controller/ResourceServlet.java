@@ -22,8 +22,10 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoapps.lang.attribute.Attribute;
 import com.aoapps.lang.io.ContentType;
 import com.aoapps.lang.io.IoUtils;
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.core.resources.ResourceConnection;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +48,8 @@ public class ResourceServlet extends HttpServlet {
 
 	protected static final String NAME = "com.semanticcms.core.controller.ResourceServlet";
 
-	protected static final String RESOURCE_CONN_REQUEST_PARAMETER = ResourceServlet.class.getName() + ".resourceConn";
+	protected static final ScopeEE.Request.Attribute<ResourceConnection> RESOURCE_CONN_REQUEST_PARAMETER =
+		ScopeEE.REQUEST.attribute(ResourceServlet.class.getName() + ".resourceConn");
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,18 +61,14 @@ public class ResourceServlet extends HttpServlet {
 	) throws IOException, ServletException {
 		RequestDispatcher dispatcher = servletContext.getNamedDispatcher(ResourceServlet.NAME);
 		if(dispatcher == null) throw new ServletException("RequestDispatcher not found: " + ResourceServlet.NAME);
-		Object oldResourceConn = request.getAttribute(ResourceServlet.RESOURCE_CONN_REQUEST_PARAMETER);
-		try {
-			request.setAttribute(ResourceServlet.RESOURCE_CONN_REQUEST_PARAMETER, resourceConn);
+		try (Attribute.OldValue oldResourceConn = RESOURCE_CONN_REQUEST_PARAMETER.context(request).init(resourceConn)) {
 			dispatcher.forward(request, response);
-		} finally {
-			request.setAttribute(ResourceServlet.RESOURCE_CONN_REQUEST_PARAMETER, oldResourceConn);
 		}
 	}
 
 	protected static ResourceConnection getResourceConn(ServletRequest request) throws ServletException {
-		ResourceConnection resourceConn = (ResourceConnection)request.getAttribute(RESOURCE_CONN_REQUEST_PARAMETER);
-		if(resourceConn == null) throw new ServletException("Request parameter not set: " + RESOURCE_CONN_REQUEST_PARAMETER);
+		ResourceConnection resourceConn = RESOURCE_CONN_REQUEST_PARAMETER.context(request).get();
+		if(resourceConn == null) throw new ServletException("Request parameter not set: " + RESOURCE_CONN_REQUEST_PARAMETER.getName());
 		return resourceConn;
 	}
 

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -22,6 +22,8 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoapps.servlet.attribute.AttributeEE;
+import com.aoapps.servlet.attribute.ScopeEE;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,9 +41,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CacheFilter implements Filter {
 
-	private static final String CAPTURE_CACHE_REQUEST_ATTRIBUTE = CacheFilter.class.getName();
+	private static final ScopeEE.Request.Attribute<Cache> CAPTURE_CACHE_REQUEST_ATTRIBUTE =
+		ScopeEE.REQUEST.attribute(CacheFilter.class.getName());
 
-	private static final String EXPORT_CACHE_APPLICATION_ATTRIBUTE = CacheFilter.class.getName() + ".exportCache";
+	private static final ScopeEE.Application.Attribute<ExportPageCache> EXPORT_CACHE_APPLICATION_ATTRIBUTE =
+		ScopeEE.APPLICATION.attribute(CacheFilter.class.getName() + ".exportCache");
 
 	/**
 	 * The number of milliseconds after the export cache is no longer considered valid.
@@ -55,7 +59,7 @@ public class CacheFilter implements Filter {
 	 * @throws IllegalStateException if the filter is not active on the current request
 	 */
 	public static Cache getCache(ServletRequest request) throws IllegalStateException {
-		Cache cache = (Cache)request.getAttribute(CAPTURE_CACHE_REQUEST_ATTRIBUTE);
+		Cache cache = CAPTURE_CACHE_REQUEST_ATTRIBUTE.context(request).get();
 		if(cache == null) throw new IllegalStateException("cache not active on the current request");
 		return cache;
 	}
@@ -68,7 +72,7 @@ public class CacheFilter implements Filter {
 	 * TODO: Consider consequences of caching once we have a security model applied
 	 */
 	private static class ExportPageCache {
-	
+
 		private final CacheFilter filter;
 
 		private final SemanticCMS semanticCMS;
@@ -90,7 +94,7 @@ public class CacheFilter implements Filter {
 		 * The time the cache started, used for expiration.
 		 */
 		private long cacheStart;
-		
+
 		/**
 		 * The currently active cache.
 		 */
@@ -145,8 +149,8 @@ public class CacheFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		@SuppressWarnings("unchecked")
-		Cache cache = (Cache)request.getAttribute(CAPTURE_CACHE_REQUEST_ATTRIBUTE);
+		AttributeEE.Request<Cache> captureCacheRequestAttribute = CAPTURE_CACHE_REQUEST_ATTRIBUTE.context(request);
+		Cache cache = captureCacheRequestAttribute.get();
 		if(cache == null) {
 			boolean isExporting;
 			if(request instanceof HttpServletRequest) {
@@ -155,19 +159,20 @@ public class CacheFilter implements Filter {
 			} else {
 				isExporting = false;
 			}
+			AttributeEE.Application<ExportPageCache> exportCacheApplicationAttribute = EXPORT_CACHE_APPLICATION_ATTRIBUTE.context(servletContext);
 			synchronized(exportCacheLock) {
-				ExportPageCache exportCache = (ExportPageCache)servletContext.getAttribute(EXPORT_CACHE_APPLICATION_ATTRIBUTE);
+				ExportPageCache exportCache = exportCacheApplicationAttribute.get();
 				if(isExporting) {
 					if(exportCache == null) {
 						exportCache = new ExportPageCache(this, SemanticCMS.getInstance(servletContext), concurrentSubrequests);
-						servletContext.setAttribute(EXPORT_CACHE_APPLICATION_ATTRIBUTE, exportCache);
+						exportCacheApplicationAttribute.set(exportCache);
 					}
 					cache = exportCache.getCache(System.currentTimeMillis());
 				} else {
 					// Clean-up stale export cache
 					if(exportCache != null) {
 						if(exportCache.invalidateCache(System.currentTimeMillis())) {
-							servletContext.removeAttribute(EXPORT_CACHE_APPLICATION_ATTRIBUTE);
+							exportCacheApplicationAttribute.remove();
 						}
 					}
 				}
@@ -182,10 +187,10 @@ public class CacheFilter implements Filter {
 				}
 			}
 			try {
-				request.setAttribute(CAPTURE_CACHE_REQUEST_ATTRIBUTE, cache);
+				captureCacheRequestAttribute.set(cache);
 				chain.doFilter(request, response);
 			} finally {
-				request.removeAttribute(CAPTURE_CACHE_REQUEST_ATTRIBUTE);
+				captureCacheRequestAttribute.remove();
 			}
 		} else {
 			// Cache already set

@@ -30,6 +30,7 @@ import com.aoapps.lang.xml.XmlUtils;
 import com.aoapps.net.DomainName;
 import com.aoapps.net.Path;
 import com.aoapps.servlet.PropertiesUtils;
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.aoapps.servlet.http.Dispatcher;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.PageRef;
@@ -63,14 +64,14 @@ import org.xml.sax.SAXException;
 
 /**
  * The SemanticCMS application context.
- * 
+ *
  * TODO: Consider custom EL resolver for this variable: http://stackoverflow.com/questions/5016965/how-to-add-a-custom-variableresolver-in-pure-jsp
  */
 public class SemanticCMS {
 
 	// <editor-fold defaultstate="collapsed" desc="Singleton Instance (per application)">
 
-	@WebListener("Exposes the application context as an application-scope SemanticCMS instance named \"" + APPLICATION_ATTRIBUTE + "\".")
+	@WebListener("Exposes the application context as an application-scope SemanticCMS instance named \"" + APPLICATION_ATTRIBUTE_NAME + "\".")
 	public static class Initializer implements ServletContextListener {
 
 		private SemanticCMS instance;
@@ -86,27 +87,27 @@ public class SemanticCMS {
 				instance.destroy();
 				instance = null;
 			}
-			event.getServletContext().removeAttribute(APPLICATION_ATTRIBUTE);
+			APPLICATION_ATTRIBUTE.context(event.getServletContext()).remove();
 		}
 	}
 
-	public static final String APPLICATION_ATTRIBUTE = "semanticCMS";
+	private static final String APPLICATION_ATTRIBUTE_NAME = "semanticCMS";
+
+	public static final ScopeEE.Application.Attribute<SemanticCMS> APPLICATION_ATTRIBUTE =
+		ScopeEE.APPLICATION.attribute(APPLICATION_ATTRIBUTE_NAME);
 
 	/**
 	 * Gets the SemanticCMS instance, creating it if necessary.
 	 */
 	public static SemanticCMS getInstance(ServletContext servletContext) {
-		try {
-			SemanticCMS semanticCMS = (SemanticCMS)servletContext.getAttribute(APPLICATION_ATTRIBUTE);
-			if(semanticCMS == null) {
+		return APPLICATION_ATTRIBUTE.context(servletContext).computeIfAbsent(__ -> {
+			try {
 				// TODO: Support custom implementations via context-param?
-				semanticCMS = new SemanticCMS(servletContext);
-				servletContext.setAttribute(APPLICATION_ATTRIBUTE, semanticCMS);
+				return new SemanticCMS(servletContext);
+			} catch(IOException | SAXException | ParserConfigurationException | XPathExpressionException | ValidationException e) {
+				throw new WrappedException(e);
 			}
-			return semanticCMS;
-		} catch(IOException | SAXException | ParserConfigurationException | XPathExpressionException | ValidationException e) {
-			throw new WrappedException(e);
-		}
+		});
 	}
 
 	private final ServletContext servletContext;

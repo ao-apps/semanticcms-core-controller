@@ -22,6 +22,8 @@
  */
 package com.semanticcms.core.controller;
 
+import com.aoapps.lang.attribute.Attribute;
+import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.renderer.PageRenderer;
 import com.semanticcms.core.renderer.Renderer;
@@ -48,9 +50,12 @@ public class RendererServlet extends HttpServlet {
 
 	protected static final String NAME = "com.semanticcms.core.controller.RendererServlet";
 
-	protected static final String RENDERER_REQUEST_PARAMETER = RendererServlet.class.getName() + ".renderer";
-	protected static final String PAGE_REQUEST_PARAMETER = RendererServlet.class.getName() + ".page";
-	protected static final String PAGE_RENDERER_REQUEST_PARAMETER = RendererServlet.class.getName() + ".pageRenderer";
+	protected static final ScopeEE.Request.Attribute<Renderer> RENDERER_REQUEST_PARAMETER =
+		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".renderer");
+	protected static final ScopeEE.Request.Attribute<Page> PAGE_REQUEST_PARAMETER =
+		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".page");
+	protected static final ScopeEE.Request.Attribute<PageRenderer> PAGE_RENDERER_REQUEST_PARAMETER =
+		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".pageRenderer");
 
 	private static final long serialVersionUID = 1L;
 
@@ -63,43 +68,32 @@ public class RendererServlet extends HttpServlet {
 	) throws IOException, ServletException {
 		RequestDispatcher dispatcher = servletContext.getNamedDispatcher(NAME);
 		if(dispatcher == null) throw new ServletException("RequestDispatcher not found: " + NAME);
-		Object oldRenderer = request.getAttribute(RENDERER_REQUEST_PARAMETER);
-		try {
-			request.setAttribute(RENDERER_REQUEST_PARAMETER, renderer);
-			Object oldPage = request.getAttribute(PAGE_REQUEST_PARAMETER);
-			try {
-				request.setAttribute(PAGE_REQUEST_PARAMETER, page);
-				dispatcher.forward(request, response);
-			} finally {
-				request.setAttribute(PAGE_REQUEST_PARAMETER, oldPage);
-			}
-		} finally {
-			request.setAttribute(RENDERER_REQUEST_PARAMETER, oldRenderer);
+		try (
+			Attribute.OldValue oldRenderer = RENDERER_REQUEST_PARAMETER.context(request).init(renderer);
+			Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER    .context(request).init(page)
+		) {
+			dispatcher.forward(request, response);
 		}
 	}
 
 	protected static PageRenderer getPageRenderer(ServletRequest request) throws ServletException {
-		PageRenderer pageRenderer = (PageRenderer)request.getAttribute(PAGE_RENDERER_REQUEST_PARAMETER);
-		if(pageRenderer == null) throw new ServletException("Request parameter not set: " + PAGE_RENDERER_REQUEST_PARAMETER);
+		PageRenderer pageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).get();
+		if(pageRenderer == null) throw new ServletException("Request parameter not set: " + PAGE_RENDERER_REQUEST_PARAMETER.getName());
 		return pageRenderer;
 	}
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Renderer renderer = (Renderer)request.getAttribute(RENDERER_REQUEST_PARAMETER);
-		if(renderer == null) throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER);
-		Page page = (Page)request.getAttribute(PAGE_REQUEST_PARAMETER);
-		if(page == null) throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER);
+		Renderer renderer = RENDERER_REQUEST_PARAMETER.context(request).get();
+		if(renderer == null) throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER.getName());
+		Page page = PAGE_REQUEST_PARAMETER.context(request).get();
+		if(page == null) throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER.getName());
 		Map<String, Object> pageRendererAttributes = new HashMap<>();
 		pageRendererAttributes.put(ServletPageRenderer.REQUEST_RENDERER_ATTRIBUTE, request);
 		pageRendererAttributes.put(ServletPageRenderer.RESPONSE_RENDERER_ATTRIBUTE, response);
 		try (PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes)) {
-			Object oldPageRenderer = request.getAttribute(PAGE_RENDERER_REQUEST_PARAMETER);
-			try {
-				request.setAttribute(PAGE_RENDERER_REQUEST_PARAMETER, pageRenderer);
+			try (Attribute.OldValue oldPageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).init(pageRenderer)) {
 				super.service(request, response);
-			} finally {
-				request.setAttribute(PAGE_RENDERER_REQUEST_PARAMETER, oldPageRenderer);
 			}
 		}
 	}
