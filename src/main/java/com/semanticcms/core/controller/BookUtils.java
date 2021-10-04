@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Utilities for working with books.
  */
-final public class BookUtils {
+public final class BookUtils {
 
 	private static final Logger logger = Logger.getLogger(BookUtils.class.getName());
 

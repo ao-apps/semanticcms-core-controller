@@ -55,7 +55,7 @@ class ConcurrentCache extends MapCache {
 	 * Overridden to add synchronization.
 	 */
 	@Override
-	synchronized protected void verifyAdded(Page page) throws ServletException {
+	protected synchronized void verifyAdded(Page page) throws ServletException {
 		super.verifyAdded(page);
 	}
 

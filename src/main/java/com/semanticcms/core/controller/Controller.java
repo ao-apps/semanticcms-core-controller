@@ -76,7 +76,7 @@ public class Controller implements Filter {
 	/**
 	 * Gets the servlet context used for this filter.
 	 */
-	final protected ServletContext getServletContext() {
+	protected final ServletContext getServletContext() {
 		return servletContext;
 	}
 

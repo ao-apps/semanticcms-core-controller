@@ -45,7 +45,7 @@ import org.apache.commons.lang3.NotImplementedException;
  *
  * TODO: Interface + abstract base?
  */
-abstract public class Book implements Comparable<Book> {
+public abstract class Book implements Comparable<Book> {
 
 	protected final BookRef bookRef;
 
@@ -87,7 +87,7 @@ abstract public class Book implements Comparable<Book> {
 		return bookRef.compareTo(o.bookRef);
 	}
 
-	final public BookRef getBookRef() {
+	public final BookRef getBookRef() {
 		return bookRef;
 	}
 
@@ -96,7 +96,7 @@ abstract public class Book implements Comparable<Book> {
 	 * connected into the page DAG.  Please note that accessible books may not
 	 * be local, but they are still part of the set of pages.
 	 */
-	abstract public boolean isAccessible();
+	public abstract boolean isAccessible();
 
 	public boolean isProtected() {
 		throw new NotImplementedException("TODO");
@@ -115,14 +115,14 @@ abstract public class Book implements Comparable<Book> {
 	 *
 	 * @return  The {@link PageRepository} or {@code null} for an inaccessible book
 	 */
-	abstract public PageRepository getPages();
+	public abstract PageRepository getPages();
 
 	/**
 	 * Gets the {@link ResourceStore} for this book.
 	 *
 	 * @return  The {@link ResourceStore} or {@code null} for an inaccessible book
 	 */
-	abstract public ResourceStore getResources();
+	public abstract ResourceStore getResources();
 
 	/**
 	 * Gets the {@link ResourceRef} for the source of the given {@link Page}.
@@ -133,7 +133,7 @@ abstract public class Book implements Comparable<Book> {
 	 *
 	 * @return  The {@link ResourceRef} or {@code null} for unknown or an inaccessible book
 	 */
-	abstract public ResourceRef getPageSource(PageRef pageRef) throws IOException;
+	public abstract ResourceRef getPageSource(PageRef pageRef) throws IOException;
 
 	/**
 	 * Gets the parent pages for this book in the context of the current overall
@@ -142,7 +142,7 @@ abstract public class Book implements Comparable<Book> {
 	 * @return  The, possibly empty, set of parents for an accessible book
 	 *          or {@code null} for an inaccessible book
 	 */
-	abstract public Set<ParentRef> getParentRefs();
+	public abstract Set<ParentRef> getParentRefs();
 
 	/**
 	 * Gets the configured canonicalBase for this book, or {@code null} if not
@@ -156,13 +156,13 @@ abstract public class Book implements Comparable<Book> {
 	/**
 	 * Gets the content root for the book or {@code null} if inaccessible.
 	 */
-	abstract public PageRef getContentRoot();
+	public abstract PageRef getContentRoot();
 
 	/**
 	 * Gets the copyright for the book or {@code null} if none declared or inaccessible.
 	 * As book copyrights are not inherited, all copyright fields will be non-null.
 	 */
-	abstract public Copyright getCopyright();
+	public abstract Copyright getCopyright();
 
 	/**
 	 * Gets the authors of the book.  Any page without more specific authors
@@ -171,19 +171,19 @@ abstract public class Book implements Comparable<Book> {
 	 * @return  The, possibly empty, set of authors for an accessible book
 	 *          or {@code null} for an inaccessible book
 	 */
-	abstract public Set<Author> getAuthors();
+	public abstract Set<Author> getAuthors();
 
 	/**
 	 * Gets the book's title or {@code null} if none declared or inaccessible.
 	 */
-	abstract public String getTitle();
+	public abstract String getTitle();
 
 	/**
 	 * Gets the allowRobots setting of the book.  Any page with an "auto"
 	 * setting and no parents within the book will use this setting.
 	 * An inaccessible book must return {@code false}.
 	 */
-	abstract public boolean getAllowRobots();
+	public abstract boolean getAllowRobots();
 
 	/**
 	 * Accesses the books parameters.
@@ -193,5 +193,5 @@ abstract public class Book implements Comparable<Book> {
 	 * @return  The, possibly empty, map of parameters for an accessible book
 	 *          or {@code null} for an inaccessible book
 	 */
-	abstract public Map<String, String> getParam();
+	public abstract Map<String, String> getParam();
 }
