@@ -177,6 +177,15 @@ public class SemanticCMS {
 				if(schemaIn_1_1 == null) throw new IOException("Schema not found: " + BOOKS_XML_SCHEMA_1_1_RESOURCE);
 				try {
 					DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+					try {
+						dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+					} catch(ParserConfigurationException e) {
+						throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
+					}
+					// See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
+					// See https://rules.sonarsource.com/java/RSPEC-2755
+					dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+					dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "https"); // TODO: How can avoid this while schema included in JAR?
 					dbf.setNamespaceAware(true);
 					dbf.setValidating(true);
 					dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
