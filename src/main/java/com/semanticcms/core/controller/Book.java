@@ -52,7 +52,7 @@ public abstract class Book implements Comparable<Book> {
 	// TODO: Move out of Book to specific subclasses that use it
 	private final String canonicalBase;
 
-	public Book(BookRef bookRef, String canonicalBase) {
+	protected Book(BookRef bookRef, String canonicalBase) {
 		this.bookRef = NullArgumentException.checkNotNull(bookRef, "bookRef");
 		this.canonicalBase = canonicalBase;
 	}
