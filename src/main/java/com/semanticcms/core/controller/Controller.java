@@ -186,7 +186,7 @@ public class Controller implements Filter {
 	}
 
 	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setHeader(
+		response.setHeader(
 			"Allow",
 			HttpServletUtil.METHOD_GET + ", " + HttpServletUtil.METHOD_HEAD + ", " + HttpServletUtil.METHOD_OPTIONS
 		);
