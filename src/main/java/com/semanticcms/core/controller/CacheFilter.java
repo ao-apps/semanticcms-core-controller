@@ -50,7 +50,7 @@ public class CacheFilter implements Filter {
 	/**
 	 * The number of milliseconds after the export cache is no longer considered valid.
 	 */
-	private static final long EXPORT_CAPTURE_PAGE_CACHE_TTL = 60 * 1000; // one minute
+	private static final long EXPORT_CAPTURE_PAGE_CACHE_TTL = 60L * 1000; // one minute
 
 	/**
 	 * Gets the cache to use for the current request.
