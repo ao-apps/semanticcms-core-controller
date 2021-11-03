@@ -23,7 +23,6 @@
 package com.semanticcms.core.controller;
 
 import com.semanticcms.core.model.Page;
-import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public final class PageDags {
 			},
 			Page::getChildRefs,
 			// Child is in accessible book
-			(PageRef childPage) -> semanticCMS.getBook(childPage.getBookRef()).isAccessible(),
+			childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible(),
 			null
 		);
 		return Collections.unmodifiableList(list);

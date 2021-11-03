@@ -956,7 +956,7 @@ public class CapturePage {
 			response,
 			page,
 			level,
-			new PageHandler<T>() {
+			new PageHandler<>() {
 				// All of the edges visited or already set as a next
 				final Set<PageRef> visited = new HashSet<>();
 				// The already resolved parents, used for postHandler

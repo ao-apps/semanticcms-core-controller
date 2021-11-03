@@ -25,10 +25,8 @@ package com.semanticcms.core.controller;
 import com.aoapps.collections.AoCollections;
 import static com.semanticcms.core.controller.Cache.VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS;
 import com.semanticcms.core.model.Page;
-import com.semanticcms.core.model.PageRef;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import javax.servlet.ServletException;
 
 /**
@@ -43,10 +41,10 @@ class SingleThreadCache extends MapCache {
 	SingleThreadCache(SemanticCMS semanticCMS) {
 		super(
 			semanticCMS,
-			new HashMap<CaptureKey, CaptureResult>(),
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<PageRef, Set<PageRef>>() : null,
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<PageRef, Set<PageRef>>() : null,
-			new HashMap<String, Object>()
+			new HashMap<>(),
+			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+			new HashMap<>()
 		);
 		Thread t = null;
 		// Intentional side-effect from assert
