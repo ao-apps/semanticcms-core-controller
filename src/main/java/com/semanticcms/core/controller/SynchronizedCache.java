@@ -23,7 +23,6 @@
 package com.semanticcms.core.controller;
 
 import com.aoapps.collections.AoCollections;
-import static com.semanticcms.core.controller.Cache.VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS;
 import com.semanticcms.core.model.Page;
 import java.util.Collections;
 import java.util.HashMap;

@@ -22,7 +22,6 @@
  */
 package com.semanticcms.core.controller;
 
-import static com.semanticcms.core.controller.Cache.VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS;
 import com.semanticcms.core.model.Page;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
