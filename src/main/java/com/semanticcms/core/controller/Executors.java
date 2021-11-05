@@ -43,6 +43,7 @@ public class Executors extends com.aoapps.concurrent.Executors {
 	 * Should only be created by SemanticCMS to control life cycle.
 	 */
 	Executors() {
+		// Do nothing
 	}
 
 	@Override

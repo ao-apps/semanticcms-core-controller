@@ -42,7 +42,10 @@ import javax.servlet.http.HttpServletRequest;
  *
  * TODO: Parts of this go to pages-local?
  */
-public class ResourceRefResolver {
+public abstract class ResourceRefResolver {
+
+	/** Make no instances. */
+	private ResourceRefResolver() {throw new AssertionError();}
 
 	/**
 	 * Resolves a {@link ResourceRef}.
@@ -143,11 +146,5 @@ public class ResourceRefResolver {
 			book,
 			path
 		);
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private ResourceRefResolver() {
 	}
 }

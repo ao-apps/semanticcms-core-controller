@@ -34,7 +34,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Utilities for working with books.
  */
-public final class BookUtils {
+public abstract class BookUtils {
+
+	/** Make no instances. */
+	private BookUtils() {throw new AssertionError();}
 
 	private static final Logger logger = Logger.getLogger(BookUtils.class.getName());
 
@@ -72,11 +75,5 @@ public final class BookUtils {
 		} else {
 			return canonicalBase;
 		}
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private BookUtils() {
 	}
 }

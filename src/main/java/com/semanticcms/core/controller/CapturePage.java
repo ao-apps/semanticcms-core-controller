@@ -64,7 +64,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
-public class CapturePage {
+public abstract class CapturePage {
+
+	/** Make no instances. */
+	private CapturePage() {throw new AssertionError();}
 
 	private static final boolean CONCURRENT_TRAVERSALS_ENABLED = true;
 
@@ -1091,7 +1094,4 @@ public class CapturePage {
 		 */
 		return result;
 	}
-
-	// Make no instances
-	private CapturePage() {}
 }

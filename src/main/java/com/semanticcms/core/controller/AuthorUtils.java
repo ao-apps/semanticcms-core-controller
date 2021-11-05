@@ -41,7 +41,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Author processing utilities.
  */
-public class AuthorUtils {
+public abstract class AuthorUtils {
+
+	/** Make no instances. */
+	private AuthorUtils() {throw new AssertionError();}
 
 	/**
 	 * <p>
@@ -141,11 +144,5 @@ public class AuthorUtils {
 		// Store in finished
 		finished.put(pageRef, pageAuthors);
 		return pageAuthors;
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private AuthorUtils() {
 	}
 }

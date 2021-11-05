@@ -42,7 +42,10 @@ import javax.servlet.http.HttpServletRequest;
  *
  * TODO: Parts of this go to pages-local?
  */
-public class PageRefResolver {
+public abstract class PageRefResolver {
+
+	/** Make no instances. */
+	private PageRefResolver() {throw new AssertionError();}
 
 	/**
 	 * Finds the path to the current page.
@@ -184,11 +187,5 @@ public class PageRefResolver {
 			book,
 			path
 		);
-	}
-
-	/**
-	 * Make no instances.
-	 */
-	private PageRefResolver() {
 	}
 }

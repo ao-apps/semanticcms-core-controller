@@ -138,7 +138,7 @@ public class CacheFilter implements Filter {
 	private ServletContext servletContext;
 	private boolean concurrentSubrequests;
 
-	private static class ExportCacheLock {}
+	private static class ExportCacheLock {/* Empty lock class to help heap profile */}
 	private final ExportCacheLock exportCacheLock = new ExportCacheLock();
 
 	@Override

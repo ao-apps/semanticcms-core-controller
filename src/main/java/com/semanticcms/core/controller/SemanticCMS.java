@@ -128,6 +128,7 @@ public class SemanticCMS {
 	 * Called when the context is shutting down.
 	 */
 	protected void destroy() {
+		// Do nothing
 	}
 	// </editor-fold>
 
