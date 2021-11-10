@@ -102,6 +102,9 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
 			<releases>
 				<enabled>false</enabled>
 			</releases>
+			<snapshots>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
 		</repository>
 	</repositories>
 
