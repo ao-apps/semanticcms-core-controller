@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Utilities for working with books.
  */
-public abstract class BookUtils {
+public final class BookUtils {
 
 	/** Make no instances. */
 	private BookUtils() {throw new AssertionError();}

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -47,7 +47,7 @@ import org.joda.time.ReadableDateTime;
 /**
  * Utilities for working with pages.
  */
-public abstract class PageUtils {
+public final class PageUtils {
 
 	/** Make no instances. */
 	private PageUtils() {throw new AssertionError();}
