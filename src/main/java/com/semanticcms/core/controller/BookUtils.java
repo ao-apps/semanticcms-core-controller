@@ -25,7 +25,6 @@ package com.semanticcms.core.controller;
 import com.aoapps.net.URIDecoder;
 import com.aoapps.servlet.http.HttpServletUtil;
 import com.semanticcms.core.model.BookRef;
-import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -55,7 +54,7 @@ public final class BookUtils {
 	 * TODO: Also could use that for broken link detection instead of throwing exceptions.
 	 * </p>
 	 */
-	public static String getCanonicalBase(ServletContext servletContext, HttpServletRequest request, Book book) throws MalformedURLException {
+	public static String getCanonicalBase(ServletContext servletContext, HttpServletRequest request, Book book) {
 		String canonicalBase = book.getCanonicalBase();
 		if(canonicalBase == null) {
 			BookRef bookRef = book.getBookRef();

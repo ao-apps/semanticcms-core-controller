@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -50,7 +50,6 @@ import java.util.TreeMap;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
@@ -168,7 +167,7 @@ public class SemanticCMS {
 
 	private final Book rootBook;
 
-	private Book initBooks() throws IOException, SAXException, ParserConfigurationException, XPathExpressionException, ValidationException {
+	private Book initBooks() throws IOException, SAXException, ParserConfigurationException, ValidationException {
 		Document booksXml;
 		{
 			InputStream schemaIn_1_0 = SemanticCMS.class.getResourceAsStream(BOOKS_XML_SCHEMA_1_0_RESOURCE);
@@ -536,7 +535,7 @@ public class SemanticCMS {
 	 *
 	 * @return  The matched renderer and trimmed path, or {@code null} if none found
 	 */
-	public Tuple2<Renderer, Path> getRendererAndPath(Path path) throws ServletException {
+	public Tuple2<Renderer, Path> getRendererAndPath(Path path) {
 		final String pathStr = path.toString();
 		String suffix = null;
 		Renderer renderer = null;
