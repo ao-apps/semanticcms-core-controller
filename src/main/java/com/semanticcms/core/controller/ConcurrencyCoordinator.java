@@ -42,99 +42,103 @@ import javax.servlet.annotation.WebListener;
 @WebListener("Decides whether to use concurrent or sequential implementations.")
 public class ConcurrencyCoordinator implements ServletContextListener, ServletRequestAttributeListener {
 
-	private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE =
-		ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentProcessingRecommended");
-	private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE =
-		ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentSubrequestsRecommended");
+  private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE =
+    ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentProcessingRecommended");
+  private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE =
+    ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentSubrequestsRecommended");
 
-	private boolean concurrentSubrequests;
-	private int preferredConcurrency;
+  private boolean concurrentSubrequests;
+  private int preferredConcurrency;
 
-	@Override
-	public void contextInitialized(ServletContextEvent event) {
-		SemanticCMS semanticCMS = SemanticCMS.getInstance(event.getServletContext());
-		concurrentSubrequests = semanticCMS.getConcurrentSubrequests();
-		preferredConcurrency = semanticCMS.getExecutors().getPreferredConcurrency();
-	}
+  @Override
+  public void contextInitialized(ServletContextEvent event) {
+    SemanticCMS semanticCMS = SemanticCMS.getInstance(event.getServletContext());
+    concurrentSubrequests = semanticCMS.getConcurrentSubrequests();
+    preferredConcurrency = semanticCMS.getExecutors().getPreferredConcurrency();
+  }
 
-	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		// Do nothing
-	}
+  @Override
+  public void contextDestroyed(ServletContextEvent event) {
+    // Do nothing
+  }
 
-	@Override
-	public void attributeAdded(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
-			ServletRequest request = event.getServletRequest();
-			int newConcurrency = (Integer)event.getValue();
+  @Override
+  public void attributeAdded(ServletRequestAttributeEvent event) {
+    if (CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
+      ServletRequest request = event.getServletRequest();
+      int newConcurrency = (Integer)event.getValue();
 
-			assert CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
-			assert CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
+      assert CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
+      assert CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
 
-			// One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
-			boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
-			boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
+      // One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
+      boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
+      boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
 
-			CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).set(concurrentProcessingRecommended);
-			CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).set(concurrentSubrequestsRecommended);
-		}
-	}
+      CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).set(concurrentProcessingRecommended);
+      CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).set(concurrentSubrequestsRecommended);
+    }
+  }
 
-	@Override
-	public void attributeRemoved(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
-			ServletRequest request = event.getServletRequest();
-			CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).remove();
-			CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).remove();
-		}
-	}
+  @Override
+  public void attributeRemoved(ServletRequestAttributeEvent event) {
+    if (CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
+      ServletRequest request = event.getServletRequest();
+      CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).remove();
+      CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).remove();
+    }
+  }
 
-	@Override
-	public void attributeReplaced(ServletRequestAttributeEvent event) {
-		if(CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
-			throw new IllegalStateException(
-				"The attribute is only expected to e added or removed, never replaced: "
-				+ CountConcurrencyListener.REQUEST_ATTRIBUTE.getName()
-			);
-		}
-	}
+  @Override
+  public void attributeReplaced(ServletRequestAttributeEvent event) {
+    if (CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
+      throw new IllegalStateException(
+        "The attribute is only expected to e added or removed, never replaced: "
+        + CountConcurrencyListener.REQUEST_ATTRIBUTE.getName()
+      );
+    }
+  }
 
-	/**
-	 * Checks if concurrent processing is recommended.
-	 * Recommended when the overall request concurrency is less than the preferred concurrency.
-	 * This value will remain consistent throughout the processing of a request.
-	 *
-	 * @see  Executors#getPreferredConcurrency()
-	 */
-	public static boolean isConcurrentProcessingRecommended(ServletRequest request) {
-		Boolean concurrentProcessingRecommended = CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get();
-		if(concurrentProcessingRecommended == null) throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
-		return concurrentProcessingRecommended;
-	}
+  /**
+   * Checks if concurrent processing is recommended.
+   * Recommended when the overall request concurrency is less than the preferred concurrency.
+   * This value will remain consistent throughout the processing of a request.
+   *
+   * @see  Executors#getPreferredConcurrency()
+   */
+  public static boolean isConcurrentProcessingRecommended(ServletRequest request) {
+    Boolean concurrentProcessingRecommended = CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get();
+    if (concurrentProcessingRecommended == null) {
+      throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
+    }
+    return concurrentProcessingRecommended;
+  }
 
-	/**
-	 * Determines if concurrent subrequests are currently allowed and advised for the given request.
-	 * <ol>
-	 * <li>Concurrent subrequests must be enabled: {@link SemanticCMS#getConcurrentSubrequests()}</li>
-	 * <li>Request concurrency must be less than the executor per-processor thread limit: {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}</li>
-	 * </ol>
-	 */
-	public static boolean useConcurrentSubrequests(ServletRequest request) {
-		Boolean concurrentSubrequestsRecommended = CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get();
-		if(concurrentSubrequestsRecommended == null) throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
-		return concurrentSubrequestsRecommended;
-	}
+  /**
+   * Determines if concurrent subrequests are currently allowed and advised for the given request.
+   * <ol>
+   * <li>Concurrent subrequests must be enabled: {@link SemanticCMS#getConcurrentSubrequests()}</li>
+   * <li>Request concurrency must be less than the executor per-processor thread limit: {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}</li>
+   * </ol>
+   */
+  public static boolean useConcurrentSubrequests(ServletRequest request) {
+    Boolean concurrentSubrequestsRecommended = CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get();
+    if (concurrentSubrequestsRecommended == null) {
+      throw new IllegalStateException(ConcurrencyCoordinator.class.getName() + " listener not active on request");
+    }
+    return concurrentSubrequestsRecommended;
+  }
 
-	/**
-	 * Gets the executor to use for per-processor tasks.
-	 * If {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
-	 * otherwise is {@link Executors#getSequential()}
-	 */
-	public static Executor getRecommendedExecutor(ServletContext servletContext, ServletRequest request) {
-		Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
-		return
-			isConcurrentProcessingRecommended(request)
-			? executors.getPerProcessor()
-			: executors.getSequential();
-	}
+  /**
+   * Gets the executor to use for per-processor tasks.
+   * If {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
+   * otherwise is {@link Executors#getSequential()}
+   */
+  public static Executor getRecommendedExecutor(ServletContext servletContext, ServletRequest request) {
+    Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
+    return
+      isConcurrentProcessingRecommended(request)
+      ? executors.getPerProcessor()
+      : executors.getSequential();
+  }
 }

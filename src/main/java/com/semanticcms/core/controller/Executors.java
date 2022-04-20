@@ -40,28 +40,28 @@ import java.util.concurrent.Callable;
  */
 public class Executors extends com.aoapps.concurrent.Executors {
 
-	/**
-	 * Should only be created by SemanticCMS to control life cycle.
-	 */
-	Executors() {
-		// Do nothing
-	}
+  /**
+   * Should only be created by SemanticCMS to control life cycle.
+   */
+  Executors() {
+    // Do nothing
+  }
 
-	@Override
-	protected <T> Callable<T> wrap(Callable<T> task) {
-		return new PageContextCallable<>(
-			new FunctionContextCallable<>(
-				super.wrap(task)
-			)
-		);
-	}
+  @Override
+  protected <T> Callable<T> wrap(Callable<T> task) {
+    return new PageContextCallable<>(
+      new FunctionContextCallable<>(
+        super.wrap(task)
+      )
+    );
+  }
 
-	@Override
-	protected Runnable wrap(Runnable task) {
-		return new PageContextRunnable(
-			new FunctionContextRunnable(
-				super.wrap(task)
-			)
-		);
-	}
+  @Override
+  protected Runnable wrap(Runnable task) {
+    return new PageContextRunnable(
+      new FunctionContextRunnable(
+        super.wrap(task)
+      )
+    );
+  }
 }

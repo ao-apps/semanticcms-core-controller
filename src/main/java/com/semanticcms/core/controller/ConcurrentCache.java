@@ -36,53 +36,55 @@ import javax.servlet.ServletException;
  */
 class ConcurrentCache extends MapCache {
 
-	private final ConcurrentMap<String, Object> concurrentAttributes;
+  private final ConcurrentMap<String, Object> concurrentAttributes;
 
-	ConcurrentCache(SemanticCMS semanticCMS) {
-		super(
-			semanticCMS,
-			new ConcurrentHashMap<>(),
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			new ConcurrentHashMap<>()
-		);
-		concurrentAttributes = (ConcurrentMap<String, Object>)attributes;
-	}
+  ConcurrentCache(SemanticCMS semanticCMS) {
+    super(
+      semanticCMS,
+      new ConcurrentHashMap<>(),
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      new ConcurrentHashMap<>()
+    );
+    concurrentAttributes = (ConcurrentMap<String, Object>)attributes;
+  }
 
-	/**
-	 * Overridden to add synchronization.
-	 */
-	@Override
-	protected synchronized void verifyAdded(Page page) throws ServletException {
-		super.verifyAdded(page);
-	}
+  /**
+   * Overridden to add synchronization.
+   */
+  @Override
+  protected synchronized void verifyAdded(Page page) throws ServletException {
+    super.verifyAdded(page);
+  }
 
-	@Override
-	public <K, V> ConcurrentMap<K, V> newMap() {
-		return new ConcurrentHashMap<>();
-	}
+  @Override
+  public <K, V> ConcurrentMap<K, V> newMap() {
+    return new ConcurrentHashMap<>();
+  }
 
-	@Override
-	public <K, V> ConcurrentMap<K, V> newMap(int size) {
-		return new ConcurrentHashMap<>(size);
-	}
+  @Override
+  public <K, V> ConcurrentMap<K, V> newMap(int size) {
+    return new ConcurrentHashMap<>(size);
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	@Override
-	// TODO: Ex extends Throwable
-	public <V, Ex extends Exception> V getAttribute(
-		String key,
-		Class<V> clazz,
-		Callable<? extends V, Ex> callable
-	) throws Ex {
-		V attribute = getAttribute(key, clazz);
-		if(attribute == null) {
-			attribute = callable.call();
-			Object existing = concurrentAttributes.putIfAbsent(key, attribute);
-			if(existing != null) attribute = clazz.cast(existing);
-		}
-		return attribute;
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @Override
+  // TODO: Ex extends Throwable
+  public <V, Ex extends Exception> V getAttribute(
+    String key,
+    Class<V> clazz,
+    Callable<? extends V, Ex> callable
+  ) throws Ex {
+    V attribute = getAttribute(key, clazz);
+    if (attribute == null) {
+      attribute = callable.call();
+      Object existing = concurrentAttributes.putIfAbsent(key, attribute);
+      if (existing != null) {
+        attribute = clazz.cast(existing);
+      }
+    }
+    return attribute;
+  }
 }

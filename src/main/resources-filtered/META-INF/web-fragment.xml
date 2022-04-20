@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021  AO Industries, Inc.
-	support@aoindustries.com
-	7262 Bull Pen Cir
-	Mobile, AL 36695
+Copyright (C) 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+    support@aoindustries.com
+    7262 Bull Pen Cir
+    Mobile, AL 36695
 
 This file is part of semanticcms-core-controller.
 
@@ -27,45 +27,45 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
                       http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd"
   version="3.1"
   metadata-complete="false">
-	<name>@{project.groupId}:@{project.artifactId}</name>
-	<!-- <display-name>@{project.name} @{project.version}</display-name> -->
-	<description>@{project.description}</description>
+  <name>@{project.groupId}:@{project.artifactId}</name>
+  <!-- <display-name>@{project.name} @{project.version}</display-name> -->
+  <description>@{project.description}</description>
 
-	<!-- Sets up the cache for the request. -->
-	<filter>
-		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
-		<filter-class>com.semanticcms.core.controller.CacheFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
+  <!-- Sets up the cache for the request. -->
+  <filter>
+    <filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
+    <filter-class>com.semanticcms.core.controller.CacheFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>com.semanticcms.core.controller.CacheFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
 
-	<!-- Main SemanticCMS Controller -->
-	<filter>
-		<filter-name>com.semanticcms.core.controller.Controller</filter-name>
-		<filter-class>com.semanticcms.core.controller.Controller</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>com.semanticcms.core.controller.Controller</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<!-- TODO: ERROR, too?
-		<dispatcher>ERROR</dispatcher>
-		-->
-	</filter-mapping>
+  <!-- Main SemanticCMS Controller -->
+  <filter>
+    <filter-name>com.semanticcms.core.controller.Controller</filter-name>
+    <filter-class>com.semanticcms.core.controller.Controller</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>com.semanticcms.core.controller.Controller</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <!-- TODO: ERROR, too?
+    <dispatcher>ERROR</dispatcher>
+    -->
+  </filter-mapping>
 
-	<!-- TODO: Why is this required when have @WebServlet annotation? -->
-	<servlet>
-		<servlet-name>com.semanticcms.core.controller.RendererServlet</servlet-name>
-		<servlet-class>com.semanticcms.core.controller.RendererServlet</servlet-class>
-	</servlet>
-	<!-- TODO: Why is this required when have @WebServlet annotation? -->
-	<servlet>
-		<servlet-name>com.semanticcms.core.controller.ResourceServlet</servlet-name>
-		<servlet-class>com.semanticcms.core.controller.ResourceServlet</servlet-class>
-	</servlet>
+  <!-- TODO: Why is this required when have @WebServlet annotation? -->
+  <servlet>
+    <servlet-name>com.semanticcms.core.controller.RendererServlet</servlet-name>
+    <servlet-class>com.semanticcms.core.controller.RendererServlet</servlet-class>
+  </servlet>
+  <!-- TODO: Why is this required when have @WebServlet annotation? -->
+  <servlet>
+    <servlet-name>com.semanticcms.core.controller.ResourceServlet</servlet-name>
+    <servlet-class>com.semanticcms.core.controller.ResourceServlet</servlet-class>
+  </servlet>
 
 </web-fragment>

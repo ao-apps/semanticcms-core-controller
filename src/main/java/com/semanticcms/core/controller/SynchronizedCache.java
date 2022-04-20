@@ -35,71 +35,71 @@ import javax.servlet.ServletException;
  */
 class SynchronizedCache extends MapCache {
 
-	SynchronizedCache(SemanticCMS semanticCMS) {
-		super(
-			semanticCMS,
-			new HashMap<>(),
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			new HashMap<>()
-		);
-	}
+  SynchronizedCache(SemanticCMS semanticCMS) {
+    super(
+      semanticCMS,
+      new HashMap<>(),
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      new HashMap<>()
+    );
+  }
 
-	@Override
-	synchronized CaptureResult get(CaptureKey key) {
-		return super.get(key);
-	}
+  @Override
+  synchronized CaptureResult get(CaptureKey key) {
+    return super.get(key);
+  }
 
-	@Override
-	synchronized void put(CaptureKey key, Page page) throws ServletException {
-		super.put(key, page);
-	}
+  @Override
+  synchronized void put(CaptureKey key, Page page) throws ServletException {
+    super.put(key, page);
+  }
 
-	@Override
-	protected void verifyAdded(Page page) throws ServletException {
-		assert Thread.holdsLock(this);
-		super.verifyAdded(page);
-	}
+  @Override
+  protected void verifyAdded(Page page) throws ServletException {
+    assert Thread.holdsLock(this);
+    super.verifyAdded(page);
+  }
 
-	@Override
-	public <K, V> Map<K, V> newMap() {
-		return Collections.synchronizedMap(new HashMap<>());
-	}
+  @Override
+  public <K, V> Map<K, V> newMap() {
+    return Collections.synchronizedMap(new HashMap<>());
+  }
 
-	@Override
-	public <K, V> Map<K, V> newMap(int size) {
-		return Collections.synchronizedMap(AoCollections.newHashMap(size));
-	}
+  @Override
+  public <K, V> Map<K, V> newMap(int size) {
+    return Collections.synchronizedMap(AoCollections.newHashMap(size));
+  }
 
-	@Override
-	public void setAttribute(String key, Object value) {
-		synchronized(attributes) {
-			super.setAttribute(key, value);
-		}
-	}
+  @Override
+  public void setAttribute(String key, Object value) {
+    synchronized (attributes) {
+      super.setAttribute(key, value);
+    }
+  }
 
-	@Override
-	public Object getAttribute(String key) {
-		synchronized(attributes) {
-			return super.getAttribute(key);
-		}
-	}
+  @Override
+  public Object getAttribute(String key) {
+    synchronized (attributes) {
+      return super.getAttribute(key);
+    }
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	@Override
-	// TODO: Ex extends Throwable
-	public <V, Ex extends Exception> V getAttribute(String key, Class<V> clazz, Callable<? extends V, Ex> callable) throws Ex {
-		synchronized(attributes) {
-			return super.getAttribute(key, clazz, callable);
-		}
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @Override
+  // TODO: Ex extends Throwable
+  public <V, Ex extends Exception> V getAttribute(String key, Class<V> clazz, Callable<? extends V, Ex> callable) throws Ex {
+    synchronized (attributes) {
+      return super.getAttribute(key, clazz, callable);
+    }
+  }
 
-	@Override
-	public void removeAttribute(String key) {
-		synchronized(attributes) {
-			super.removeAttribute(key);
-		}
-	}
+  @Override
+  public void removeAttribute(String key) {
+    synchronized (attributes) {
+      super.removeAttribute(key);
+    }
+  }
 }

@@ -36,44 +36,46 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class BookUtils {
 
-	/** Make no instances. */
-	private BookUtils() {throw new AssertionError();}
+  /** Make no instances. */
+  private BookUtils() {
+    throw new AssertionError();
+  }
 
-	private static final Logger logger = Logger.getLogger(BookUtils.class.getName());
+  private static final Logger logger = Logger.getLogger(BookUtils.class.getName());
 
-	/**
-	 * Optional initialization parameter providing the canonical base URL.
-	 */
-	private static final String CANONICAL_BASE_WARNED_ATTRIBUTE = BookUtils.class.getName() + ".getCanonicalBase.autoWarned.";
+  /**
+   * Optional initialization parameter providing the canonical base URL.
+   */
+  private static final String CANONICAL_BASE_WARNED_ATTRIBUTE = BookUtils.class.getName() + ".getCanonicalBase.autoWarned.";
 
-	/**
-	 * Gets the canonical base URL, not including any trailing slash, such as
-	 * <code>https://example.com</code>
-	 * This is configured in the book via the "canonicalBase" setting.
-	 * <p>
-	 * TODO: Create central per-request warnings list that could be reported during development mode, include this warning on requests.
-	 * TODO: Also could use that for broken link detection instead of throwing exceptions.
-	 * </p>
-	 */
-	public static String getCanonicalBase(ServletContext servletContext, HttpServletRequest request, Book book) {
-		String canonicalBase = book.getCanonicalBase();
-		if(canonicalBase == null) {
-			BookRef bookRef = book.getBookRef();
-			String autoCanonical = URIDecoder.decodeURI(HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix()));
-			if(
-				// Logger checked first, so if warnings enabled mid-run, will get first warning still
-				logger.isLoggable(Level.WARNING)
-			) {
-				String warningAttribute = CANONICAL_BASE_WARNED_ATTRIBUTE + bookRef;
-				// Acceptable race condition: logging multiple times would not cause any harm
-				if(servletContext.getAttribute(warningAttribute) == null) {
-					servletContext.setAttribute(warningAttribute, true);
-					logger.warning("Using generated canonical base URL, please configure the \"canonicalBase\" setting in the \"" + bookRef + "\" book: " + autoCanonical);
-				}
-			}
-			return autoCanonical;
-		} else {
-			return canonicalBase;
-		}
-	}
+  /**
+   * Gets the canonical base URL, not including any trailing slash, such as
+   * <code>https://example.com</code>
+   * This is configured in the book via the "canonicalBase" setting.
+   * <p>
+   * TODO: Create central per-request warnings list that could be reported during development mode, include this warning on requests.
+   * TODO: Also could use that for broken link detection instead of throwing exceptions.
+   * </p>
+   */
+  public static String getCanonicalBase(ServletContext servletContext, HttpServletRequest request, Book book) {
+    String canonicalBase = book.getCanonicalBase();
+    if (canonicalBase == null) {
+      BookRef bookRef = book.getBookRef();
+      String autoCanonical = URIDecoder.decodeURI(HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix()));
+      if (
+        // Logger checked first, so if warnings enabled mid-run, will get first warning still
+        logger.isLoggable(Level.WARNING)
+      ) {
+        String warningAttribute = CANONICAL_BASE_WARNED_ATTRIBUTE + bookRef;
+        // Acceptable race condition: logging multiple times would not cause any harm
+        if (servletContext.getAttribute(warningAttribute) == null) {
+          servletContext.setAttribute(warningAttribute, true);
+          logger.warning("Using generated canonical base URL, please configure the \"canonicalBase\" setting in the \"" + bookRef + "\" book: " + autoCanonical);
+        }
+      }
+      return autoCanonical;
+    } else {
+      return canonicalBase;
+    }
+  }
 }

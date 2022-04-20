@@ -35,72 +35,72 @@ import javax.servlet.ServletException;
  */
 class SingleThreadCache extends MapCache {
 
-	private final Thread assertingThread;
+  private final Thread assertingThread;
 
-	@SuppressWarnings("AssertWithSideEffects")
-	SingleThreadCache(SemanticCMS semanticCMS) {
-		super(
-			semanticCMS,
-			new HashMap<>(),
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
-			new HashMap<>()
-		);
-		Thread t = null;
-		// Intentional side-effect from assert
-		assert (t = Thread.currentThread()) != null;
-		assertingThread = t;
-	}
+  @SuppressWarnings("AssertWithSideEffects")
+  SingleThreadCache(SemanticCMS semanticCMS) {
+    super(
+      semanticCMS,
+      new HashMap<>(),
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
+      new HashMap<>()
+    );
+    Thread t = null;
+    // Intentional side-effect from assert
+    assert (t = Thread.currentThread()) != null;
+    assertingThread = t;
+  }
 
-	@Override
-	CaptureResult get(CaptureKey key) {
-		assert assertingThread == Thread.currentThread();
-		return super.get(key);
-	}
+  @Override
+  CaptureResult get(CaptureKey key) {
+    assert assertingThread == Thread.currentThread();
+    return super.get(key);
+  }
 
-	@Override
-	void put(CaptureKey key, Page page) throws ServletException {
-		assert assertingThread == Thread.currentThread();
-		super.put(key, page);
-	}
+  @Override
+  void put(CaptureKey key, Page page) throws ServletException {
+    assert assertingThread == Thread.currentThread();
+    super.put(key, page);
+  }
 
-	@Override
-	public <K, V> Map<K, V> newMap() {
-		assert assertingThread == Thread.currentThread();
-		return new HashMap<>();
-	}
+  @Override
+  public <K, V> Map<K, V> newMap() {
+    assert assertingThread == Thread.currentThread();
+    return new HashMap<>();
+  }
 
-	@Override
-	public <K, V> Map<K, V> newMap(int size) {
-		assert assertingThread == Thread.currentThread();
-		return AoCollections.newHashMap(size);
-	}
+  @Override
+  public <K, V> Map<K, V> newMap(int size) {
+    assert assertingThread == Thread.currentThread();
+    return AoCollections.newHashMap(size);
+  }
 
-	@Override
-	public void setAttribute(String key, Object value) {
-		assert assertingThread == Thread.currentThread();
-		super.setAttribute(key, value);
-	}
+  @Override
+  public void setAttribute(String key, Object value) {
+    assert assertingThread == Thread.currentThread();
+    super.setAttribute(key, value);
+  }
 
-	@Override
-	public Object getAttribute(String key) {
-		assert assertingThread == Thread.currentThread();
-		return super.getAttribute(key);
-	}
+  @Override
+  public Object getAttribute(String key) {
+    assert assertingThread == Thread.currentThread();
+    return super.getAttribute(key);
+  }
 
-	/**
-	 * @param  <Ex>  An arbitrary exception type that may be thrown
-	 */
-	@Override
-	// TODO: Ex extends Throwable
-	public <V, Ex extends Exception> V getAttribute(String key, Class<V> clazz, Callable<? extends V, Ex> callable) throws Ex {
-		assert assertingThread == Thread.currentThread();
-		return super.getAttribute(key, clazz, callable);
-	}
+  /**
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @Override
+  // TODO: Ex extends Throwable
+  public <V, Ex extends Exception> V getAttribute(String key, Class<V> clazz, Callable<? extends V, Ex> callable) throws Ex {
+    assert assertingThread == Thread.currentThread();
+    return super.getAttribute(key, clazz, callable);
+  }
 
-	@Override
-	public void removeAttribute(String key) {
-		assert assertingThread == Thread.currentThread();
-		super.removeAttribute(key);
-	}
+  @Override
+  public void removeAttribute(String key) {
+    assert assertingThread == Thread.currentThread();
+    super.removeAttribute(key);
+  }
 }

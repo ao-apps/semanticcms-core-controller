@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
+Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -22,125 +22,125 @@ You should have received a copy of the GNU Lesser General Public License
 along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <jsp:root
-	xmlns:ao="https://oss.aoapps.com/taglib/"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:changelog="https://semanticcms.com/changelog/taglib/"
-	xmlns:core="https://semanticcms.com/core/taglib/"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	version="2.1"
+  xmlns:ao="https://oss.aoapps.com/taglib/"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:changelog="https://semanticcms.com/changelog/taglib/"
+  xmlns:core="https://semanticcms.com/core/taglib/"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  version="2.1"
 >
-	<jsp:directive.page language="java" pageEncoding="UTF-8" />
-	<jsp:directive.page session="false" />
-	<core:page
-		title="@{documented.name} Servlet Space"
-		shortTitle="Servlet Space"
-		datePublished="2018-06-01T21:04:31-05:00"
-		dateModified="2021-05-13T21:21:00-05:00"
-	>
-		<p>
-			To protected against unintended direct access to the local servlet environment,
-			the controller defaults to not passing any non-page and non-resource request
-			along to the FilterChain (TODO: Link).
-		</p>
-		<p>
-			Components may register their own area of the servlet space by reserving a certain
-			prefix, such as <code>/</code> or <code>/resource/path/</code>.
-			TODO: "/path", "/path/", "/path/*", "/path/**", "/path/*.jsp", "/path/**.jsp", "/path/*.inc.jsp".
-		</p>
-		<p>
-			A servlet space may end in multiple <code>/*/*</code>, creating a bounded multi-level space,
-			such as <code>/styles/*/* → (*.css → pass-through)</code>.
-			This would allow any CSS files from <code>/styles/a/b/*.css</code>, but would not have any
-			affect on the <code>/styles/a/</code> directory or its direct contents.
-		</p>
-		<p>
-			An unbounded multi-level servlet space ends in <code>/**</code>.
-			It may follow a bounded multi-level prefix, such as <code>/images/generated/*/*/**</code>, which
-			would be applied to both <code>/images/generated/a/b/c.png</code>
-			and <code>/images/generated/a/b/other/path/something.txt</code>, but not to
-			<code>/images/generated/a/file.txt</code>.
-		</p>
-		<p>
-			Servlet spaces are always reserved along "/" boundaries with precise prefix matches.
-			This ensures that a space for "/path/to/resource" does not match "/path/to/resource-other.jsp".
-		</p>
-		<p>
-			When using <code>/path/**</code> for multi-level servlet spaces, it is possible for a sub-section of the servlet
-			space to be overlaid by a sub-space.  Consider an application that wants to have a fairly
-			default servlet environment, and so it adds <code>/** → pass-through</code>.  At
-			the same time, a component has protected itself with <code>/component/* → block</code>.
-			A request to <code>/other</code> or <code>/component/*/other</code> would be passed-through, but
-			a request to <code>/component/other</code> would be blocked.
-		</p>
-		<p>
-			It is also possible to have a multi-level sub-space within a multi-level servlet space.
-			Consider an application enabling default pass-through with <code>/** → pass-through</code>,
-			while a component has registered <code>/component/** → block</code>.  In this case, the entire
-			sub-space of <code>/component/…</code> is blocked (unless a sub-sub space is registered).
-		</p>
-		<p>
-			TODO: Should we avoid potential conflicts by preventing bounded multi-level from being overlaid
-			by another servlet space?  If one component registers <code>/images/generated/*/* -> pass-through</code>, should
-			another be allowed to register <code>/images/generated/private/* -> block</code>?  It may not be
-			clear in the first component that the second is blocking part of its space.  And the opposite could
-			also happen where the sub-space component exposes resources the the first component intended to block.
-			By not allowing this overlap, this unintended blocking or opening of resources would be impossible
-			with any combination of bounded multi-level spaces.
-		</p>
-		<p>
-			It is possible for a sub-space to inadvertently expose direct servlet resources of a parent space
-			that is otherwise protected.  Consider an application that has a policy
-			of <code>/includes/** -&gt block</code>, which contains resource expected to be access via include-only, not via
-			direct request, and is relying on the controller to enforce this.  The application then
-			has a file <code>/includes/admin/secret.jsp</code>, which it assumes is protected.
-			Then another component adds the servlet space <code>/includes/admin/* -&gt pass-through</code>.
-			With this component added, the <code>secret.jsp</code> file then becomes directly accessible
-			via the pass-through to the filter chain.  As the servlet environment merges the contents of
-			all resources JARs, there is no simple and clean way around this short of convention and care.
-			To minimize this chance, it is recommended to use multi-level <code>/**</code> patterns only where absolutely
-			necessary, even possibly going as far as programmatically adding multiple single-level patterns <code>/*</code>.
-			Use of single-level <code>/*</code> will not suffer from these conflicts.
-		</p>
-		<p>
-			TODO: Review how the servlet container handles directories when accessed without the trailing slash.
-			Does it try to generate a redirect like Apache does in default setting?  Does it serve the directory
-			directly (possibly via its welcome file)?  How does this impact the name space?  Do we match
-			include the directory "/dir" as part of the servlet space "/dir/", but with any empty path instead
-			of "/".  Do we, instead, add all directories as "/dir", with the directory itself having both
-			empty path "" or single slash "/" both referencing the directory?
-		</p>
-		<p>
-			Two components are not allowed to register the same exact part of the servlet space.
-		</p>
-		<p>
-			Each space then has rules applied to the request sequentially, with the first rule matching determining
-			whether or not the request will be passed along to the filter chain.
-		</p>
-		<p>
-			A local book creates its own servlet space.
-			It defaults to blocking all pass-through unless rules are added to the
-			<code>book.properties</code> file, or programmatically through
-			<code>SemanticCMS.addBookServletSpaceRule(…)</code>.
-			TODO: The book's domain is part of the servlet-space matching (see paragraph below
-			about domains).
-			TODO: Annotations applicable for pass-through rules?
-		</p>
-		<p>
-			TODO: How to handle domains when a sub-part of the servlet space is expected
-			to be served for a single domain?  Should the domain be a part of the servlet space matching?
-			Would a space be <code>semanticcms.com/images/* → pass-through</code>, which
-			would allow those images to be accessed on semanticcms.com, but not on other domains.
-			Would the name-space be completely non-existent on other domains, possibly exposing content
-			that was expected to be blocked?  Would it have to be a combination of <code>*/images/* → block</code>
-			followed by <code>semanticcmscom/images/* → pass-through</code>?  Would all servlet spaces
-			from non-matching domains still be applied but with block-all, to prevent inadvertent disclosure
-			or duplication of information across domains?
-		</p>
-		<p>
-			TODO: Servlet Space matching by HTTP method, too?  Defaulting to all or "GET", "HEAD" (implied)
-			and "OPTIONS" (always) only?
-		</p>
-	</core:page>
+  <jsp:directive.page language="java" pageEncoding="UTF-8" />
+  <jsp:directive.page session="false" />
+  <core:page
+    title="@{documented.name} Servlet Space"
+    shortTitle="Servlet Space"
+    datePublished="2018-06-01T21:04:31-05:00"
+    dateModified="2021-05-13T21:21:00-05:00"
+  >
+    <p>
+      To protected against unintended direct access to the local servlet environment,
+      the controller defaults to not passing any non-page and non-resource request
+      along to the FilterChain (TODO: Link).
+    </p>
+    <p>
+      Components may register their own area of the servlet space by reserving a certain
+      prefix, such as <code>/</code> or <code>/resource/path/</code>.
+      TODO: "/path", "/path/", "/path/*", "/path/**", "/path/*.jsp", "/path/**.jsp", "/path/*.inc.jsp".
+    </p>
+    <p>
+      A servlet space may end in multiple <code>/*/*</code>, creating a bounded multi-level space,
+      such as <code>/styles/*/* → (*.css → pass-through)</code>.
+      This would allow any CSS files from <code>/styles/a/b/*.css</code>, but would not have any
+      affect on the <code>/styles/a/</code> directory or its direct contents.
+    </p>
+    <p>
+      An unbounded multi-level servlet space ends in <code>/**</code>.
+      It may follow a bounded multi-level prefix, such as <code>/images/generated/*/*/**</code>, which
+      would be applied to both <code>/images/generated/a/b/c.png</code>
+      and <code>/images/generated/a/b/other/path/something.txt</code>, but not to
+      <code>/images/generated/a/file.txt</code>.
+    </p>
+    <p>
+      Servlet spaces are always reserved along "/" boundaries with precise prefix matches.
+      This ensures that a space for "/path/to/resource" does not match "/path/to/resource-other.jsp".
+    </p>
+    <p>
+      When using <code>/path/**</code> for multi-level servlet spaces, it is possible for a sub-section of the servlet
+      space to be overlaid by a sub-space.  Consider an application that wants to have a fairly
+      default servlet environment, and so it adds <code>/** → pass-through</code>.  At
+      the same time, a component has protected itself with <code>/component/* → block</code>.
+      A request to <code>/other</code> or <code>/component/*/other</code> would be passed-through, but
+      a request to <code>/component/other</code> would be blocked.
+    </p>
+    <p>
+      It is also possible to have a multi-level sub-space within a multi-level servlet space.
+      Consider an application enabling default pass-through with <code>/** → pass-through</code>,
+      while a component has registered <code>/component/** → block</code>.  In this case, the entire
+      sub-space of <code>/component/…</code> is blocked (unless a sub-sub space is registered).
+    </p>
+    <p>
+      TODO: Should we avoid potential conflicts by preventing bounded multi-level from being overlaid
+      by another servlet space?  If one component registers <code>/images/generated/*/* -> pass-through</code>, should
+      another be allowed to register <code>/images/generated/private/* -> block</code>?  It may not be
+      clear in the first component that the second is blocking part of its space.  And the opposite could
+      also happen where the sub-space component exposes resources the the first component intended to block.
+      By not allowing this overlap, this unintended blocking or opening of resources would be impossible
+      with any combination of bounded multi-level spaces.
+    </p>
+    <p>
+      It is possible for a sub-space to inadvertently expose direct servlet resources of a parent space
+      that is otherwise protected.  Consider an application that has a policy
+      of <code>/includes/** -&gt block</code>, which contains resource expected to be access via include-only, not via
+      direct request, and is relying on the controller to enforce this.  The application then
+      has a file <code>/includes/admin/secret.jsp</code>, which it assumes is protected.
+      Then another component adds the servlet space <code>/includes/admin/* -&gt pass-through</code>.
+      With this component added, the <code>secret.jsp</code> file then becomes directly accessible
+      via the pass-through to the filter chain.  As the servlet environment merges the contents of
+      all resources JARs, there is no simple and clean way around this short of convention and care.
+      To minimize this chance, it is recommended to use multi-level <code>/**</code> patterns only where absolutely
+      necessary, even possibly going as far as programmatically adding multiple single-level patterns <code>/*</code>.
+      Use of single-level <code>/*</code> will not suffer from these conflicts.
+    </p>
+    <p>
+      TODO: Review how the servlet container handles directories when accessed without the trailing slash.
+      Does it try to generate a redirect like Apache does in default setting?  Does it serve the directory
+      directly (possibly via its welcome file)?  How does this impact the name space?  Do we match
+      include the directory "/dir" as part of the servlet space "/dir/", but with any empty path instead
+      of "/".  Do we, instead, add all directories as "/dir", with the directory itself having both
+      empty path "" or single slash "/" both referencing the directory?
+    </p>
+    <p>
+      Two components are not allowed to register the same exact part of the servlet space.
+    </p>
+    <p>
+      Each space then has rules applied to the request sequentially, with the first rule matching determining
+      whether or not the request will be passed along to the filter chain.
+    </p>
+    <p>
+      A local book creates its own servlet space.
+      It defaults to blocking all pass-through unless rules are added to the
+      <code>book.properties</code> file, or programmatically through
+      <code>SemanticCMS.addBookServletSpaceRule(…)</code>.
+      TODO: The book's domain is part of the servlet-space matching (see paragraph below
+      about domains).
+      TODO: Annotations applicable for pass-through rules?
+    </p>
+    <p>
+      TODO: How to handle domains when a sub-part of the servlet space is expected
+      to be served for a single domain?  Should the domain be a part of the servlet space matching?
+      Would a space be <code>semanticcms.com/images/* → pass-through</code>, which
+      would allow those images to be accessed on semanticcms.com, but not on other domains.
+      Would the name-space be completely non-existent on other domains, possibly exposing content
+      that was expected to be blocked?  Would it have to be a combination of <code>*/images/* → block</code>
+      followed by <code>semanticcmscom/images/* → pass-through</code>?  Would all servlet spaces
+      from non-matching domains still be applied but with block-all, to prevent inadvertent disclosure
+      or duplication of information across domains?
+    </p>
+    <p>
+      TODO: Servlet Space matching by HTTP method, too?  Defaulting to all or "GET", "HEAD" (implied)
+      and "OPTIONS" (always) only?
+    </p>
+  </core:page>
 </jsp:root>
 

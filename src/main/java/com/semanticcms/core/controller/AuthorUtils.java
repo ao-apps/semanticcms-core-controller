@@ -44,106 +44,116 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class AuthorUtils {
 
-	/** Make no instances. */
-	private AuthorUtils() {throw new AssertionError();}
+  /** Make no instances. */
+  private AuthorUtils() {
+    throw new AssertionError();
+  }
 
-	/**
-	 * <p>
-	 * Finds all the authors for the given page.
-	 * </p>
-	 * <p>
-	 * When no authors provided, will use the author(s) of any parent
-	 * page that is within the same book.  If there are no parent pages
-	 * in this same book, uses the book's authors.
-	 * </p>
-	 * <p>
-	 * When inheriting authorship from multiple parent pages, the authors must
-	 * be in exact agreement.  This means exactly the same order and all
-	 * values matching precisely.  Any mismatch in authors will result in
-	 * an exception.
-	 * </p>
-	 */
-	public static Set<Author> findAuthors(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		com.semanticcms.core.model.Page page
-	) throws ServletException, IOException {
-		// TODO: traversal
-		return findAuthorsRecursive(
-			servletContext,
-			request,
-			response,
-			SemanticCMS.getInstance(servletContext),
-			page,
-			new HashMap<>()
-		);
-	}
+  /**
+   * <p>
+   * Finds all the authors for the given page.
+   * </p>
+   * <p>
+   * When no authors provided, will use the author(s) of any parent
+   * page that is within the same book.  If there are no parent pages
+   * in this same book, uses the book's authors.
+   * </p>
+   * <p>
+   * When inheriting authorship from multiple parent pages, the authors must
+   * be in exact agreement.  This means exactly the same order and all
+   * values matching precisely.  Any mismatch in authors will result in
+   * an exception.
+   * </p>
+   */
+  public static Set<Author> findAuthors(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    com.semanticcms.core.model.Page page
+  ) throws ServletException, IOException {
+    // TODO: traversal
+    return findAuthorsRecursive(
+      servletContext,
+      request,
+      response,
+      SemanticCMS.getInstance(servletContext),
+      page,
+      new HashMap<>()
+    );
+  }
 
-	/**
-	 * Checks that both the iterables have equal objects in iteration order.
-	 */
-	private static boolean exactMatch(Iterable<?> iterable1, Iterable<?> iterable2) {
-		if(iterable1 == iterable2) return true;
-		Iterator<?> iter1 = iterable1.iterator();
-		Iterator<?> iter2 = iterable2.iterator();
-		while(iter1.hasNext() && iter2.hasNext()) {
-			Object o1 = iter1.next();
-			Object o2 = iter2.next();
-			if(!o1.equals(o2)) return false;
-		}
-		return !iter1.hasNext() && !iter2.hasNext();
-	}
+  /**
+   * Checks that both the iterables have equal objects in iteration order.
+   */
+  private static boolean exactMatch(Iterable<?> iterable1, Iterable<?> iterable2) {
+    if (iterable1 == iterable2) {
+      return true;
+    }
+    Iterator<?> iter1 = iterable1.iterator();
+    Iterator<?> iter2 = iterable2.iterator();
+    while (iter1.hasNext() && iter2.hasNext()) {
+      Object o1 = iter1.next();
+      Object o2 = iter2.next();
+      if (!o1.equals(o2)) {
+        return false;
+      }
+    }
+    return !iter1.hasNext() && !iter2.hasNext();
+  }
 
-	private static Set<Author> findAuthorsRecursive(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		SemanticCMS semanticCMS,
-		com.semanticcms.core.model.Page page,
-		Map<PageRef, Set<Author>> finished
-	) throws ServletException, IOException {
-		PageRef pageRef = page.getPageRef();
-		assert !finished.containsKey(pageRef);
-		// Use directly set authors first
-		Set<Author> pageAuthors = page.getAuthors();
-		if(pageAuthors.isEmpty()) {
-			// Use the authors of all parents in the same book
-			pageAuthors = null;
-			BookRef bookRef = pageRef.getBookRef();
-			for(ParentRef parentRef : page.getParentRefs()) {
-				PageRef parentPageRef = parentRef.getPageRef();
-				if(bookRef.equals(parentPageRef.getBookRef())) {
-					// Check finished already
-					Set<Author> parentAuthors = finished.get(parentPageRef);
-					if(parentAuthors == null) {
-						// Capture parent and find its authors
-						parentAuthors = findAuthorsRecursive(
-							servletContext,
-							request,
-							response,
-							semanticCMS,
-							CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
-							finished
-						);
-					}
-					if(pageAuthors == null) {
-						pageAuthors = parentAuthors;
-					} else {
-						// Must precisely match when have multiple parents
-						if(!exactMatch(pageAuthors, parentAuthors)) throw new ServletException("Mismatched authors inherited from different parents: " + pageAuthors + " does not match " + parentAuthors);
-					}
-				}
-			}
-			// No parents in the same book, use book authors
-			if(pageAuthors == null) {
-				Book book = semanticCMS.getBook(bookRef);
-				pageAuthors = book.getAuthors();
-				if(pageAuthors == null) pageAuthors = Collections.emptySet();
-			}
-		}
-		// Store in finished
-		finished.put(pageRef, pageAuthors);
-		return pageAuthors;
-	}
+  private static Set<Author> findAuthorsRecursive(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    SemanticCMS semanticCMS,
+    com.semanticcms.core.model.Page page,
+    Map<PageRef, Set<Author>> finished
+  ) throws ServletException, IOException {
+    PageRef pageRef = page.getPageRef();
+    assert !finished.containsKey(pageRef);
+    // Use directly set authors first
+    Set<Author> pageAuthors = page.getAuthors();
+    if (pageAuthors.isEmpty()) {
+      // Use the authors of all parents in the same book
+      pageAuthors = null;
+      BookRef bookRef = pageRef.getBookRef();
+      for (ParentRef parentRef : page.getParentRefs()) {
+        PageRef parentPageRef = parentRef.getPageRef();
+        if (bookRef.equals(parentPageRef.getBookRef())) {
+          // Check finished already
+          Set<Author> parentAuthors = finished.get(parentPageRef);
+          if (parentAuthors == null) {
+            // Capture parent and find its authors
+            parentAuthors = findAuthorsRecursive(
+              servletContext,
+              request,
+              response,
+              semanticCMS,
+              CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
+              finished
+            );
+          }
+          if (pageAuthors == null) {
+            pageAuthors = parentAuthors;
+          } else {
+            // Must precisely match when have multiple parents
+            if (!exactMatch(pageAuthors, parentAuthors)) {
+              throw new ServletException("Mismatched authors inherited from different parents: " + pageAuthors + " does not match " + parentAuthors);
+            }
+          }
+        }
+      }
+      // No parents in the same book, use book authors
+      if (pageAuthors == null) {
+        Book book = semanticCMS.getBook(bookRef);
+        pageAuthors = book.getAuthors();
+        if (pageAuthors == null) {
+          pageAuthors = Collections.emptySet();
+        }
+      }
+    }
+    // Store in finished
+    finished.put(pageRef, pageAuthors);
+    return pageAuthors;
+  }
 }

@@ -39,92 +39,92 @@ import java.util.Set;
  */
 public class MissingBook extends Book {
 
-	private final String base;
+  private final String base;
 
-	public MissingBook(BookRef bookRef, String canonicalBase, String base) {
-		super(bookRef, canonicalBase);
-		if(base != null) {
-			while(base.endsWith("/")) {
-				base = base.substring(0, base.length() - 1);
-			}
-		}
-		this.base = base;
-	}
+  public MissingBook(BookRef bookRef, String canonicalBase, String base) {
+    super(bookRef, canonicalBase);
+    if (base != null) {
+      while (base.endsWith("/")) {
+        base = base.substring(0, base.length() - 1);
+      }
+    }
+    this.base = base;
+  }
 
-	@Override
-	public boolean isAccessible() {
-		return false;
-	}
+  @Override
+  public boolean isAccessible() {
+    return false;
+  }
 
-	@Override
-	public ResourceStore getResources() {
-		return null;
-	}
+  @Override
+  public ResourceStore getResources() {
+    return null;
+  }
 
-	@Override
-	public PageRepository getPages() {
-		return null;
-	}
+  @Override
+  public PageRepository getPages() {
+    return null;
+  }
 
-	@Override
-	public ResourceRef getPageSource(PageRef pageRef) {
-		return null;
-	}
+  @Override
+  public ResourceRef getPageSource(PageRef pageRef) {
+    return null;
+  }
 
-	@Override
-	public Set<ParentRef> getParentRefs() {
-		return null;
-	}
+  @Override
+  public Set<ParentRef> getParentRefs() {
+    return null;
+  }
 
-	@Override
-	public PageRef getContentRoot() {
-		return null;
-	}
+  @Override
+  public PageRef getContentRoot() {
+    return null;
+  }
 
-	@Override
-	public Copyright getCopyright() {
-		return null;
-	}
+  @Override
+  public Copyright getCopyright() {
+    return null;
+  }
 
-	@Override
-	public Set<Author> getAuthors() {
-		return null;
-	}
+  @Override
+  public Set<Author> getAuthors() {
+    return null;
+  }
 
-	@Override
-	public String getTitle() {
-		return null;
-	}
+  @Override
+  public String getTitle() {
+    return null;
+  }
 
-	@Override
-	public boolean getAllowRobots() {
-		return false;
-	}
+  @Override
+  public boolean getAllowRobots() {
+    return false;
+  }
 
-	@Override
-	public Map<String, String> getParam() {
-		return null;
-	}
+  @Override
+  public Map<String, String> getParam() {
+    return null;
+  }
 
-	/**
-	 * Gets the base for this book, or {@code null} if not
-	 * configured.
-	 * <p>
-	 * When no base is defined (is {@code null}), links to missing pages will be
-	 * generated within the current webapp context.  Links within webapp context
-	 * are response encoded.
-	 * </p>
-	 * <p>
-	 * When the base is defined, any trailing slash (/) has been stripped from the base
-	 * so can directly concatenate base + path.  Links to base are not response encoded,
-	 * even when going to the same server or webapp context.
-	 * </p>
-	 * <p>
-	 * This may be an empty string, which represents the server root.  Not to be
-	 * confused with {@code null} which means no base defined.
-	 * </p>
-	 */
-	public String getBase() {
-		return base;
-	}
+  /**
+   * Gets the base for this book, or {@code null} if not
+   * configured.
+   * <p>
+   * When no base is defined (is {@code null}), links to missing pages will be
+   * generated within the current webapp context.  Links within webapp context
+   * are response encoded.
+   * </p>
+   * <p>
+   * When the base is defined, any trailing slash (/) has been stripped from the base
+   * so can directly concatenate base + path.  Links to base are not response encoded,
+   * even when going to the same server or webapp context.
+   * </p>
+   * <p>
+   * This may be an empty string, which represents the server root.  Not to be
+   * confused with {@code null} which means no base defined.
+   * </p>
+   */
+  public String getBase() {
+    return base;
+  }
 }

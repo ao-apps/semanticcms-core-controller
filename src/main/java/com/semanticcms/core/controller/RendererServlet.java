@@ -49,77 +49,87 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = RendererServlet.NAME)
 public class RendererServlet extends HttpServlet {
 
-	protected static final String NAME = "com.semanticcms.core.controller.RendererServlet";
+  protected static final String NAME = "com.semanticcms.core.controller.RendererServlet";
 
-	protected static final ScopeEE.Request.Attribute<Renderer> RENDERER_REQUEST_PARAMETER =
-		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".renderer");
-	protected static final ScopeEE.Request.Attribute<Page> PAGE_REQUEST_PARAMETER =
-		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".page");
-	protected static final ScopeEE.Request.Attribute<PageRenderer> PAGE_RENDERER_REQUEST_PARAMETER =
-		ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".pageRenderer");
+  protected static final ScopeEE.Request.Attribute<Renderer> RENDERER_REQUEST_PARAMETER =
+    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".renderer");
+  protected static final ScopeEE.Request.Attribute<Page> PAGE_REQUEST_PARAMETER =
+    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".page");
+  protected static final ScopeEE.Request.Attribute<PageRenderer> PAGE_RENDERER_REQUEST_PARAMETER =
+    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".pageRenderer");
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public static void dispatch(
-		ServletContext servletContext,
-		HttpServletRequest request,
-		HttpServletResponse response,
-		Renderer renderer,
-		Page page
-	) throws IOException, ServletException {
-		RequestDispatcher dispatcher = servletContext.getNamedDispatcher(NAME);
-		if(dispatcher == null) throw new ServletException("RequestDispatcher not found: " + NAME);
-		try (
-			Attribute.OldValue oldRenderer = RENDERER_REQUEST_PARAMETER.context(request).init(renderer);
-			Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER    .context(request).init(page)
-		) {
-			dispatcher.forward(request, response);
-		}
-	}
+  public static void dispatch(
+    ServletContext servletContext,
+    HttpServletRequest request,
+    HttpServletResponse response,
+    Renderer renderer,
+    Page page
+  ) throws IOException, ServletException {
+    RequestDispatcher dispatcher = servletContext.getNamedDispatcher(NAME);
+    if (dispatcher == null) {
+      throw new ServletException("RequestDispatcher not found: " + NAME);
+    }
+    try (
+      Attribute.OldValue oldRenderer = RENDERER_REQUEST_PARAMETER.context(request).init(renderer);
+      Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER    .context(request).init(page)
+    ) {
+      dispatcher.forward(request, response);
+    }
+  }
 
-	protected static PageRenderer getPageRenderer(ServletRequest request) throws ServletException {
-		PageRenderer pageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).get();
-		if(pageRenderer == null) throw new ServletException("Request parameter not set: " + PAGE_RENDERER_REQUEST_PARAMETER.getName());
-		return pageRenderer;
-	}
+  protected static PageRenderer getPageRenderer(ServletRequest request) throws ServletException {
+    PageRenderer pageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).get();
+    if (pageRenderer == null) {
+      throw new ServletException("Request parameter not set: " + PAGE_RENDERER_REQUEST_PARAMETER.getName());
+    }
+    return pageRenderer;
+  }
 
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Renderer renderer = RENDERER_REQUEST_PARAMETER.context(request).get();
-		if(renderer == null) throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER.getName());
-		Page page = PAGE_REQUEST_PARAMETER.context(request).get();
-		if(page == null) throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER.getName());
-		Map<String, Object> pageRendererAttributes = new HashMap<>();
-		pageRendererAttributes.put(ServletPageRenderer.REQUEST_RENDERER_ATTRIBUTE, request);
-		pageRendererAttributes.put(ServletPageRenderer.RESPONSE_RENDERER_ATTRIBUTE, response);
-		try (PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes)) {
-			try (Attribute.OldValue oldPageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).init(pageRenderer)) {
-				super.service(request, response);
-			}
-		}
-	}
+  @Override
+  protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Renderer renderer = RENDERER_REQUEST_PARAMETER.context(request).get();
+    if (renderer == null) {
+      throw new ServletException("Request parameter not set: " + RENDERER_REQUEST_PARAMETER.getName());
+    }
+    Page page = PAGE_REQUEST_PARAMETER.context(request).get();
+    if (page == null) {
+      throw new ServletException("Request parameter not set: " + PAGE_REQUEST_PARAMETER.getName());
+    }
+    Map<String, Object> pageRendererAttributes = new HashMap<>();
+    pageRendererAttributes.put(ServletPageRenderer.REQUEST_RENDERER_ATTRIBUTE, request);
+    pageRendererAttributes.put(ServletPageRenderer.RESPONSE_RENDERER_ATTRIBUTE, response);
+    try (PageRenderer pageRenderer = renderer.newPageRenderer(page, pageRendererAttributes)) {
+      try (Attribute.OldValue oldPageRenderer = PAGE_RENDERER_REQUEST_PARAMETER.context(request).init(pageRenderer)) {
+        super.service(request, response);
+      }
+    }
+  }
 
-	@Override
-	protected long getLastModified(HttpServletRequest request) {
-		try {
-			long lastModified = getPageRenderer(request).getLastModified();
-			return lastModified == 0 ? -1 : lastModified;
-		} catch(IOException | ServletException e) {
-			log(null, e);
-			return -1;
-		}
-	}
+  @Override
+  protected long getLastModified(HttpServletRequest request) {
+    try {
+      long lastModified = getPageRenderer(request).getLastModified();
+      return lastModified == 0 ? -1 : lastModified;
+    } catch (IOException | ServletException e) {
+      log(null, e);
+      return -1;
+    }
+  }
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PageRenderer pageRenderer = getPageRenderer(request);
-		// TODO: Doctype and Serialization stuff here, or somewhere appropriate before Theme.doTheme is called (like in 1.x branch PageImpl.java)
-		response.setContentType(pageRenderer.getContentType());
-		long length = pageRenderer.getLength();
-		if(length != -1) {
-			if(length < 0) throw new AssertionError();
-			response.setContentLengthLong(length);
-		}
-		pageRenderer.doRenderer(response.getWriter());
-	}
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    PageRenderer pageRenderer = getPageRenderer(request);
+    // TODO: Doctype and Serialization stuff here, or somewhere appropriate before Theme.doTheme is called (like in 1.x branch PageImpl.java)
+    response.setContentType(pageRenderer.getContentType());
+    long length = pageRenderer.getLength();
+    if (length != -1) {
+      if (length < 0) {
+        throw new AssertionError();
+      }
+      response.setContentLengthLong(length);
+    }
+    pageRenderer.doRenderer(response.getWriter());
+  }
 }

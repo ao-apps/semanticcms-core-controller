@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
-Copyright (C) 2018, 2019, 2020, 2021  AO Industries, Inc.
+Copyright (C) 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -22,82 +22,82 @@ You should have received a copy of the GNU Lesser General Public License
 along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <jsp:root
-	xmlns:ao="https://oss.aoapps.com/taglib/"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:changelog="https://semanticcms.com/changelog/taglib/"
-	xmlns:core="https://semanticcms.com/core/taglib/"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	version="2.1"
+  xmlns:ao="https://oss.aoapps.com/taglib/"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  xmlns:changelog="https://semanticcms.com/changelog/taglib/"
+  xmlns:core="https://semanticcms.com/core/taglib/"
+  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+  xmlns:jsp="http://java.sun.com/JSP/Page"
+  version="2.1"
 >
-	<jsp:directive.page language="java" pageEncoding="UTF-8" />
-	<jsp:directive.page session="false" />
-	<core:page
-		title="@{documented.name} URL Space"
-		shortTitle="URL Space"
-		datePublished="2018-05-31T04:10:51-05:00"
-		dateModified="2020-02-25T13:48:17-06:00"
-	>
-		<table class="ao-grid">
-			<thead>
-				<tr>
-					<th>Path (after Renderer suffix stripped)</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>/</td>
-					<td>
-						<ol>
-							<li>TODO: Error if both options exist to avoid ambiguity?</li>
-							<li>Invoke page at domain "", book "/", page "/", if page exists.</li>
-							<li>Redirect to root page of domain "", book "/", if book exists.</li>
-							<li>Redirect to root page of root boot in domain "", if domain exists.</li>
-							<li>Redirect to root page of root boot in root domain.</li>
-						</ol>
-					</td>
-				</tr>
-				<tr>
-					<td>/path/to/book</td>
-					<td>
-						<ol>
-							<li>TODO: Error if both options exist to avoid ambiguity?</li>
-							<li>Invoke page at book "/path/to", page "/book", if both exist.</li>
-							<li>Redirect to root of book "/path/to/book", if book exists.</li>
-						</ol>
-					</td>
-				</tr>
-				<tr>
-					<td>/path/to/book/</td>
-					<td>
-						<ol>
-							<li>Invoke page at book "/path/to/book", page "/", if both exist.</li>
-							<li>Redirect to root of book "/path/to/book", if book exists.</li>
-						</ol>
-					</td>
-				</tr>
-				<tr>
-					<td>/domain</td>
-					<td>
-						<ol>
-							<li>TODO: Error if both options exist to avoid ambiguity?</li>
-							<li>Invoke page at book "/", page "/domain", if both exist.</li>
-							<li>Redirect to root page of root boot in domain "domain".</li>
-						</ol>
-					</td>
-				</tr>
-				<tr>
-					<td>/domain/</td>
-					<td>
-						<ol>
-							<li>TODO: Error if both options exist to avoid ambiguity?</li>
-							<li>Invoke page at book "/", page "/domain", if both exist.</li>
-							<li>Redirect to root page of root boot in domain "domain".</li>
-						</ol>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</core:page>
+  <jsp:directive.page language="java" pageEncoding="UTF-8" />
+  <jsp:directive.page session="false" />
+  <core:page
+    title="@{documented.name} URL Space"
+    shortTitle="URL Space"
+    datePublished="2018-05-31T04:10:51-05:00"
+    dateModified="2020-02-25T13:48:17-06:00"
+  >
+    <table class="ao-grid">
+      <thead>
+        <tr>
+          <th>Path (after Renderer suffix stripped)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>/</td>
+          <td>
+            <ol>
+              <li>TODO: Error if both options exist to avoid ambiguity?</li>
+              <li>Invoke page at domain "", book "/", page "/", if page exists.</li>
+              <li>Redirect to root page of domain "", book "/", if book exists.</li>
+              <li>Redirect to root page of root boot in domain "", if domain exists.</li>
+              <li>Redirect to root page of root boot in root domain.</li>
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td>/path/to/book</td>
+          <td>
+            <ol>
+              <li>TODO: Error if both options exist to avoid ambiguity?</li>
+              <li>Invoke page at book "/path/to", page "/book", if both exist.</li>
+              <li>Redirect to root of book "/path/to/book", if book exists.</li>
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td>/path/to/book/</td>
+          <td>
+            <ol>
+              <li>Invoke page at book "/path/to/book", page "/", if both exist.</li>
+              <li>Redirect to root of book "/path/to/book", if book exists.</li>
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td>/domain</td>
+          <td>
+            <ol>
+              <li>TODO: Error if both options exist to avoid ambiguity?</li>
+              <li>Invoke page at book "/", page "/domain", if both exist.</li>
+              <li>Redirect to root page of root boot in domain "domain".</li>
+            </ol>
+          </td>
+        </tr>
+        <tr>
+          <td>/domain/</td>
+          <td>
+            <ol>
+              <li>TODO: Error if both options exist to avoid ambiguity?</li>
+              <li>Invoke page at book "/", page "/domain", if both exist.</li>
+              <li>Redirect to root page of root boot in domain "domain".</li>
+            </ol>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </core:page>
 </jsp:root>
