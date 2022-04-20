@@ -1,2 +1,8 @@
 # Significant manual code formatting clean-up…
 900754ec1161a7e0133329f445f21f2d5d0de10c
+# Removed trailing whitespace
+4d0dde50ad64f1594c74237d4cf2e3f116d0144a
+# Tab indentation and UNIX newlines
+eb1811b4f1cef82e137520aff92bb08702008f7a
+# Tab indent
+2e4c0a8ed81968b99b94221e70c0e0482578af6b
