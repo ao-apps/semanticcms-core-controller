@@ -86,8 +86,8 @@ public final class PageRefResolver {
     assert pagePath.startsWith(bookPrefix);
     try {
       return new PageRef(
-        bookRef,
-        Path.valueOf(pagePath.substring(bookPrefix.length()))
+          bookRef,
+          Path.valueOf(pagePath.substring(bookPrefix.length()))
       );
     } catch (ValidationException e) {
       throw new ServletException(e);
@@ -117,11 +117,11 @@ public final class PageRefResolver {
    * @see  ResourceRefResolver#getResourceRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
   public static PageRef getPageRef(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    DomainName domain,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      DomainName domain,
+      Path book,
+      String path
   ) throws ServletException, MalformedURLException {
     try {
       NullArgumentException.checkNotNull(path, "path");
@@ -145,13 +145,13 @@ public final class PageRefResolver {
         String bookPrefix = currentBookRef.getPrefix();
         assert currentPagePath.startsWith(bookPrefix);
         return new PageRef(
-          currentBookRef,
-          Path.valueOf(
-            URIResolver.getAbsolutePath(
-              currentPagePath.substring(bookPrefix.length()),
-              path
+            currentBookRef,
+            Path.valueOf(
+                URIResolver.getAbsolutePath(
+                    currentPagePath.substring(bookPrefix.length()),
+                    path
+                )
             )
-          )
         );
       } else {
         if (!path.startsWith("/")) {
@@ -171,8 +171,8 @@ public final class PageRefResolver {
         // Make sure book exists
         try {
           return new PageRef(
-            semanticCMS.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
-            Path.valueOf(path)
+              semanticCMS.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
+              Path.valueOf(path)
           );
         } catch (NoSuchElementException e) {
           throw new ServletException("Reference to missing book not allowed: " + bookRef, e);
@@ -192,11 +192,11 @@ public final class PageRefResolver {
    */
   public static PageRef getPageRef(DomainName domain, Path book, String path) throws ServletException, MalformedURLException {
     return getPageRef(
-      PageContext.getServletContext(),
-      PageContext.getRequest(),
-      domain,
-      book,
-      path
+        PageContext.getServletContext(),
+        PageContext.getRequest(),
+        domain,
+        book,
+        path
     );
   }
 }

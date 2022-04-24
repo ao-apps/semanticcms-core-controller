@@ -94,7 +94,7 @@ public class SemanticCMS {
   private static final String APPLICATION_ATTRIBUTE_NAME = "semanticCMS";
 
   public static final ScopeEE.Application.Attribute<SemanticCMS> APPLICATION_ATTRIBUTE =
-    ScopeEE.APPLICATION.attribute(APPLICATION_ATTRIBUTE_NAME);
+      ScopeEE.APPLICATION.attribute(APPLICATION_ATTRIBUTE_NAME);
 
   /**
    * Gets the SemanticCMS instance, creating it if necessary.
@@ -117,8 +117,8 @@ public class SemanticCMS {
     this.demoMode = Boolean.parseBoolean(servletContext.getInitParameter(DEMO_MODE_INIT_PARAM));
     int numProcessors = Runtime.getRuntime().availableProcessors();
     this.concurrentSubrequests =
-      numProcessors > 1
-      && Boolean.parseBoolean(servletContext.getInitParameter(CONCURRENT_SUBREQUESTS_INIT_PARAM))
+        numProcessors > 1
+            && Boolean.parseBoolean(servletContext.getInitParameter(CONCURRENT_SUBREQUESTS_INIT_PARAM))
     ;
     this.rootBook = initBooks();
     this.executors = new Executors();
@@ -195,11 +195,11 @@ public class SemanticCMS {
           dbf.setValidating(true);
           dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
           dbf.setAttribute(
-            "http://java.sun.com/xml/jaxp/properties/schemaSource",
-            new InputStream[] {
-              schemaIn_1_0,
-              schemaIn_1_1
-            }
+              "http://java.sun.com/xml/jaxp/properties/schemaSource",
+              new InputStream[]{
+                  schemaIn_1_0,
+                  schemaIn_1_1
+              }
           );
           DocumentBuilder db = dbf.newDocumentBuilder();
           InputStream booksXmlIn = servletContext.getResource(BOOKS_XML_RESOURCE).openStream();
@@ -223,22 +223,22 @@ public class SemanticCMS {
     for (org.w3c.dom.Element missingBookElem : XmlUtils.iterableChildElementsByTagName(booksElem, MISSING_BOOK_TAG)) {
       String domainStr = missingBookElem.getAttribute("domain");
       BookRef missingBookRef = new BookRef(
-        domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
-        Path.valueOf(missingBookElem.getAttribute("name"))
+          domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
+          Path.valueOf(missingBookElem.getAttribute("name"))
       );
       String publishedStr = Strings.nullIfEmpty(missingBookElem.getAttribute("published"));
       boolean published = publishedStr != null && Boolean.valueOf(publishedStr);
       MissingBook book = new MissingBook(
-        missingBookRef,
-        null,
-        Strings.nullIfEmpty(missingBookElem.getAttribute("base"))
+          missingBookRef,
+          null,
+          Strings.nullIfEmpty(missingBookElem.getAttribute("base"))
       );
       if (books.put(missingBookRef, book) != null) {
-        throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
+        throw new IllegalStateException(BOOKS_XML_RESOURCE + ": Duplicate value for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
       }
       if (published) {
         if (publishedBooks.put(missingBookRef.getPath(), book) != null) {
-          throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
+          throw new IllegalStateException(BOOKS_XML_RESOURCE + ": Duplicate published book for \"" + MISSING_BOOK_TAG + "\": " + missingBookRef);
         }
       }
     }
@@ -247,16 +247,16 @@ public class SemanticCMS {
     {
       String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE);
       Path rootBookPath = Path.valueOf(
-        Strings.nullIfEmpty(
-          booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
-        )
+          Strings.nullIfEmpty(
+              booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
+          )
       );
       if (rootBookPath == null) {
         throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE + "\" not found");
       }
       rootBookRef = new BookRef(
-        rootDomainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(rootDomainStr),
-        rootBookPath
+          rootDomainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(rootDomainStr),
+          rootBookPath
       );
     }
     for (org.w3c.dom.Element bookElem : XmlUtils.iterableChildElementsByTagName(booksElem, BOOK_TAG)) {
@@ -264,16 +264,16 @@ public class SemanticCMS {
       {
         String domainStr = bookElem.getAttribute("domain");
         bookRef = new BookRef(
-          domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
-          Path.valueOf(bookElem.getAttribute("name"))
+            domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
+            Path.valueOf(bookElem.getAttribute("name"))
         );
       }
       Set<ParentRef> parentRefs = new LinkedHashSet<>();
       for (org.w3c.dom.Element parentElem : XmlUtils.iterableChildElementsByTagName(bookElem, PARENT_TAG)) {
         String domainStr = parentElem.getAttribute("domain");
         BookRef parentBookRef = new BookRef(
-          domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
-          Path.valueOf(parentElem.getAttribute("book"))
+            domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
+            Path.valueOf(parentElem.getAttribute("book"))
         );
         Path parentPage = Path.valueOf(parentElem.getAttribute("page"));
         String parentShortTitle = parentElem.hasAttribute("shortTitle") ? parentElem.getAttribute("shortTitle") : null;
@@ -302,22 +302,22 @@ public class SemanticCMS {
         resourceDirectories = Collections.singleton(cvsworkDirectory);
       }
       ServletBook book = new ServletBook(
-        servletContext,
-        bookRef,
-        resourceDirectories,
-        Boolean.valueOf(bookElem.getAttribute("allowRobots")),
-        parentRefs,
-        PropertiesUtils.loadFromResource(
           servletContext,
-          bookRef.getPrefix() + "/book.properties"
-        )
+          bookRef,
+          resourceDirectories,
+          Boolean.valueOf(bookElem.getAttribute("allowRobots")),
+          parentRefs,
+          PropertiesUtils.loadFromResource(
+              servletContext,
+              bookRef.getPrefix() + "/book.properties"
+          )
       );
       if (books.put(bookRef, book) != null) {
-        throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate value for \"" + BOOK_TAG + "\": " + bookRef);
+        throw new IllegalStateException(BOOKS_XML_RESOURCE + ": Duplicate value for \"" + BOOK_TAG + "\": " + bookRef);
       }
       if (published) {
         if (publishedBooks.put(bookRef.getPath(), book) != null) {
-          throw new IllegalStateException(BOOKS_XML_RESOURCE+ ": Duplicate published book for \"" + BOOK_TAG + "\": " + bookRef);
+          throw new IllegalStateException(BOOKS_XML_RESOURCE + ": Duplicate published book for \"" + BOOK_TAG + "\": " + bookRef);
         }
       }
     }
@@ -509,19 +509,19 @@ public class SemanticCMS {
   // <editor-fold defaultstate="collapsed" desc="Renderers">
 
   private final SortedMap<String, Renderer> renderers = new TreeMap<>(
-    (String s1, String s2) -> {
-      // Order by length descending
-      int len1 = s1.length();
-      int len2 = s2.length();
-      if (len1 < len2) {
-        return 1;
+      (String s1, String s2) -> {
+        // Order by length descending
+        int len1 = s1.length();
+        int len2 = s2.length();
+        if (len1 < len2) {
+          return 1;
+        }
+        if (len1 > len2) {
+          return -1;
+        }
+        // Then order by suffix, case-insensitive ascending
+        return s1.compareToIgnoreCase(s2);
       }
-      if (len1 > len2) {
-        return -1;
-      }
-      // Then order by suffix, case-insensitive ascending
-      return s1.compareToIgnoreCase(s2);
-    }
   );
   private final SortedMap<String, Renderer> unmodifiableRenderers = Collections.unmodifiableSortedMap(renderers);
 
@@ -578,8 +578,8 @@ public class SemanticCMS {
         pathLen -= END_INDEX.length() - 1;
       }
       return new Tuple2<>(
-        renderer,
-        path.prefix(pathLen)
+          renderer,
+          path.prefix(pathLen)
       );
     } else {
       return null;

@@ -66,19 +66,19 @@ public final class AuthorUtils {
    * </p>
    */
   public static Set<Author> findAuthors(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    com.semanticcms.core.model.Page page
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      com.semanticcms.core.model.Page page
   ) throws ServletException, IOException {
     // TODO: traversal
     return findAuthorsRecursive(
-      servletContext,
-      request,
-      response,
-      SemanticCMS.getInstance(servletContext),
-      page,
-      new HashMap<>()
+        servletContext,
+        request,
+        response,
+        SemanticCMS.getInstance(servletContext),
+        page,
+        new HashMap<>()
     );
   }
 
@@ -102,12 +102,12 @@ public final class AuthorUtils {
   }
 
   private static Set<Author> findAuthorsRecursive(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    SemanticCMS semanticCMS,
-    com.semanticcms.core.model.Page page,
-    Map<PageRef, Set<Author>> finished
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      SemanticCMS semanticCMS,
+      com.semanticcms.core.model.Page page,
+      Map<PageRef, Set<Author>> finished
   ) throws ServletException, IOException {
     PageRef pageRef = page.getPageRef();
     assert !finished.containsKey(pageRef);
@@ -125,12 +125,12 @@ public final class AuthorUtils {
           if (parentAuthors == null) {
             // Capture parent and find its authors
             parentAuthors = findAuthorsRecursive(
-              servletContext,
-              request,
-              response,
-              semanticCMS,
-              CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
-              finished
+                servletContext,
+                request,
+                response,
+                semanticCMS,
+                CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
+                finished
             );
           }
           if (pageAuthors == null) {

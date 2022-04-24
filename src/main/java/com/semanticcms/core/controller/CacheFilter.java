@@ -43,10 +43,10 @@ import javax.servlet.http.HttpServletRequest;
 public class CacheFilter implements Filter {
 
   private static final ScopeEE.Request.Attribute<Cache> CAPTURE_CACHE_REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(CacheFilter.class.getName());
+      ScopeEE.REQUEST.attribute(CacheFilter.class.getName());
 
   private static final ScopeEE.Application.Attribute<ExportPageCache> EXPORT_CACHE_APPLICATION_ATTRIBUTE =
-    ScopeEE.APPLICATION.attribute(CacheFilter.class.getName() + ".exportCache");
+      ScopeEE.APPLICATION.attribute(CacheFilter.class.getName() + ".exportCache");
 
   /**
    * The number of milliseconds after the export cache is no longer considered valid.
@@ -113,9 +113,9 @@ public class CacheFilter implements Filter {
       if (cache == null) {
         return true;
       } else if (
-        currentTime >= (cacheStart + EXPORT_CAPTURE_PAGE_CACHE_TTL)
-        // Handle system time changes
-        || currentTime <= (cacheStart - EXPORT_CAPTURE_PAGE_CACHE_TTL)
+          currentTime >= (cacheStart + EXPORT_CAPTURE_PAGE_CACHE_TTL)
+              // Handle system time changes
+              || currentTime <= (cacheStart - EXPORT_CAPTURE_PAGE_CACHE_TTL)
       ) {
         cache = null;
         return true;
@@ -141,7 +141,9 @@ public class CacheFilter implements Filter {
   private ServletContext servletContext;
   private boolean concurrentSubrequests;
 
-  private static class ExportCacheLock {/* Empty lock class to help heap profile */}
+  private static class ExportCacheLock {
+    // Empty lock class to help heap profile
+  }
   private final ExportCacheLock exportCacheLock = new ExportCacheLock();
 
   @Override

@@ -52,20 +52,20 @@ public class RendererServlet extends HttpServlet {
   protected static final String NAME = "com.semanticcms.core.controller.RendererServlet";
 
   protected static final ScopeEE.Request.Attribute<Renderer> RENDERER_REQUEST_PARAMETER =
-    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".renderer");
+      ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".renderer");
   protected static final ScopeEE.Request.Attribute<Page> PAGE_REQUEST_PARAMETER =
-    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".page");
+      ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".page");
   protected static final ScopeEE.Request.Attribute<PageRenderer> PAGE_RENDERER_REQUEST_PARAMETER =
-    ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".pageRenderer");
+      ScopeEE.REQUEST.attribute(RendererServlet.class.getName() + ".pageRenderer");
 
   private static final long serialVersionUID = 1L;
 
   public static void dispatch(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    Renderer renderer,
-    Page page
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Renderer renderer,
+      Page page
   ) throws IOException, ServletException {
     RequestDispatcher dispatcher = servletContext.getNamedDispatcher(NAME);
     if (dispatcher == null) {
@@ -74,7 +74,7 @@ public class RendererServlet extends HttpServlet {
     try (
       Attribute.OldValue oldRenderer = RENDERER_REQUEST_PARAMETER.context(request).init(renderer);
       Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER    .context(request).init(page)
-    ) {
+        ) {
       dispatcher.forward(request, response);
     }
   }

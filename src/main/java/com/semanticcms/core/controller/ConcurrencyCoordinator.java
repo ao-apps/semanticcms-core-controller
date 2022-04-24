@@ -43,9 +43,9 @@ import javax.servlet.annotation.WebListener;
 public class ConcurrencyCoordinator implements ServletContextListener, ServletRequestAttributeListener {
 
   private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentProcessingRecommended");
+      ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentProcessingRecommended");
   private static final ScopeEE.Request.Attribute<Boolean> CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE =
-    ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentSubrequestsRecommended");
+      ScopeEE.REQUEST.attribute(ConcurrencyCoordinator.class.getName() + ".concurrentSubrequestsRecommended");
 
   private boolean concurrentSubrequests;
   private int preferredConcurrency;
@@ -66,7 +66,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
   public void attributeAdded(ServletRequestAttributeEvent event) {
     if (CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
       ServletRequest request = event.getServletRequest();
-      int newConcurrency = (Integer)event.getValue();
+      int newConcurrency = (Integer) event.getValue();
 
       assert CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
       assert CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
@@ -93,8 +93,8 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
   public void attributeReplaced(ServletRequestAttributeEvent event) {
     if (CountConcurrencyListener.REQUEST_ATTRIBUTE.getName().equals(event.getName())) {
       throw new IllegalStateException(
-        "The attribute is only expected to e added or removed, never replaced: "
-        + CountConcurrencyListener.REQUEST_ATTRIBUTE.getName()
+          "The attribute is only expected to e added or removed, never replaced: "
+              + CountConcurrencyListener.REQUEST_ATTRIBUTE.getName()
       );
     }
   }
@@ -137,8 +137,8 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
   public static Executor getRecommendedExecutor(ServletContext servletContext, ServletRequest request) {
     Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
     return
-      isConcurrentProcessingRecommended(request)
-      ? executors.getPerProcessor()
-      : executors.getSequential();
+        isConcurrentProcessingRecommended(request)
+            ? executors.getPerProcessor()
+            : executors.getSequential();
   }
 }

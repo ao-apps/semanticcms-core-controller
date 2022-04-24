@@ -72,11 +72,11 @@ public final class ResourceRefResolver {
    * @see  PageRefResolver#getPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
   public static ResourceRef getResourceRef(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    DomainName domain,
-    Path book,
-    String path
+      ServletContext servletContext,
+      HttpServletRequest request,
+      DomainName domain,
+      Path book,
+      String path
   ) throws ServletException, MalformedURLException {
     try {
       NullArgumentException.checkNotNull(path, "path");
@@ -101,13 +101,13 @@ public final class ResourceRefResolver {
         assert currentPagePath.startsWith(bookPrefix);
         try {
           return new ResourceRef(
-            currentBookRef,
-            Path.valueOf(
-              URIResolver.getAbsolutePath(
-                currentPagePath.substring(bookPrefix.length()),
-                path
+              currentBookRef,
+              Path.valueOf(
+                  URIResolver.getAbsolutePath(
+                      currentPagePath.substring(bookPrefix.length()),
+                      path
+                  )
               )
-            )
           );
         } catch (ValidationException e) {
           throw new ServletException(e);
@@ -130,8 +130,8 @@ public final class ResourceRefResolver {
         // Make sure book exists
         try {
           return new ResourceRef(
-            semanticCMS.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
-            Path.valueOf(path)
+              semanticCMS.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
+              Path.valueOf(path)
           );
         } catch (NoSuchElementException e) {
           throw new ServletException("Reference to missing book not allowed: " + bookRef, e);
@@ -151,11 +151,11 @@ public final class ResourceRefResolver {
    */
   public static ResourceRef getResourceRef(DomainName domain, Path book, String path) throws ServletException, MalformedURLException {
     return getResourceRef(
-      PageContext.getServletContext(),
-      PageContext.getRequest(),
-      domain,
-      book,
-      path
+        PageContext.getServletContext(),
+        PageContext.getRequest(),
+        domain,
+        book,
+        path
     );
   }
 }

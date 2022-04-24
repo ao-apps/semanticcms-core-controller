@@ -45,28 +45,28 @@ public final class PageDags {
   }
 
   public static List<Page> convertPageDagToList(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    Page rootPage,
-    CaptureLevel level
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Page rootPage,
+      CaptureLevel level
   ) throws ServletException, IOException {
     final List<Page> list = new ArrayList<>();
     final SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
     CapturePage.traversePagesDepthFirst(
-      servletContext,
-      request,
-      response,
-      rootPage,
-      level,
-      (Page page, int depth) -> {
-        list.add(page);
-        return null;
-      },
-      Page::getChildRefs,
-      // Child is in accessible book
-      childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible(),
-      null
+        servletContext,
+        request,
+        response,
+        rootPage,
+        level,
+        (Page page, int depth) -> {
+          list.add(page);
+          return null;
+        },
+        Page::getChildRefs,
+        // Child is in accessible book
+        childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible(),
+        null
     );
     return Collections.unmodifiableList(list);
   }

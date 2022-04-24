@@ -92,12 +92,12 @@ public class ServletBook extends Book {
   }
 
   public ServletBook(
-    ServletContext servletContext,
-    BookRef bookRef,
-    Collection<String> resourceDirectories,
-    boolean allowRobots,
-    Set<ParentRef> parentRefs,
-    Properties bookProps // TODO: Load from resolved resourceStore?
+      ServletContext servletContext,
+      BookRef bookRef,
+      Collection<String> resourceDirectories,
+      boolean allowRobots,
+      Set<ParentRef> parentRefs,
+      Properties bookProps // TODO: Load from resolved resourceStore?
   ) throws ValidationException, IOException {
     super(bookRef, getCanonicalBase(bookProps));
 
@@ -112,20 +112,20 @@ public class ServletBook extends Book {
     String copyrightRights = getProperty(bookProps, usedKeys, "copyright.rights");
     String copyrightDateCopyrighted = getProperty(bookProps, usedKeys, "copyright.dateCopyrighted");
     if (
-      copyrightRightsHolder != null
-      || copyrightRights != null
-      || copyrightDateCopyrighted != null
+        copyrightRightsHolder != null
+            || copyrightRights != null
+            || copyrightDateCopyrighted != null
     ) {
       this.copyright = new Copyright(
-        copyrightRightsHolder    != null ? copyrightRightsHolder    : "",
-        copyrightRights          != null ? copyrightRights          : "",
-        copyrightDateCopyrighted != null ? copyrightDateCopyrighted : ""
+          copyrightRightsHolder    != null ? copyrightRightsHolder    : "",
+          copyrightRights          != null ? copyrightRights          : "",
+          copyrightDateCopyrighted != null ? copyrightDateCopyrighted : ""
       );
     } else {
       this.copyright = null;
     }
     Set<Author> authors = new LinkedHashSet<>();
-    for (int i=1; i<Integer.MAX_VALUE; i++) {
+    for (int i = 1; i < Integer.MAX_VALUE; i++) {
       String authorName = getProperty(bookProps, usedKeys, "author." + i + ".name");
       String authorHref = getProperty(bookProps, usedKeys, "author." + i + ".href");
       DomainName authorDomain = DomainName.valueOf(getProperty(bookProps, usedKeys, "author." + i + ".domain"));
@@ -160,18 +160,18 @@ public class ServletBook extends Book {
       if (authorName == null && authorBook != null) {
         assert authorDomain != null;
         if (
-          !authorDomain.equals(this.bookRef.getDomain())
-          || !authorBook.equals(this.bookRef.getPath())
+            !authorDomain.equals(this.bookRef.getDomain())
+                || !authorBook.equals(this.bookRef.getPath())
         ) {
           throw new IllegalStateException(this.bookRef + ": Author name required when author is in a different book: " + authorPage);
         }
       }
       Author newAuthor = new Author(
-        authorName,
-        authorHref,
-        authorDomain,
-        authorBook,
-        authorPage
+          authorName,
+          authorHref,
+          authorDomain,
+          authorBook,
+          authorPage
       );
       if (!authors.add(newAuthor)) {
         throw new IllegalStateException(this.bookRef + ": Duplicate author: " + newAuthor);
@@ -182,13 +182,13 @@ public class ServletBook extends Book {
     this.allowRobots = allowRobots;
     Map<String, String> newParam = new LinkedHashMap<>();
     @SuppressWarnings("unchecked")
-    Enumeration<String> propertyNames = (Enumeration)bookProps.propertyNames();
+    Enumeration<String> propertyNames = (Enumeration) bookProps.propertyNames();
     while (propertyNames.hasMoreElements()) {
       String propertyName = propertyNames.nextElement();
       if (propertyName.startsWith(PARAM_PREFIX)) {
         newParam.put(
-          propertyName.substring(PARAM_PREFIX.length()),
-          getProperty(bookProps, usedKeys, propertyName)
+            propertyName.substring(PARAM_PREFIX.length()),
+            getProperty(bookProps, usedKeys, propertyName)
         );
       }
     }
@@ -209,9 +209,9 @@ public class ServletBook extends Book {
     }
 
     pages = UnionPageRepository.getInstance(
-      JspxPageRepository.getInstance(servletContext, this.bookRef.getPath()),
-      JspPageRepository.getInstance(servletContext, this.bookRef.getPath()),
-      ServletPageRepository.getInstance(servletContext, this.bookRef.getPath())
+        JspxPageRepository.getInstance(servletContext, this.bookRef.getPath()),
+        JspPageRepository.getInstance(servletContext, this.bookRef.getPath()),
+        ServletPageRepository.getInstance(servletContext, this.bookRef.getPath())
     );
 
     ServletResourceStore servletStore = ServletResourceStore.getInstance(servletContext, this.bookRef.getPath());

@@ -89,14 +89,14 @@ public class Controller implements Filter {
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     if (
-      !(request instanceof HttpServletRequest)
-      || !(response instanceof HttpServletResponse)
+        !(request instanceof HttpServletRequest)
+            || !(response instanceof HttpServletResponse)
     ) {
       // Is not HTTP
       doNotHttp(request, response, chain);
     } else {
       // Is HTTP
-      doHttp((HttpServletRequest)request, (HttpServletResponse)response, chain);
+      doHttp((HttpServletRequest) request, (HttpServletResponse) response, chain);
     }
   }
 
@@ -145,14 +145,14 @@ public class Controller implements Filter {
    * @see  HttpServletResponse#SC_METHOD_NOT_ALLOWED
    */
   protected void doMethodCheckNotFound(
-    HttpServletRequest request,
-    HttpServletResponse response
+      HttpServletRequest request,
+      HttpServletResponse response
   ) throws IOException, ServletException {
     String method = request.getMethod();
     if (
-      HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
-      || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
-      || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
+        HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
+            || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
+            || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
     ) {
       doNotFound(request, response);
     } else {
@@ -167,8 +167,8 @@ public class Controller implements Filter {
    * @see  HttpServletResponse#SC_NOT_FOUND
    */
   protected void doNotFound(
-    HttpServletRequest request,
-    HttpServletResponse response
+      HttpServletRequest request,
+      HttpServletResponse response
   ) throws IOException, ServletException {
     response.sendError(HttpServletResponse.SC_NOT_FOUND);
   }
@@ -180,16 +180,16 @@ public class Controller implements Filter {
    * @see  HttpServletResponse#SC_METHOD_NOT_ALLOWED
    */
   protected void doMethodNotAllowed(
-    HttpServletRequest request,
-    HttpServletResponse response
+      HttpServletRequest request,
+      HttpServletResponse response
   ) throws IOException, ServletException {
     response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
   }
 
   protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     response.setHeader(
-      "Allow",
-      HttpServletUtil.METHOD_GET + ", " + HttpServletUtil.METHOD_HEAD + ", " + HttpServletUtil.METHOD_OPTIONS
+        "Allow",
+        HttpServletUtil.METHOD_GET + ", " + HttpServletUtil.METHOD_HEAD + ", " + HttpServletUtil.METHOD_OPTIONS
     );
   }
 
@@ -220,13 +220,13 @@ public class Controller implements Filter {
     } else {
       try {
         doPublishedBook(
-          request,
-          response,
-          chain,
-          semanticCMS,
-          servletPath,
-          publishedBook,
-          Path.valueOf(servletPath.substring(publishedBook.bookRef.getPrefix().length()))
+            request,
+            response,
+            chain,
+            semanticCMS,
+            servletPath,
+            publishedBook,
+            Path.valueOf(servletPath.substring(publishedBook.bookRef.getPrefix().length()))
         );
       } catch (ValidationException e) {
         throw new ServletException(e);
@@ -249,11 +249,11 @@ public class Controller implements Filter {
    * Called for HTTP requests that do not correspond to a published book.
    */
   protected void doNotPublishedBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath
   ) throws IOException, ServletException {
     Book localBook = getLocalBook(semanticCMS, servletPath);
     if (localBook == null) {
@@ -261,13 +261,13 @@ public class Controller implements Filter {
     } else {
       try {
         doNotPublishedBookAndLocalBook(
-          request,
-          response,
-          chain,
-          semanticCMS,
-          servletPath,
-          localBook,
-          Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
+            request,
+            response,
+            chain,
+            semanticCMS,
+            servletPath,
+            localBook,
+            Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
         );
       } catch (ValidationException e) {
         throw new ServletException(e);
@@ -289,11 +289,11 @@ public class Controller implements Filter {
    * @see  #doMethodCheckNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndNotLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath
   ) throws IOException, ServletException {
     // TODO: Move to a /WEB-INF/semanticcms-core-controller.xml or books.xml?
     if (!"false".equalsIgnoreCase(servletContext.getInitParameter(NO_BOOK_PASS_THROUGH_INIT_PARAM))) {
@@ -334,17 +334,17 @@ public class Controller implements Filter {
    * @see  #doMethodCheckNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book localBook,
-    Path localPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book localBook,
+      Path localPath
   ) throws IOException, ServletException {
     if (
-      !isLocalBookProtected(localBook, localPath, request)
-      && isLocalBookPassThroughEnabled(localBook, localPath, request)
+        !isLocalBookProtected(localBook, localPath, request)
+            && isLocalBookPassThroughEnabled(localBook, localPath, request)
     ) {
       doPassThrough(request, response, chain);
     } else {
@@ -356,19 +356,19 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book.
    */
   protected void doPublishedBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     String method = request.getMethod();
     if (
-      HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
-      || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
-      || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
+        HttpServletUtil.METHOD_GET.equalsIgnoreCase(method)
+            || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
+            || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
     ) {
       doPublishedBookExpectedMethods(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
     } else {
@@ -416,17 +416,17 @@ public class Controller implements Filter {
    * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
    */
   protected void doPublishedBookOtherMethod(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     if (
-      !isPublishedBookProtected(publishedBook, publishedPath, request)
-      && isPublishedBookPassThroughEnabled(publishedBook, publishedPath, request)
+        !isPublishedBookProtected(publishedBook, publishedPath, request)
+            && isPublishedBookPassThroughEnabled(publishedBook, publishedPath, request)
     ) {
       if (isPublishedBookLocal(publishedBook)) {
         doPassThrough(request, response, chain);
@@ -437,15 +437,15 @@ public class Controller implements Filter {
         } else {
           try {
             doPublishedBookOtherMethodLocalBook(
-              request,
-              response,
-              chain,
-              semanticCMS,
-              servletPath,
-              publishedBook,
-              publishedPath,
-              localBook,
-              Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
+                request,
+                response,
+                chain,
+                semanticCMS,
+                servletPath,
+                publishedBook,
+                publishedPath,
+                localBook,
+                Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
             );
           } catch (ValidationException e) {
             throw new ServletException(e);
@@ -458,38 +458,38 @@ public class Controller implements Filter {
   }
 
   protected void doPublishedBookOtherMethodNoLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     doPassThrough(request, response, chain);
   }
 
   protected void doPublishedBookOtherMethodLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Book localBook,
-    Path localPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Book localBook,
+      Path localPath
   ) throws IOException, ServletException {
     if (
-      !isLocalBookProtected(localBook, localPath, request)
-      && isLocalBookPassThroughEnabled(localBook, localPath, request)
+        !isLocalBookProtected(localBook, localPath, request)
+            && isLocalBookPassThroughEnabled(localBook, localPath, request)
     ) {
       doPassThrough(request, response, chain);
     } else {
       assert
-        !HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
-        && !HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-        && !HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
+          !HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
+              && !HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
+              && !HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
       ;
       doMethodNotAllowed(request, response);
     }
@@ -499,13 +499,13 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book and are GET, HEAD, or OPTIONS method.
    */
   protected void doPublishedBookExpectedMethods(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     Tuple2<Renderer, Path> rendererAndPath = semanticCMS.getRendererAndPath(publishedPath);
     if (rendererAndPath == null) {
@@ -526,13 +526,13 @@ public class Controller implements Filter {
    * but have no matching renderer.
    */
   protected void doPublishedBookNoRenderer(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
   }
@@ -541,22 +541,22 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book and the OPTIONS method.
    */
   protected void doPublishedBookOptions(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Renderer renderer,
-    Path pagePath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Renderer renderer,
+      Path pagePath
   ) throws IOException, ServletException {
     Page page = CapturePage.capturePage(
-      servletContext,
-      request,
-      response,
-      new PageRef(publishedBook.bookRef, pagePath),
-      CaptureLevel.PAGE
+        servletContext,
+        request,
+        response,
+        new PageRef(publishedBook.bookRef, pagePath),
+        CaptureLevel.PAGE
     );
     if (page == null) {
       doPublishedBookOptionsNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
@@ -569,15 +569,15 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book and the OPTIONS method with no page found.
    */
   protected void doPublishedBookOptionsNoPageFound(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Renderer renderer,
-    Path pagePath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Renderer renderer,
+      Path pagePath
   ) throws IOException, ServletException {
     doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
   }
@@ -586,15 +586,15 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book and the OPTIONS method with page found.
    */
   protected void doPublishedBookOptionsPageFound(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Renderer renderer,
-    Page page
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Renderer renderer,
+      Page page
   ) throws IOException, ServletException {
     doOptions(request, response);
   }
@@ -603,22 +603,22 @@ public class Controller implements Filter {
    * Called for HTTP requests that map onto a published book and the GET or HEAD methods.
    */
   protected void doPublishedBookGetHead(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Renderer renderer,
-    Path pagePath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Renderer renderer,
+      Path pagePath
   ) throws IOException, ServletException {
     Page page = CapturePage.capturePage(
-      servletContext,
-      request,
-      response,
-      new PageRef(publishedBook.bookRef, pagePath),
-      renderer.getCaptureLevel()
+        servletContext,
+        request,
+        response,
+        new PageRef(publishedBook.bookRef, pagePath),
+        renderer.getCaptureLevel()
     );
     if (page == null) {
       doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
@@ -636,15 +636,15 @@ public class Controller implements Filter {
    * </p>
    */
   protected void doRenderer(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Renderer renderer,
-    Page page
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Renderer renderer,
+      Page page
   ) throws IOException, ServletException {
     RendererServlet.dispatch(servletContext, request, response, renderer, page);
   }
@@ -654,13 +654,13 @@ public class Controller implements Filter {
    * but have no page found.
    */
   protected void doPublishedBookNoPageFound(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     if (isPublishedBookProtected(publishedBook, publishedPath, request)) {
       doNotFound(request, response);
@@ -691,14 +691,14 @@ public class Controller implements Filter {
   }
 
   protected void doPublishedBookResourceNotExists(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Resource resource
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Resource resource
   ) throws IOException, ServletException {
     if (!isPublishedBookPassThroughEnabled(publishedBook, publishedPath, request)) {
       doNotFound(request, response);
@@ -710,15 +710,15 @@ public class Controller implements Filter {
         if (localBook != null) {
           try {
             doPublishedBookResourceNotExistsLocalBook(
-              request,
-              response,
-              chain,
-              semanticCMS,
-              servletPath,
-              publishedBook,
-              publishedPath,
-              localBook,
-              Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
+                request,
+                response,
+                chain,
+                semanticCMS,
+                servletPath,
+                publishedBook,
+                publishedPath,
+                localBook,
+                Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
             );
           } catch (ValidationException e) {
             throw new ServletException(e);
@@ -731,65 +731,65 @@ public class Controller implements Filter {
   }
 
   protected void doPublishedBookResourceNotExistsIsLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath
   ) throws IOException, ServletException {
     doPassThrough(request, response, chain);
   }
 
   protected void doPublishedBookResourceNotExistsLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Book localBook,
-    Path localPath
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Book localBook,
+      Path localPath
   ) throws IOException, ServletException {
     if (
-      !isLocalBookProtected(localBook, localPath, request)
-      && isLocalBookPassThroughEnabled(localBook, localPath, request)
+        !isLocalBookProtected(localBook, localPath, request)
+            && isLocalBookPassThroughEnabled(localBook, localPath, request)
     ) {
       doPassThrough(request, response, chain);
     } else {
       assert
-        HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
-        || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-        || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
+          HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
+              || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
+              || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
       ;
       doNotFound(request, response);
     }
   }
 
   protected void doPublishedBookResourceNotExistsNoLocalBook(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Resource resource
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Resource resource
   ) throws IOException, ServletException {
     doPassThrough(request, response, chain);
   }
 
   protected void doPublishedBookResourceExistsOptions(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    Resource resource
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      Resource resource
   ) throws IOException, ServletException {
     doOptions(request, response);
   }
@@ -801,14 +801,14 @@ public class Controller implements Filter {
    * </p>
    */
   protected void doPublishedBookResourceExistsGetHead(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain chain,
-    SemanticCMS semanticCMS,
-    String servletPath,
-    Book publishedBook,
-    Path publishedPath,
-    ResourceConnection resourceConn
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      SemanticCMS semanticCMS,
+      String servletPath,
+      Book publishedBook,
+      Path publishedPath,
+      ResourceConnection resourceConn
   ) throws IOException, ServletException {
     ResourceServlet.dispatch(servletContext, request, response, resourceConn);
   }

@@ -71,7 +71,7 @@ public abstract class Book implements Comparable<Book> {
     if (!(obj instanceof Book)) {
       return false;
     }
-    Book other = (Book)obj;
+    Book other = (Book) obj;
     return bookRef.equals(other.bookRef);
   }
 

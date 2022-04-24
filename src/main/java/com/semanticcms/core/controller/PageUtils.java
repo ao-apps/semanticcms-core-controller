@@ -70,32 +70,32 @@ public final class PageUtils {
 
   // TODO: Cache result per class per page?
   public static boolean hasElement(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    Page page,
-    final Class<? extends Element> elementType,
-    final boolean recursive
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Page page,
+      final Class<? extends Element> elementType,
+      final boolean recursive
   ) throws ServletException, IOException {
     if (recursive) {
       final SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
       return CapturePage.traversePagesAnyOrder(
-        servletContext,
-        request,
-        response,
-        page,
-        CaptureLevel.META,
-        page1 -> {
-          for (Element element : page1.getElements()) {
-            if (elementType.isAssignableFrom(element.getClass())) {
-              return true;
+          servletContext,
+          request,
+          response,
+          page,
+          CaptureLevel.META,
+          page1 -> {
+            for (Element element : page1.getElements()) {
+              if (elementType.isAssignableFrom(element.getClass())) {
+                return true;
+              }
             }
-          }
-          return null;
-        },
-        Page::getChildRefs,
-        // Child is in an accessible book
-        childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible()
+            return null;
+          },
+          Page::getChildRefs,
+          // Child is in an accessible book
+          childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible()
       ) != null;
     } else {
       for (Element element : page.getElements()) {
@@ -124,29 +124,29 @@ public final class PageUtils {
    * </p>
    */
   public static boolean findAllowRobots(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    com.semanticcms.core.model.Page page
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      com.semanticcms.core.model.Page page
   ) throws ServletException, IOException {
     // TODO: Traversal
     return findAllowRobotsRecursive(
-      servletContext,
-      request,
-      response,
-      SemanticCMS.getInstance(servletContext),
-      page,
-      new HashMap<>()
+        servletContext,
+        request,
+        response,
+        SemanticCMS.getInstance(servletContext),
+        page,
+        new HashMap<>()
     );
   }
 
   private static boolean findAllowRobotsRecursive(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    SemanticCMS semanticCMS,
-    com.semanticcms.core.model.Page page,
-    Map<PageRef, Boolean> finished
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      SemanticCMS semanticCMS,
+      com.semanticcms.core.model.Page page,
+      Map<PageRef, Boolean> finished
   ) throws ServletException, IOException {
     PageRef pageRef = page.getPageRef();
     assert !finished.containsKey(pageRef);
@@ -163,12 +163,12 @@ public final class PageUtils {
           if (parentAllowRobots == null) {
             // Capture parent and find its allowRobots
             parentAllowRobots = findAllowRobotsRecursive(
-              servletContext,
-              request,
-              response,
-              semanticCMS,
-              CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
-              finished
+                servletContext,
+                request,
+                response,
+                semanticCMS,
+                CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
+                finished
             );
           }
           if (pageAllowRobots == null) {
@@ -244,10 +244,10 @@ public final class PageUtils {
   // TODO: This should go where?  Picking up dependency on controller for this alone is too much
   public static ReadableDateTime toDateTime(Object o) throws IOException {
     if (o instanceof ReadableDateTime) {
-      return (ReadableDateTime)o;
+      return (ReadableDateTime) o;
     }
     if (o instanceof Long) {
-      long l = (Long)o;
+      long l = (Long) o;
       return l == -1 || l == 0 ? null : new DateTime(l);
     }
     if (Coercion.isEmpty(o)) {
@@ -264,12 +264,12 @@ public final class PageUtils {
   public static void verifyChildToParent(ChildRef childRef, PageRef parentPageRef, Set<ChildRef> childRefs) throws ServletException {
     if (!childRefs.contains(childRef)) {
       throw new ServletException(
-        "The parent page does not have this as a child.  this="
-          + childRef
-          + ", parent="
-          + parentPageRef
-          + ", parent.children="
-          + childRefs
+          "The parent page does not have this as a child.  this="
+              + childRef
+              + ", parent="
+              + parentPageRef
+              + ", parent.children="
+              + childRefs
       );
     }
   }
@@ -291,12 +291,12 @@ public final class PageUtils {
   public static void verifyParentToChild(ParentRef parentRef, PageRef childPageRef, Set<ParentRef> parentRefs) throws ServletException {
     if (!parentRefs.contains(parentRef)) {
       throw new ServletException(
-        "The child page does not have this as a parent.  this="
-          + parentRef
-          + ", child="
-          + childPageRef
-          + ", child.parents="
-          + parentRefs
+          "The child page does not have this as a parent.  this="
+              + parentRef
+              + ", child="
+              + childPageRef
+              + ", child.parents="
+              + parentRefs
       );
     }
   }
@@ -319,19 +319,19 @@ public final class PageUtils {
    * @throws  ServletException  if verification failed
    */
   public static void fullVerifyParentChild(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    Page page
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Page page
   ) throws ServletException, IOException {
     // Verify parents
     if (!page.getAllowParentMismatch()) {
       Map<PageRef, Page> notMissingParents = CapturePage.capturePages(
-        servletContext,
-        request,
-        response,
-        PageUtils.filterNotMissingBook(servletContext, page.getParentRefs()),
-        CaptureLevel.PAGE
+          servletContext,
+          request,
+          response,
+          PageUtils.filterNotMissingBook(servletContext, page.getParentRefs()),
+          CaptureLevel.PAGE
       );
       PageRef pageRef = page.getPageRef();
       for (Map.Entry<PageRef, Page> entry : notMissingParents.entrySet()) {
@@ -341,11 +341,11 @@ public final class PageUtils {
     // Verify children
     if (!page.getAllowChildMismatch()) {
       Map<PageRef, Page> notMissingChildren = CapturePage.capturePages(
-        servletContext,
-        request,
-        response,
-        PageUtils.filterNotMissingBook(servletContext, page.getChildRefs()),
-        CaptureLevel.PAGE
+          servletContext,
+          request,
+          response,
+          PageUtils.filterNotMissingBook(servletContext, page.getChildRefs()),
+          CaptureLevel.PAGE
       );
       PageRef pageRef = page.getPageRef();
       for (Map.Entry<PageRef, Page> entry : notMissingChildren.entrySet()) {

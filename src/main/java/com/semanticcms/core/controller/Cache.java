@@ -65,8 +65,8 @@ public abstract class Cache {
     final CaptureLevel level;
 
     CaptureKey(
-      PageRef pageRef,
-      CaptureLevel level
+        PageRef pageRef,
+        CaptureLevel level
     ) {
       this.pageRef = pageRef;
       assert level != CaptureLevel.BODY : "Body captures are not cached";
@@ -78,10 +78,10 @@ public abstract class Cache {
       if (!(o instanceof CaptureKey)) {
         return false;
       }
-      CaptureKey other = (CaptureKey)o;
+      CaptureKey other = (CaptureKey) o;
       return
-        level == other.level
-        && pageRef.equals(other.pageRef)
+          level == other.level
+              && pageRef.equals(other.pageRef)
       ;
     }
 
@@ -124,7 +124,7 @@ public abstract class Cache {
       if (!(o instanceof CaptureResult)) {
         return false;
       }
-      CaptureResult other = (CaptureResult)o;
+      CaptureResult other = (CaptureResult) o;
       return Objects.equals(page, other.page);
     }
 
@@ -213,9 +213,9 @@ public abstract class Cache {
    */
   // TODO: Ex extends Throwable
   public abstract <V, Ex extends Exception> V getAttribute(
-    String key,
-    Class<V> clazz,
-    Callable<? extends V, Ex> callable
+      String key,
+      Class<V> clazz,
+      Callable<? extends V, Ex> callable
   ) throws Ex;
 
   /**

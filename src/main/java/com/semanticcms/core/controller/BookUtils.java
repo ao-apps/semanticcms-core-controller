@@ -63,8 +63,8 @@ public final class BookUtils {
       BookRef bookRef = book.getBookRef();
       String autoCanonical = URIDecoder.decodeURI(HttpServletUtil.getAbsoluteURL(request, bookRef.getPrefix()));
       if (
-        // Logger checked first, so if warnings enabled mid-run, will get first warning still
-        logger.isLoggable(Level.WARNING)
+          // Logger checked first, so if warnings enabled mid-run, will get first warning still
+          logger.isLoggable(Level.WARNING)
       ) {
         String warningAttribute = CANONICAL_BASE_WARNED_ATTRIBUTE + bookRef;
         // Acceptable race condition: logging multiple times would not cause any harm

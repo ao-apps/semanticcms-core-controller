@@ -50,15 +50,15 @@ public class ResourceServlet extends HttpServlet {
   protected static final String NAME = "com.semanticcms.core.controller.ResourceServlet";
 
   protected static final ScopeEE.Request.Attribute<ResourceConnection> RESOURCE_CONN_REQUEST_PARAMETER =
-    ScopeEE.REQUEST.attribute(ResourceServlet.class.getName() + ".resourceConn");
+      ScopeEE.REQUEST.attribute(ResourceServlet.class.getName() + ".resourceConn");
 
   private static final long serialVersionUID = 1L;
 
   public static void dispatch(
-    ServletContext servletContext,
-    HttpServletRequest request,
-    HttpServletResponse response,
-    ResourceConnection resourceConn
+      ServletContext servletContext,
+      HttpServletRequest request,
+      HttpServletResponse response,
+      ResourceConnection resourceConn
   ) throws IOException, ServletException {
     RequestDispatcher dispatcher = servletContext.getNamedDispatcher(ResourceServlet.NAME);
     if (dispatcher == null) {
