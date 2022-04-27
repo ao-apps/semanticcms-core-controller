@@ -72,7 +72,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
       assert CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
 
       // One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
-      boolean concurrentProcessingRecommended = (newConcurrency < preferredConcurrency);
+      boolean concurrentProcessingRecommended = newConcurrency < preferredConcurrency;
       boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
 
       CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).set(concurrentProcessingRecommended);

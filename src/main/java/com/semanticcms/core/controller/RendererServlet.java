@@ -73,7 +73,7 @@ public class RendererServlet extends HttpServlet {
     }
     try (
       Attribute.OldValue oldRenderer = RENDERER_REQUEST_PARAMETER.context(request).init(renderer);
-      Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER    .context(request).init(page)
+      Attribute.OldValue oldPage     = PAGE_REQUEST_PARAMETER.context(request).init(page)
         ) {
       dispatcher.forward(request, response);
     }
