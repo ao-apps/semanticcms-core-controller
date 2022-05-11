@@ -58,9 +58,9 @@ public final class PageUtils {
   public static boolean hasChild(ServletContext servletContext, Page page) {
     Set<ChildRef> childRefs = page.getChildRefs();
     if (!childRefs.isEmpty()) {
-      SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+      SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
       for (ChildRef childRef : childRefs) {
-        if (semanticCMS.getBook(childRef.getPageRef().getBookRef()).isAccessible()) {
+        if (semanticCms.getBook(childRef.getPageRef().getBookRef()).isAccessible()) {
           return true;
         }
       }
@@ -78,7 +78,7 @@ public final class PageUtils {
       final boolean recursive
   ) throws ServletException, IOException {
     if (recursive) {
-      final SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+      final SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
       return CapturePage.traversePagesAnyOrder(
           servletContext,
           request,
@@ -95,7 +95,7 @@ public final class PageUtils {
           },
           Page::getChildRefs,
           // Child is in an accessible book
-          childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible()
+          childPage -> semanticCms.getBook(childPage.getBookRef()).isAccessible()
       ) != null;
     } else {
       for (Element element : page.getElements()) {
@@ -144,7 +144,7 @@ public final class PageUtils {
       ServletContext servletContext,
       HttpServletRequest request,
       HttpServletResponse response,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       com.semanticcms.core.model.Page page,
       Map<PageRef, Boolean> finished
   ) throws ServletException, IOException {
@@ -166,7 +166,7 @@ public final class PageUtils {
                 servletContext,
                 request,
                 response,
-                semanticCMS,
+                semanticCms,
                 CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
                 finished
             );
@@ -183,7 +183,7 @@ public final class PageUtils {
       }
       // No parents in the same book, use book allowRobots
       if (pageAllowRobots == null) {
-        pageAllowRobots = semanticCMS.getBook(bookRef).getAllowRobots();
+        pageAllowRobots = semanticCms.getBook(bookRef).getAllowRobots();
       }
     }
     // Store in finished
@@ -194,23 +194,23 @@ public final class PageUtils {
   /**
    * Filters for all pageRefs that are present (not missing books).
    */
-  public static <PR extends PageReferrer> Set<PR> filterNotMissingBook(ServletContext servletContext, Set<PR> pageReferrers) {
+  public static <R extends PageReferrer> Set<R> filterNotMissingBook(ServletContext servletContext, Set<R> pageReferrers) {
     int size = pageReferrers.size();
     if (size == 0) {
       return Collections.emptySet();
     } else {
-      SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+      SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
       if (size == 1) {
-        PR pageReferrer = pageReferrers.iterator().next();
-        if (semanticCMS.getBook(pageReferrer.getPageRef().getBookRef()).isAccessible()) {
+        R pageReferrer = pageReferrers.iterator().next();
+        if (semanticCms.getBook(pageReferrer.getPageRef().getBookRef()).isAccessible()) {
           return Collections.singleton(pageReferrer);
         } else {
           return Collections.emptySet();
         }
       } else {
-        Set<PR> notMissingBooks = AoCollections.newLinkedHashSet(size);
-        for (PR pageReferrer : pageReferrers) {
-          if (semanticCMS.getBook(pageReferrer.getPageRef().getBookRef()).isAccessible()) {
+        Set<R> notMissingBooks = AoCollections.newLinkedHashSet(size);
+        for (R pageReferrer : pageReferrers) {
+          if (semanticCms.getBook(pageReferrer.getPageRef().getBookRef()).isAccessible()) {
             if (!notMissingBooks.add(pageReferrer)) {
               throw new AssertionError();
             }

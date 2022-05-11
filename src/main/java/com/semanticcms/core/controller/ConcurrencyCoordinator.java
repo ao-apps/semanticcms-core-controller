@@ -52,9 +52,9 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
 
   @Override
   public void contextInitialized(ServletContextEvent event) {
-    SemanticCMS semanticCMS = SemanticCMS.getInstance(event.getServletContext());
-    concurrentSubrequests = semanticCMS.getConcurrentSubrequests();
-    preferredConcurrency = semanticCMS.getExecutors().getPreferredConcurrency();
+    SemanticCMS semanticCms = SemanticCMS.getInstance(event.getServletContext());
+    concurrentSubrequests = semanticCms.getConcurrentSubrequests();
+    preferredConcurrency = semanticCms.getExecutors().getPreferredConcurrency();
   }
 
   @Override

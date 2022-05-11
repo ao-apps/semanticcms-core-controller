@@ -39,7 +39,7 @@ import javax.servlet.ServletException;
  */
 abstract class MapCache extends Cache {
 
-  protected final SemanticCMS semanticCMS;
+  protected final SemanticCMS semanticCms;
 
   private final Map<CaptureKey, CaptureResult> pageCache;
 
@@ -67,13 +67,13 @@ abstract class MapCache extends Cache {
   protected final Map<String, Object> attributes;
 
   MapCache(
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       Map<CaptureKey, CaptureResult> pageCache,
       Map<PageRef, Set<PageRef>> unverifiedParentsByPageRef,
       Map<PageRef, Set<PageRef>> unverifiedChildrenByPageRef,
       Map<String, Object> attributes
   ) {
-    this.semanticCMS = semanticCMS;
+    this.semanticCms = semanticCms;
     this.pageCache = pageCache;
     this.unverifiedParentsByPageRef = unverifiedParentsByPageRef;
     this.unverifiedChildrenByPageRef = unverifiedChildrenByPageRef;
@@ -133,7 +133,7 @@ abstract class MapCache extends Cache {
       for (ParentRef parentRef : parentRefs) {
         PageRef parentPageRef = parentRef.getPageRef();
         // Can't verify parent reference to missing book
-        if (semanticCMS.getBook(parentPageRef.getBookRef()).isAccessible()) {
+        if (semanticCms.getBook(parentPageRef.getBookRef()).isAccessible()) {
           // Check if parent in cache
           CaptureResult parentResult = get(parentPageRef, CaptureLevel.PAGE);
           if (parentResult != null && parentResult.page != null) {
@@ -150,7 +150,7 @@ abstract class MapCache extends Cache {
       for (ChildRef childRef : childRefs) {
         PageRef childPageRef = childRef.getPageRef();
         // Can't verify child reference to missing book
-        if (semanticCMS.getBook(childPageRef.getBookRef()).isAccessible()) {
+        if (semanticCms.getBook(childPageRef.getBookRef()).isAccessible()) {
           // Check if child in cache
           CaptureResult childResult = get(childPageRef, CaptureLevel.PAGE);
           if (childResult != null && childResult.page != null) {
@@ -198,6 +198,8 @@ abstract class MapCache extends Cache {
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @Override

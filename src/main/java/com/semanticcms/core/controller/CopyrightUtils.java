@@ -88,7 +88,7 @@ public final class CopyrightUtils {
       ServletContext servletContext,
       HttpServletRequest request,
       HttpServletResponse response,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       com.semanticcms.core.model.Page page,
       Map<PageRef, Copyright> finished
   ) throws ServletException, IOException {
@@ -126,7 +126,7 @@ public final class CopyrightUtils {
                 servletContext,
                 request,
                 response,
-                semanticCMS,
+                semanticCms,
                 CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
                 finished
             );
@@ -167,7 +167,7 @@ public final class CopyrightUtils {
         }
       }
       // No parents in the same book, use book copyright fields
-      Copyright bookCopyright = semanticCMS.getBook(bookRef).getCopyright();
+      Copyright bookCopyright = semanticCms.getBook(bookRef).getCopyright();
       if (pageRightsHolder == null) {
         if (parentsRightsHolder == null) {
           parentsRightsHolder = bookCopyright == null ? "" : bookCopyright.getRightsHolder();

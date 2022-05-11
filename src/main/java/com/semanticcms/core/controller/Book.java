@@ -43,8 +43,9 @@ import org.apache.commons.lang3.NotImplementedException;
  * A book contains {@link Page pages} and {@link Resource resources} and is the
  * central mechanism for high-level separation of content.  Each book usually
  * has its own code repository and a book can be added to multiple webapps.
- *
+ * <p>
  * TODO: Interface + abstract base?
+ * </p>
  */
 public abstract class Book implements Comparable<Book> {
 
@@ -59,6 +60,8 @@ public abstract class Book implements Comparable<Book> {
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @see  BookRef#toString()
    */
   @Override
@@ -130,9 +133,10 @@ public abstract class Book implements Comparable<Book> {
   /**
    * Gets the {@link ResourceRef} for the source of the given {@link Page}.
    * Although not typical, the resulting reference might be to a different domain/book.
-   *
+   * <p>
    * TODO: This belongs where?
    * TODO: How is this interact with remote books that have directly accessible resources?
+   * </p>
    *
    * @return  The {@link ResourceRef} or {@code null} for unknown or an inaccessible book
    */
@@ -190,8 +194,9 @@ public abstract class Book implements Comparable<Book> {
 
   /**
    * Accesses the books parameters.
-   *
+   * <p>
    * TODO: Should this be named "property" to be consistent with per-page properties?
+   * </p>
    *
    * @return  The, possibly empty, map of parameters for an accessible book
    *          or {@code null} for an inaccessible book

@@ -81,8 +81,10 @@ public final class CapturePage {
    * Captures a page.
    * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
    * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
-   *
-   * TODO: Within the scope of one request and cache, avoid capturing the same page at the same time (CurrencyLimiter applied to sub requests), is there a reasonable way to catch deadlock conditions?
+   * <p>
+   * TODO: Within the scope of one request and cache, avoid capturing the same page at the same time (CurrencyLimiter applied to sub requests),
+   * is there a reasonable way to catch deadlock conditions?
+   * </p>
    *
    * @param level  The minimum page capture level, note that a higher level might be substituted, such as a META capture in place of a PAGE request.
    *
@@ -106,8 +108,13 @@ public final class CapturePage {
   }
 
   /**
+   * Captures a page.
+   * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
+   * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
+   * <p>
    * TODO: Support null level for non-capture fetches
    * TODO: Rename this class to "PageCache"?
+   * </p>
    *
    * @param cache  See {@link CacheFilter#getCache(javax.servlet.ServletRequest)}
    *
@@ -173,9 +180,9 @@ public final class CapturePage {
 
     if (capturedPage == null) {
       // Find the book
-      SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+      SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
       final BookRef bookRef = pageRef.getBookRef();
-      Book book = semanticCMS.getBook(bookRef);
+      Book book = semanticCms.getBook(bookRef);
       if (!book.isAccessible()) {
         throw new ServletException("Book is inaccessible: " + bookRef);
       }
@@ -224,6 +231,8 @@ public final class CapturePage {
 
   /**
    * Captures a page in the current page context.
+   * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
+   * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
    *
    * @return  The captured page or {@code null} if page does not exist.
    *
@@ -455,6 +464,7 @@ public final class CapturePage {
    * </p>
    * <p>
    * pageHandler, edges, and edgeFilter are all called on the main thread (the thread invoking this method).
+   * </p>
    * <p>
    * Returns when the first pageHandler returns a non-null object.
    * Once a pageHandler returns non-null, no other pageHandler,
@@ -556,12 +566,12 @@ public final class CapturePage {
     // Find the executor
     final Executor concurrentSubrequestExecutor;
     final int preferredConcurrency;
-    { // Scoping block
-      final Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
-      concurrentSubrequestExecutor = executors.getPerProcessor();
-      preferredConcurrency = executors.getPreferredConcurrency();
-      assert preferredConcurrency > 1 : "Single-CPU systems should never make it to this concurrent implementation";
-    }
+      { // Scoping block
+        final Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
+        concurrentSubrequestExecutor = executors.getPerProcessor();
+        preferredConcurrency = executors.getPreferredConcurrency();
+        assert preferredConcurrency > 1 : "Single-CPU systems should never make it to this concurrent implementation";
+      }
     final TempFileContext tempFileContext = TempFileContextEE.get(request);
 
     int maxSize = 0;
@@ -819,6 +829,7 @@ public final class CapturePage {
    * </p>
    * <p>
    * preHandler, edges, edgeFilter, and postHandler are all called on the main thread (the thread invoking this method).
+   * </p>
    * <p>
    * Returns when the first preHandler or postHandler returns a non-null object.
    * Once a preHandler or postHandler returns non-null, no other preHandler,

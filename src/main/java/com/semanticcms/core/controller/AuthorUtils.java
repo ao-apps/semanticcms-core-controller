@@ -105,7 +105,7 @@ public final class AuthorUtils {
       ServletContext servletContext,
       HttpServletRequest request,
       HttpServletResponse response,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       com.semanticcms.core.model.Page page,
       Map<PageRef, Set<Author>> finished
   ) throws ServletException, IOException {
@@ -128,7 +128,7 @@ public final class AuthorUtils {
                 servletContext,
                 request,
                 response,
-                semanticCMS,
+                semanticCms,
                 CapturePage.capturePage(servletContext, request, response, parentPageRef, CaptureLevel.PAGE),
                 finished
             );
@@ -145,7 +145,7 @@ public final class AuthorUtils {
       }
       // No parents in the same book, use book authors
       if (pageAuthors == null) {
-        Book book = semanticCMS.getBook(bookRef);
+        Book book = semanticCms.getBook(bookRef);
         pageAuthors = book.getAuthors();
         if (pageAuthors == null) {
           pageAuthors = Collections.emptySet();

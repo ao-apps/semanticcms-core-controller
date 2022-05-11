@@ -35,9 +35,9 @@ import javax.servlet.ServletException;
  */
 class SynchronizedCache extends MapCache {
 
-  SynchronizedCache(SemanticCMS semanticCMS) {
+  SynchronizedCache(SemanticCMS semanticCms) {
     super(
-        semanticCMS,
+        semanticCms,
         new HashMap<>(),
         VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
         VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
@@ -86,6 +86,8 @@ class SynchronizedCache extends MapCache {
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @Override

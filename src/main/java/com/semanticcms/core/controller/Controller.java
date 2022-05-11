@@ -200,8 +200,8 @@ public class Controller implements Filter {
    * This default implementation calls {@link SemanticCMS#getPublishedBook(java.lang.String)}
    * </p>
    */
-  protected Book getPublishedBook(SemanticCMS semanticCMS, String servletPath) {
-    return semanticCMS.getPublishedBook(servletPath);
+  protected Book getPublishedBook(SemanticCMS semanticCms, String servletPath) {
+    return semanticCms.getPublishedBook(servletPath);
   }
 
   /**
@@ -212,18 +212,18 @@ public class Controller implements Filter {
    * @see  #doPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
    */
   protected void doHttp(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-    SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+    SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
     String servletPath = Dispatcher.getCurrentPagePath(request);
-    Book publishedBook = getPublishedBook(semanticCMS, servletPath);
+    Book publishedBook = getPublishedBook(semanticCms, servletPath);
     if (publishedBook == null) {
-      doNotPublishedBook(request, response, chain, semanticCMS, servletPath);
+      doNotPublishedBook(request, response, chain, semanticCms, servletPath);
     } else {
       try {
         doPublishedBook(
             request,
             response,
             chain,
-            semanticCMS,
+            semanticCms,
             servletPath,
             publishedBook,
             Path.valueOf(servletPath.substring(publishedBook.bookRef.getPrefix().length()))
@@ -241,8 +241,8 @@ public class Controller implements Filter {
    * This default implementation calls {@link SemanticCMS#getLocalBook(java.lang.String)}
    * </p>
    */
-  protected Book getLocalBook(SemanticCMS semanticCMS, String servletPath) {
-    return semanticCMS.getLocalBook(servletPath);
+  protected Book getLocalBook(SemanticCMS semanticCms, String servletPath) {
+    return semanticCms.getLocalBook(servletPath);
   }
 
   /**
@@ -252,19 +252,19 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath
   ) throws IOException, ServletException {
-    Book localBook = getLocalBook(semanticCMS, servletPath);
+    Book localBook = getLocalBook(semanticCms, servletPath);
     if (localBook == null) {
-      doNotPublishedBookAndNotLocalBook(request, response, chain, semanticCMS, servletPath);
+      doNotPublishedBookAndNotLocalBook(request, response, chain, semanticCms, servletPath);
     } else {
       try {
         doNotPublishedBookAndLocalBook(
             request,
             response,
             chain,
-            semanticCMS,
+            semanticCms,
             servletPath,
             localBook,
             Path.valueOf(servletPath.substring(localBook.bookRef.getPrefix().length()))
@@ -292,7 +292,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath
   ) throws IOException, ServletException {
     // TODO: Move to a /WEB-INF/semanticcms-core-controller.xml or books.xml?
@@ -337,7 +337,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book localBook,
       Path localPath
@@ -359,7 +359,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
@@ -370,9 +370,9 @@ public class Controller implements Filter {
             || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(method)
             || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(method)
     ) {
-      doPublishedBookExpectedMethods(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+      doPublishedBookExpectedMethods(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
     } else {
-      doPublishedBookOtherMethod(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+      doPublishedBookOtherMethod(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
     }
   }
 
@@ -419,7 +419,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
@@ -431,16 +431,16 @@ public class Controller implements Filter {
       if (isPublishedBookLocal(publishedBook)) {
         doPassThrough(request, response, chain);
       } else {
-        Book localBook = getLocalBook(semanticCMS, servletPath);
+        Book localBook = getLocalBook(semanticCms, servletPath);
         if (localBook == null) {
-          doPublishedBookOtherMethodNoLocalBook(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+          doPublishedBookOtherMethodNoLocalBook(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
         } else {
           try {
             doPublishedBookOtherMethodLocalBook(
                 request,
                 response,
                 chain,
-                semanticCMS,
+                semanticCms,
                 servletPath,
                 publishedBook,
                 publishedPath,
@@ -461,7 +461,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
@@ -473,7 +473,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -489,8 +489,7 @@ public class Controller implements Filter {
       assert
           !HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
               && !HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-              && !HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
-      ;
+              && !HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod());
       doMethodNotAllowed(request, response);
     }
   }
@@ -502,21 +501,21 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
   ) throws IOException, ServletException {
-    Tuple2<Renderer, Path> rendererAndPath = semanticCMS.getRendererAndPath(publishedPath);
+    Tuple2<Renderer, Path> rendererAndPath = semanticCms.getRendererAndPath(publishedPath);
     if (rendererAndPath == null) {
-      doPublishedBookNoRenderer(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+      doPublishedBookNoRenderer(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
     } else {
       Renderer renderer = rendererAndPath.getElement1();
       Path pagePath = rendererAndPath.getElement2();
       if (HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
-        doPublishedBookOptions(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
+        doPublishedBookOptions(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, renderer, pagePath);
       } else {
-        doPublishedBookGetHead(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
+        doPublishedBookGetHead(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, renderer, pagePath);
       }
     }
   }
@@ -529,12 +528,12 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
   ) throws IOException, ServletException {
-    doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+    doPublishedBookNoPageFound(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
   }
 
   /**
@@ -544,7 +543,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -559,9 +558,9 @@ public class Controller implements Filter {
         CaptureLevel.PAGE
     );
     if (page == null) {
-      doPublishedBookOptionsNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, pagePath);
+      doPublishedBookOptionsNoPageFound(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, renderer, pagePath);
     } else {
-      doPublishedBookOptionsPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, page);
+      doPublishedBookOptionsPageFound(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, renderer, page);
     }
   }
 
@@ -572,14 +571,14 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
       Renderer renderer,
       Path pagePath
   ) throws IOException, ServletException {
-    doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+    doPublishedBookNoPageFound(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
   }
 
   /**
@@ -589,7 +588,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -606,7 +605,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -621,9 +620,9 @@ public class Controller implements Filter {
         renderer.getCaptureLevel()
     );
     if (page == null) {
-      doPublishedBookNoPageFound(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+      doPublishedBookNoPageFound(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
     } else {
-      doRenderer(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, renderer, page);
+      doRenderer(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, renderer, page);
     }
   }
 
@@ -639,7 +638,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -657,7 +656,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
@@ -672,14 +671,14 @@ public class Controller implements Filter {
         if (!resourceConn.exists()) {
           resourceConn.close();
           resourceConn = null;
-          doPublishedBookResourceNotExists(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resource);
+          doPublishedBookResourceNotExists(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, resource);
         } else {
           if (HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())) {
             resourceConn.close();
             resourceConn = null;
-            doPublishedBookResourceExistsOptions(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resource);
+            doPublishedBookResourceExistsOptions(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, resource);
           } else {
-            doPublishedBookResourceExistsGetHead(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resourceConn);
+            doPublishedBookResourceExistsGetHead(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, resourceConn);
           }
         }
       } finally {
@@ -694,7 +693,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -704,16 +703,16 @@ public class Controller implements Filter {
       doNotFound(request, response);
     } else {
       if (isPublishedBookLocal(publishedBook)) {
-        doPublishedBookResourceNotExistsIsLocalBook(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath);
+        doPublishedBookResourceNotExistsIsLocalBook(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath);
       } else {
-        Book localBook = getLocalBook(semanticCMS, servletPath);
+        Book localBook = getLocalBook(semanticCms, servletPath);
         if (localBook != null) {
           try {
             doPublishedBookResourceNotExistsLocalBook(
                 request,
                 response,
                 chain,
-                semanticCMS,
+                semanticCms,
                 servletPath,
                 publishedBook,
                 publishedPath,
@@ -724,7 +723,7 @@ public class Controller implements Filter {
             throw new ServletException(e);
           }
         } else {
-          doPublishedBookResourceNotExistsNoLocalBook(request, response, chain, semanticCMS, servletPath, publishedBook, publishedPath, resource);
+          doPublishedBookResourceNotExistsNoLocalBook(request, response, chain, semanticCms, servletPath, publishedBook, publishedPath, resource);
         }
       }
     }
@@ -734,7 +733,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath
@@ -746,7 +745,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -762,8 +761,7 @@ public class Controller implements Filter {
       assert
           HttpServletUtil.METHOD_GET.equalsIgnoreCase(request.getMethod())
               || HttpServletUtil.METHOD_HEAD.equalsIgnoreCase(request.getMethod())
-              || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod())
-      ;
+              || HttpServletUtil.METHOD_OPTIONS.equalsIgnoreCase(request.getMethod());
       doNotFound(request, response);
     }
   }
@@ -772,7 +770,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -785,7 +783,7 @@ public class Controller implements Filter {
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,
@@ -795,16 +793,14 @@ public class Controller implements Filter {
   }
 
   /**
-   * <p>
    * <b>Implementation Note:</b><br>
-   * This default implementation calls {@link ResourceServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}
-   * </p>
+   * This default implementation calls {@link ResourceServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}.
    */
   protected void doPublishedBookResourceExistsGetHead(
       HttpServletRequest request,
       HttpServletResponse response,
       FilterChain chain,
-      SemanticCMS semanticCMS,
+      SemanticCMS semanticCms,
       String servletPath,
       Book publishedBook,
       Path publishedPath,

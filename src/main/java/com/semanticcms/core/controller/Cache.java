@@ -48,16 +48,18 @@ public abstract class Cache {
 
   /**
    * Enables the page parent-child relationships verification.
-   *
+   * <p>
    * This does not measurably affect performance; just leave it on.
+   * </p>
    */
   protected static final boolean VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS = true;
 
   /**
    * Caches pages that have been captured within the scope of a single request.
-   *
+   * <p>
    * IDEA: Could also cache over time, since there is currently no concept of a "user" (except whether request is trusted
    *       127.0.0.1 or not).
+   * </p>
    */
   static class CaptureKey {
 
@@ -81,8 +83,7 @@ public abstract class Cache {
       CaptureKey other = (CaptureKey) o;
       return
           level == other.level
-              && pageRef.equals(other.pageRef)
-      ;
+              && pageRef.equals(other.pageRef);
     }
 
     private int hash;
@@ -174,6 +175,7 @@ public abstract class Cache {
 
   /**
    * Sets a cache attribute.
+   *
    * @see  #removeAttribute(java.lang.String)  Setting to a null value is equivalent to calling removeAttribute.
    */
   public abstract void setAttribute(String key, Object value);

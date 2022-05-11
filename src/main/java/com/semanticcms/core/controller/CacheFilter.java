@@ -71,14 +71,15 @@ public class CacheFilter implements Filter {
    * To speed up an export, the elements are cached between requests.
    * The first non-exporting request will clear this cache, and it will also
    * be removed after a given number of seconds.
-   *
+   * <p>
    * TODO: Consider consequences of caching once we have a security model applied
+   * </p>
    */
   private static class ExportPageCache {
 
     private final CacheFilter filter;
 
-    private final SemanticCMS semanticCMS;
+    private final SemanticCMS semanticCms;
 
     /**
      * When concurrent subrequests are enabled, use concurrent implementation.
@@ -87,9 +88,9 @@ public class CacheFilter implements Filter {
      */
     private final boolean concurrentSubrequests;
 
-    private ExportPageCache(CacheFilter filter, SemanticCMS semanticCMS, boolean concurrentSubrequests) {
+    private ExportPageCache(CacheFilter filter, SemanticCMS semanticCms, boolean concurrentSubrequests) {
       this.filter = filter;
-      this.semanticCMS = semanticCMS;
+      this.semanticCms = semanticCms;
       this.concurrentSubrequests = concurrentSubrequests;
     }
 
@@ -132,7 +133,7 @@ public class CacheFilter implements Filter {
       invalidateCache(currentTime);
       if (cache == null) {
         cacheStart = currentTime;
-        cache = concurrentSubrequests ? new ConcurrentCache(semanticCMS) : new SynchronizedCache(semanticCMS);
+        cache = concurrentSubrequests ? new ConcurrentCache(semanticCms) : new SynchronizedCache(semanticCms);
       }
       return cache;
     }
@@ -144,6 +145,7 @@ public class CacheFilter implements Filter {
   private static class ExportCacheLock {
     // Empty lock class to help heap profile
   }
+
   private final ExportCacheLock exportCacheLock = new ExportCacheLock();
 
   @Override
@@ -184,11 +186,11 @@ public class CacheFilter implements Filter {
       }
       if (cache == null) {
         // Request-level cache when not exporting
-        SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+        SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
         if (ConcurrencyCoordinator.useConcurrentSubrequests(request)) {
-          cache = new ConcurrentCache(semanticCMS);
+          cache = new ConcurrentCache(semanticCms);
         } else {
-          cache = new SingleThreadCache(semanticCMS);
+          cache = new SingleThreadCache(semanticCms);
         }
       }
       try {

@@ -52,7 +52,7 @@ public final class PageDags {
       CaptureLevel level
   ) throws ServletException, IOException {
     final List<Page> list = new ArrayList<>();
-    final SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+    final SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
     CapturePage.traversePagesDepthFirst(
         servletContext,
         request,
@@ -65,7 +65,7 @@ public final class PageDags {
         },
         Page::getChildRefs,
         // Child is in accessible book
-        childPage -> semanticCMS.getBook(childPage.getBookRef()).isAccessible(),
+        childPage -> semanticCms.getBook(childPage.getBookRef()).isAccessible(),
         null
     );
     return Collections.unmodifiableList(list);

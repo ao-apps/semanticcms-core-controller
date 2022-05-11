@@ -40,8 +40,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper utilities for resolving {@link ResourceRef ResourceRefs}.
- *
+ * <p>
  * TODO: Parts of this go to pages-local?
+ * </p>
  */
 public final class ResourceRefResolver {
 
@@ -86,13 +87,13 @@ public final class ResourceRefResolver {
       if (domain != null && book == null) {
         throw new IllegalArgumentException("book is required when domain is provided.");
       }
-      SemanticCMS semanticCMS = SemanticCMS.getInstance(servletContext);
+      SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
       if (book == null) {
         assert domain == null;
         // When book not provided, path is relative to current page
         String currentPagePath = Dispatcher.getCurrentPagePath(request);
         // TODO: get local book distinct from get published book, for local content that is not published
-        Book currentBook = semanticCMS.getPublishedBook(currentPagePath);
+        Book currentBook = semanticCms.getPublishedBook(currentPagePath);
         if (currentBook == null) {
           throw new ServletException("book attribute required when not in a book's content: " + currentPagePath);
         }
@@ -120,7 +121,7 @@ public final class ResourceRefResolver {
         if (domain == null) {
           String currentPagePath = Dispatcher.getCurrentPagePath(request);
           // TODO: get local book distinct from get published book, for local content that is not published
-          Book currentBook = semanticCMS.getPublishedBook(currentPagePath);
+          Book currentBook = semanticCms.getPublishedBook(currentPagePath);
           if (currentBook == null) {
             throw new ServletException("domain attribute required when not in a book's content: " + currentPagePath);
           }
@@ -130,7 +131,7 @@ public final class ResourceRefResolver {
         // Make sure book exists
         try {
           return new ResourceRef(
-              semanticCMS.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
+              semanticCms.getBook(bookRef).getBookRef(), // Use BookRef from Book, since it is a shared long-lived object
               Path.valueOf(path)
           );
         } catch (NoSuchElementException e) {

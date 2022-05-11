@@ -31,16 +31,17 @@ import javax.servlet.ServletException;
 
 /**
  * A page cache that is thread safe through concurrent collections.
- *
+ * <p>
  * Is currently still synchronized on parent-child verifications, which only occurs on put.
+ * </p>
  */
 class ConcurrentCache extends MapCache {
 
   private final ConcurrentMap<String, Object> concurrentAttributes;
 
-  ConcurrentCache(SemanticCMS semanticCMS) {
+  ConcurrentCache(SemanticCMS semanticCms) {
     super(
-        semanticCMS,
+        semanticCms,
         new ConcurrentHashMap<>(),
         VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
         VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS ? new HashMap<>() : null,
@@ -68,6 +69,8 @@ class ConcurrentCache extends MapCache {
   }
 
   /**
+   * {@inheritDoc}
+   *
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @Override
