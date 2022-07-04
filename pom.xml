@@ -48,7 +48,7 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
     <commons-lang3.version>3.12.0</commons-lang3.version>
   </properties>
 
-  <name>SemanticCMS Core Controller²</name>
+  <name>SemanticCMS Core Controller</name>
   <url>https://semanticcms.com/core/controller/</url>
   <description>Serves SemanticCMS content from a Servlet environment.</description>
   <inceptionYear>2013</inceptionYear>
