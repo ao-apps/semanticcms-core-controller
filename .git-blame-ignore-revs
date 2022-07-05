@@ -8,23 +8,37 @@
 #
 # $ git config blame.ignoreRevsFile .git-blame-ignore-revs
 
+############################
+# semanticcms-core-servlet #
+############################
+
+# PageContext moved to new semanticcms-core-pages-local module
+2daba56c045179a7675097204ab3f8bbbd348883
+
+# Converted remaining four-space indents to our standard tab indent.
+66e7073c6112bc6d1d60e0688c603e72e4bff432
+
+###############################
+# semanticcms-core-controller #
+###############################
+
 # Significant manual code formatting clean-up…
-900754ec1161a7e0133329f445f21f2d5d0de10c
+ed84a350ffc9c2c003cdf7484e9ce97fff7540b2
 
 # Removed trailing whitespace
-4d0dde50ad64f1594c74237d4cf2e3f116d0144a
+14e88fb8a050513468b0c0ff24c8206c3360189d
 
 # Tab indentation and UNIX newlines
-eb1811b4f1cef82e137520aff92bb08702008f7a
+04fe559c6f51130fbb722a3bbb50773d6ca0c9c2
 
 # Tab indent
-2e4c0a8ed81968b99b94221e70c0e0482578af6b
+d35703d2db5b7ec13bef4e298774c9ac665f1430
 
 # Performed automatic source code clean-up with rewrite-maven-plugin
-ea2d94a4abb476c2f6df29d36a7cac3b1cc88e68
+4036582438d9aba0d87fe04cc421c3212bb9ba09
 
 # Performed automatic clean-up with org.openrewrite.java.cleanup.Cleanup
-68387f503b90808a8227c91d0ac8ee79b92b634a
+a839130034d644b1d3140a8259091c33a7e48238
 
 # Performed manual checkstyle clean-up
-a6b4402b2488fc6b48fb92b120e561b34ed59392
+22cd0bb863957979df2268ea5d2f40a2e269abaf
