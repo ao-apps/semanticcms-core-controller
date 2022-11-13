@@ -8,21 +8,20 @@
 #
 # $ git config blame.ignoreRevsFile .git-blame-ignore-revs
 
-############################
-# semanticcms-core-servlet #
-############################
-
 # Significant manual code formatting clean-up…
 5d100e22b532557b26bcfeed25598a3d46f9b7b0
 9d3b5f2711719a4d745105ae80a615d8e5bdacae
+ed84a350ffc9c2c003cdf7484e9ce97fff7540b2
 
 # Removed trailing whitespace
 551e214861711039830c92d0a0e53cb7131e8f9f
 f2075c256244e730fc6f016116a4ebbd7dab0adb
+14e88fb8a050513468b0c0ff24c8206c3360189d
 
 # Tab indent
 9f74530865b680198a47b1f6f8dc1cbec5acd6a3
 4d30288fb381902cb750290ebccdf4a763ce7ce3
+d35703d2db5b7ec13bef4e298774c9ac665f1430
 
 # PageContext moved to new semanticcms-core-pages-local module
 b6cc2ea5071c09c9ec86fb48e1e314607956ff87
@@ -36,36 +35,17 @@ cd90779c49b04f315b0553e14be8e8d04c5b25f6
 # Performed automatic source code clean-up with rewrite-maven-plugin
 e91d75031c20d3e95d66f9a2e5238cc911616055
 51e52c70612575b227df6c9efa05fc096d9acc00
+4036582438d9aba0d87fe04cc421c3212bb9ba09
 
 # Performed automatic clean-up with org.openrewrite.java.cleanup.Cleanup
 200da68805dc1a22a976eed9177fd8d568a446b5
 27d2a4368995e35d3a8c8bd91fe645e4bd5ee4c6
+a839130034d644b1d3140a8259091c33a7e48238
 
 # Performed manual checkstyle clean-up
 38cfeea43e41c41a61580e640c11491172ae6a95
 d0ae5d42d966812468e3a4a9029928a38dfb7805
-
-###############################
-# semanticcms-core-controller #
-###############################
-
-# Significant manual code formatting clean-up…
-ed84a350ffc9c2c003cdf7484e9ce97fff7540b2
-
-# Removed trailing whitespace
-14e88fb8a050513468b0c0ff24c8206c3360189d
+22cd0bb863957979df2268ea5d2f40a2e269abaf
 
 # Tab indentation and UNIX newlines
 04fe559c6f51130fbb722a3bbb50773d6ca0c9c2
-
-# Tab indent
-d35703d2db5b7ec13bef4e298774c9ac665f1430
-
-# Performed automatic source code clean-up with rewrite-maven-plugin
-4036582438d9aba0d87fe04cc421c3212bb9ba09
-
-# Performed automatic clean-up with org.openrewrite.java.cleanup.Cleanup
-a839130034d644b1d3140a8259091c33a7e48238
-
-# Performed manual checkstyle clean-up
-22cd0bb863957979df2268ea5d2f40a2e269abaf
