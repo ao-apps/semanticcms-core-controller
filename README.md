@@ -23,7 +23,7 @@ Serves [SemanticCMS](https://github.com/ao-apps/semanticcms) content from a Serv
 * [Project Home](https://semanticcms.com/core/controller/)
 * [Changelog](https://semanticcms.com/core/controller/changelog)
 * [API Docs](https://semanticcms.com/core/controller/apidocs/)
-* [Maven Central Repository](https://search.maven.org/artifact/com.semanticcms/semanticcms-core-controller)
+* [Maven Central Repository](https://central.sonatype.com/search?namespace=com.semanticcms&q=a%3Asemanticcms-core-controller)
 * [GitHub](https://github.com/ao-apps/semanticcms-core-controller)
 
 ## Contact Us
