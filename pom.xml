@@ -39,10 +39,6 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
 / <a target="${javadoc.target}" href="https://semanticcms.com/core/">Core</a>
 / <a target="${javadoc.target}" href="${project.url}">Controller</a>]]></javadoc.breadcrumbs>
     <description.html><![CDATA[Serves <a target="${javadoc.target}" href="https://semanticcms.com/">SemanticCMS</a> content from a Servlet environment.]]></description.html>
-    <!-- SonarQube -->
-    <sonar.projectKey>${project.groupId}:${project.artifactId}</sonar.projectKey>
-    <sonar.organization>ao-apps</sonar.organization>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <!-- TODO: Implement tests -->
     <sonar.coverage.exclusions>**.*</sonar.coverage.exclusions>
     <!-- Dependencies -->
