@@ -523,9 +523,9 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
         <groupId>com.aoapps</groupId><artifactId>ao-web-resources-registry</artifactId><version>0.4.0${POST-SNAPSHOT}</version>
       </dependency>
       <!-- javaee-web-api-bom: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
-      <!-- BOM -->
+      <!-- Imports -->
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1${POST-SNAPSHOT}</version>
+        <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1-POST-SNAPSHOT</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -618,6 +618,12 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
     <dependency>
       <groupId>com.semanticcms</groupId><artifactId>semanticcms-resources-union</artifactId>
       <optional>true</optional>
+    </dependency>
+    <!-- Imports (Reactor build order only) -->
+    <dependency>
+      <groupId>com.aoapps</groupId><artifactId>javaee-web-api-bom</artifactId><version>7.0.1-POST-SNAPSHOT</version>
+      <type>pom</type>
+      <exclusions><exclusion><artifactId>*</artifactId><groupId>*</groupId></exclusion></exclusions>
     </dependency>
   </dependencies>
 </project>
