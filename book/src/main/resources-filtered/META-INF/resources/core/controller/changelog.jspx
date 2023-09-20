@@ -37,7 +37,7 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
     shortTitle="Changelog"
     tocLevels="1"
     datePublished="2017-08-26T19:19:43-05:00"
-    dateModified="2021-06-27T16:13:41-05:00"
+    dateModified="2023-09-20T00:18:05Z"
   >
     <c:set var="latestRelease" value="TODO" />
     <c:if test="${
@@ -80,7 +80,7 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
           </li>
           <li><code>book.cvsworkDirectory</code> is now optional in <code>books.xml</code></li>
           <li>
-            Activated new filter <ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com.aoapps.servlet.lastmodified/com/aoapps/servlet/lastmodified/LastModifiedCacheControlFilter.html">LastModifiedCacheControlFilter</ao:a>
+            Activated new filter <ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com.aoapps.servlet.lastmodified/com/aoapps/servlet/lastmodified/LastModifiedHeaderFilter.html">LastModifiedHeaderFilter</ao:a>
             that adds a <ao:a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">cache-control</ao:a> header to any request with a
             <ao:a href="https://oss.aoapps.com/servlet-last-modified/apidocs/com.aoapps.servlet.lastmodified/com/aoapps/servlet/lastmodified/LastModifiedServlet.html#LAST_MODIFIED_PARAMETER_NAME">LAST_MODIFIED_PARAMETER_NAME</ao:a>
             parameter.  Defaults to a very aggressive setting of public, one-year, allowing stale, and immutable.
