@@ -523,6 +523,7 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-web-resources-registry</artifactId><version>0.6.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
       </dependency>
+      <!-- javaee-web-api-bom: <groupId>javax.el</groupId><artifactId>javax.el-api</artifactId> -->
       <!-- javaee-web-api-bom: <groupId>javax.servlet.jsp</groupId><artifactId>javax.servlet.jsp-api</artifactId> -->
       <!-- Imports -->
       <dependency>
