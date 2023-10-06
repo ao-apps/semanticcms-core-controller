@@ -255,7 +255,7 @@ public final class PageUtils {
   }
 
   // TODO: This should go where?  Picking up dependency on controller for this alone is too much
-  public static ReadableDateTime toDateTime(Object o) throws IOException {
+  public static ReadableDateTime toDateTime(Object o) {
     if (o instanceof ReadableDateTime) {
       return (ReadableDateTime) o;
     }
