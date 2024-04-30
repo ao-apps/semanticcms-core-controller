@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -181,6 +181,18 @@ public abstract class Cache {
   public abstract void setAttribute(String key, Object value);
 
   /**
+   * Constrains allowed exception type.
+   *
+   * @param  <Ex>  An arbitrary exception type that may be thrown
+   */
+  @FunctionalInterface
+  // TODO: Ex extends Throwable
+  public static interface Callable<V, Ex extends Exception> extends java.util.concurrent.Callable<V> {
+    @Override
+    public V call() throws Ex;
+  }
+
+  /**
    * Gets a cache attribute or null if not in cache.
    */
   public abstract Object getAttribute(String key);
@@ -191,18 +203,6 @@ public abstract class Cache {
    */
   public <V> V getAttribute(String key, Class<V> clazz) {
     return clazz.cast(getAttribute(key));
-  }
-
-  /**
-   * Constrains allowed exception type.
-   *
-   * @param  <Ex>  An arbitrary exception type that may be thrown
-   */
-  @FunctionalInterface
-  // TODO: Ex extends Throwable
-  public static interface Callable<V, Ex extends Exception> extends java.util.concurrent.Callable<V> {
-    @Override
-    public V call() throws Ex;
   }
 
   /**
