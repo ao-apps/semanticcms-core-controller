@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2017, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -40,9 +40,8 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper utilities for resolving {@link ResourceRef ResourceRefs}.
- * <p>
- * TODO: Parts of this go to pages-local?
- * </p>
+ *
+ * <p>TODO: Parts of this go to pages-local?</p>
  */
 public final class ResourceRefResolver {
 
@@ -53,17 +52,14 @@ public final class ResourceRefResolver {
 
   /**
    * Resolves a {@link ResourceRef}.
-   * <p>
-   * When domain is provided, book is required.  When domain is not provided,
-   * defaults to the domain of the current page.
-   * </p>
-   * <p>
-   * When book is not provided, defaults to the book of the current page.
-   * </p>
-   * <p>
-   * When book is not provided, path may be book-relative path, which will be interpreted relative
-   * to the current page.
-   * </p>
+   *
+   * <p>When domain is provided, book is required.  When domain is not provided,
+   * defaults to the domain of the current page.</p>
+   *
+   * <p>When book is not provided, defaults to the book of the current page.</p>
+   *
+   * <p>When book is not provided, path may be book-relative path, which will be interpreted relative
+   * to the current page.</p>
    *
    * @param  path  required non-empty
    *

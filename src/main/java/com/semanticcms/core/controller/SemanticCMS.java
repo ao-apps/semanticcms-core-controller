@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -63,10 +63,9 @@ import org.xml.sax.SAXException;
 
 /**
  * The SemanticCMS application context.
- * <p>
- * TODO: Consider custom EL resolver for this variable.
- * http://stackoverflow.com/questions/5016965/how-to-add-a-custom-variableresolver-in-pure-jsp
- * </p>
+ *
+ * <p>TODO: Consider custom EL resolver for this variable.
+ * http://stackoverflow.com/questions/5016965/how-to-add-a-custom-variableresolver-in-pure-jsp</p>
  */
 public class SemanticCMS {
 
@@ -378,18 +377,16 @@ public class SemanticCMS {
   /**
    * A published book is one that is served by the local web application.
    * Its content may or may not be generated locally.
-   * <p>
-   * Its content may also be inaccessible/missing, which can serve as a placeholder
-   * for future content or allow for maintenance of parts of a site.
-   * </p>
-   * <p>
-   * There may exist books that are generated locally, but not published.
+   *
+   * <p>Its content may also be inaccessible/missing, which can serve as a placeholder
+   * for future content or allow for maintenance of parts of a site.</p>
+   *
+   * <p>There may exist books that are generated locally, but not published.
    * In this configuration, the local book is used for captures, while links
    * may be optionally generated to an external base.  This is one option to
    * integrate content between sites while avoiding real-time cross-server communication,
    * but at the cost of the two versions may get out of sync or be deployed separately.
-   * Consider using with autogit modules.
-   * </p>
+   * Consider using with autogit modules.</p>
    *
    * @see  #getPublishedBook(java.lang.String)
    * @see  #getPublishedBook(javax.servlet.http.HttpServletRequest)
@@ -402,11 +399,11 @@ public class SemanticCMS {
    * Gets the published book for the provided context-relative servlet path or {@code null} if no book published at that path.
    * The book with the longest prefix match is used, matched along segments only (along '/' boundaries).
    * The servlet path must begin with a slash (/).
-   * <p>
-   * Please note the book may be {@link Book#isAccessible() inaccessible}.
-   * </p>
-   * TODO: Support mount point different than name?
-   * TODO: How to return null at local-but-not-published books.
+   *
+   * <p>Please note the book may be {@link Book#isAccessible() inaccessible}.</p>
+   *
+   * <pre>TODO: Support mount point different than name?
+   * TODO: How to return null at local-but-not-published books.</pre>
    *
    * @see  #getPublishedBooks()
    * @see  #getPublishedBook(javax.servlet.http.HttpServletRequest)
@@ -437,9 +434,8 @@ public class SemanticCMS {
 
   /**
    * Gets the published book for the provided request or <code>null</code> if no book published at the current request path.
-   * <p>
-   * Please note the book may be {@link Book#isAccessible() inaccessible}.
-   * </p>
+   *
+   * <p>Please note the book may be {@link Book#isAccessible() inaccessible}.</p>
    *
    * @see  #getPublishedBooks()
    * @see  Dispatcher#getCurrentPagePath(javax.servlet.http.HttpServletRequest)
@@ -459,14 +455,12 @@ public class SemanticCMS {
 
   /**
    * Gets the root book as configured in <code>/WEB-INF/books.xml</code>.
-   * <p>
-   * The root book will always be {@link Book#isAccessible() accessible}.
-   * TODO: Can this be enforced in the XML Schema for books.xml?
-   * </p>
-   * <p>
-   * The root book may or may not be {@link #getPublishedBooks() published} by the local
-   * server.
-   * </p>
+   *
+   * <p>The root book will always be {@link Book#isAccessible() accessible}.
+   * TODO: Can this be enforced in the XML Schema for books.xml?</p>
+   *
+   * <p>The root book may or may not be {@link #getPublishedBooks() published} by the local
+   * server.</p>
    */
   public Book getRootBook() {
     assert rootBook.isAccessible();
@@ -499,10 +493,9 @@ public class SemanticCMS {
 
   /**
    * A shared executor available to all components.
-   * <p>
-   * Consider selecting concurrent or sequential implementations based on overall system load.
-   * See {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}.
-   * </p>
+   *
+   * <p>Consider selecting concurrent or sequential implementations based on overall system load.
+   * See {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}.</p>
    *
    * @see  ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
    */
@@ -534,9 +527,8 @@ public class SemanticCMS {
    * Gets the mapping of all configured renderers, key is suffix, value is renderer.
    * A renderer may exist under multiple suffixes, but only one unique renderer may be
    * associated with each suffix.
-   * <p>
-   * The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.
-   * </p>
+   *
+   * <p>The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.</p>
    *
    * @see  #getRendererAndPath(com.aoapps.net.Path)
    */
@@ -554,10 +546,9 @@ public class SemanticCMS {
    * but only when no other renderer matches.  This also means that one renderer can be more
    * specific than another, such as both ".html" and ".amp.html" being registered as separate
    * renderers.
-   * <p>
-   * If the path ends with "/index" after the suffix is removed, the trailing "index" is removed.
-   * TODO: Don't end with "/" ever except root.
-   * </p>
+   *
+   * <p>If the path ends with "/index" after the suffix is removed, the trailing "index" is removed.
+   * TODO: Don't end with "/" ever except root.</p>
    *
    * @return  The matched renderer and trimmed path, or {@code null} if none found
    */

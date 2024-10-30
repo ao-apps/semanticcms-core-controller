@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -59,10 +59,9 @@ import javax.servlet.ServletContext;
 
 /**
  * A book where the pages in invoked locally.
- * <p>
- * TODO: Flags to enable JSPX, JSP, and Servlet repositories.  In properties file,
- *       defaulting to ?
- * </p>
+ *
+ * <p>TODO: Flags to enable JSPX, JSP, and Servlet repositories.  In properties file,
+ *       defaulting to ?</p>
  */
 public class ServletBook extends Book {
 

@@ -33,9 +33,9 @@ import javax.servlet.ServletException;
 /**
  * A caching cache, whether shared between requests or used within the scope of
  * a single request.
- * <p>
- * The thread safety will be the minimum needed for the expected usage.
- * </p>
+ *
+ * <p>The thread safety will be the minimum needed for the expected usage.</p>
+ *
  * <ol>
  *   <li>Thread safe for caches shared between requests.</li>
  *   <li>Thread safe for caches used in requests that may use concurrent subrequests.</li>
@@ -48,18 +48,16 @@ public abstract class Cache {
 
   /**
    * Enables the page parent-child relationships verification.
-   * <p>
-   * This does not measurably affect performance; just leave it on.
-   * </p>
+   *
+   * <p>This does not measurably affect performance; just leave it on.</p>
    */
   protected static final boolean VERIFY_CACHE_PARENT_CHILD_RELATIONSHIPS = true;
 
   /**
    * Caches pages that have been captured within the scope of a single request.
-   * <p>
-   * IDEA: Could also cache over time, since there is currently no concept of a "user" (except whether request is trusted
-   *       127.0.0.1 or not).
-   * </p>
+   *
+   * <p>IDEA: Could also cache over time, since there is currently no concept of a "user" (except whether request is trusted
+   *       127.0.0.1 or not).</p>
    */
   static class CaptureKey {
 

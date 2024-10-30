@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2018, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2018, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -31,9 +31,8 @@ import javax.servlet.ServletException;
 
 /**
  * A page cache that is thread safe through concurrent collections.
- * <p>
- * Is currently still synchronized on parent-child verifications, which only occurs on put.
- * </p>
+ *
+ * <p>Is currently still synchronized on parent-child verifications, which only occurs on put.</p>
  */
 class ConcurrentCache extends MapCache {
 

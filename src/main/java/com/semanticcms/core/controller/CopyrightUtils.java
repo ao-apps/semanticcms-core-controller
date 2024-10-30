@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -47,23 +47,18 @@ public final class CopyrightUtils {
   }
 
   /**
-   * <p>
    * Finds the effective copyright for the given page or null if none.
    * If a copyright is returned, all fields in the resulting copyright will be
    * non-null since all inheriting has been completed.
-   * </p>
-   * <p>
-   * Any field not set (or set to null) will be inherited from the parent(s) in the same book.
-   * Any field set to "" will have no value and not inherit from parents.
-   * </p>
-   * <p>
-   * If there are no parent pages in this same book, uses the fields from the book's copyright.
-   * </p>
-   * <p>
-   * When inheriting a field from multiple parent pages, the field must
+   *
+   * <p>Any field not set (or set to null) will be inherited from the parent(s) in the same book.
+   * Any field set to "" will have no value and not inherit from parents.</p>
+   *
+   * <p>If there are no parent pages in this same book, uses the fields from the book's copyright.</p>
+   *
+   * <p>When inheriting a field from multiple parent pages, the field must
    * have exactly the same value in all parents.  Any mismatch in value
-   * will result in an exception.
-   * </p>
+   * will result in an exception.</p>
    */
   public static Copyright findCopyright(
       ServletContext servletContext,

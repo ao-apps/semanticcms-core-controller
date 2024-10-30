@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2017, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -109,20 +109,17 @@ public class MissingBook extends Book {
   /**
    * Gets the base for this book, or {@code null} if not
    * configured.
-   * <p>
-   * When no base is defined (is {@code null}), links to missing pages will be
+   *
+   * <p>When no base is defined (is {@code null}), links to missing pages will be
    * generated within the current webapp context.  Links within webapp context
-   * are response encoded.
-   * </p>
-   * <p>
-   * When the base is defined, any trailing slash (/) has been stripped from the base
+   * are response encoded.</p>
+   *
+   * <p>When the base is defined, any trailing slash (/) has been stripped from the base
    * so can directly concatenate base + path.  Links to base are not response encoded,
-   * even when going to the same server or webapp context.
-   * </p>
-   * <p>
-   * This may be an empty string, which represents the server root.  Not to be
-   * confused with {@code null} which means no base defined.
-   * </p>
+   * even when going to the same server or webapp context.</p>
+   *
+   * <p>This may be an empty string, which represents the server root.  Not to be
+   * confused with {@code null} which means no base defined.</p>
    */
   public String getBase() {
     return base;

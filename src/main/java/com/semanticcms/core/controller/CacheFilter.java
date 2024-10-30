@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -71,9 +71,8 @@ public class CacheFilter implements Filter {
    * To speed up an export, the elements are cached between requests.
    * The first non-exporting request will clear this cache, and it will also
    * be removed after a given number of seconds.
-   * <p>
-   * TODO: Consider consequences of caching once we have a security model applied
-   * </p>
+   *
+   * <p>TODO: Consider consequences of caching once we have a security model applied</p>
    */
   private static class ExportPageCache {
 

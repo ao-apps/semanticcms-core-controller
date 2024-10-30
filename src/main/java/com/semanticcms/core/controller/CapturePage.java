@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -81,10 +81,9 @@ public final class CapturePage {
    * Captures a page.
    * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
    * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
-   * <p>
-   * TODO: Within the scope of one request and cache, avoid capturing the same page at the same time (CurrencyLimiter applied to sub requests),
-   * is there a reasonable way to catch deadlock conditions?
-   * </p>
+   *
+   * <p>TODO: Within the scope of one request and cache, avoid capturing the same page at the same time (CurrencyLimiter applied to sub requests),
+   * is there a reasonable way to catch deadlock conditions?</p>
    *
    * @param level  The minimum page capture level, note that a higher level might be substituted, such as a META capture in place of a PAGE request.
    *
@@ -111,10 +110,9 @@ public final class CapturePage {
    * Captures a page.
    * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
    * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
-   * <p>
-   * TODO: Support null level for non-capture fetches
-   * TODO: Rename this class to "PageCache"?
-   * </p>
+   *
+   * <p>TODO: Support null level for non-capture fetches
+   * TODO: Rename this class to "PageCache"?</p>
    *
    * @param cache  See {@link CacheFilter#getCache(javax.servlet.ServletRequest)}
    *
@@ -452,33 +450,26 @@ public final class CapturePage {
   }
 
   /**
-   * <p>
    * Performs potentially concurrent traversal of the pages in any order.
    * Each page is only visited once.
-   * </p>
-   * <p>
-   * This may at times appear to give results in a predictable order, but this must not be relied upon.
+   *
+   * <p>This may at times appear to give results in a predictable order, but this must not be relied upon.
    * For example, with all items already in cache it might end up giving results in a breadth-first order,
    * whereas the same situation on a single-CPU system might end up in a depth-first order.  The ordering
-   * is not guaranteed in any way and should not be relied upon.
-   * </p>
-   * <p>
-   * pageHandler, edges, and edgeFilter are all called on the main thread (the thread invoking this method).
-   * </p>
-   * <p>
-   * Returns when the first pageHandler returns a non-null object.
+   * is not guaranteed in any way and should not be relied upon.</p>
+   *
+   * <p>pageHandler, edges, and edgeFilter are all called on the main thread (the thread invoking this method).</p>
+   *
+   * <p>Returns when the first pageHandler returns a non-null object.
    * Once a pageHandler returns non-null, no other pageHandler,
-   * edges, or edgeFilter will be called.
-   * </p>
-   * <p>
-   * Due to pageHandlers, edges, and edgeFilter all being called on the main thread, slow implementations
+   * edges, or edgeFilter will be called.</p>
+   *
+   * <p>Due to pageHandlers, edges, and edgeFilter all being called on the main thread, slow implementations
    * of these methods may limit effective concurrency.  A future improvement might be to allow for concurrent
-   * execution of handlers.
-   * </p>
-   * <p>
-   * If a page is already in the cache, it is fetched directly instead of passed-off to a separate
-   * thread for capture.  Thus, if all is cached, this method will not perform with any concurrency.
-   * </p>
+   * execution of handlers.</p>
+   *
+   * <p>If a page is already in the cache, it is fetched directly instead of passed-off to a separate
+   * thread for capture.  Thus, if all is cached, this method will not perform with any concurrency.</p>
    *
    * @param level        The captureLevel.  A higher captureLevel may be returned when it is available, such
    *                     as a META capture in place of a PAGE request.
@@ -823,27 +814,21 @@ public final class CapturePage {
   }
 
   /**
-   * <p>
    * Performs a consistent-ordered, potentially concurrent, depth-first traversal of the pages.
    * Each page is only visited once.
-   * </p>
-   * <p>
-   * preHandler, edges, edgeFilter, and postHandler are all called on the main thread (the thread invoking this method).
-   * </p>
-   * <p>
-   * Returns when the first preHandler or postHandler returns a non-null object.
+   *
+   * <p>preHandler, edges, edgeFilter, and postHandler are all called on the main thread (the thread invoking this method).</p>
+   *
+   * <p>Returns when the first preHandler or postHandler returns a non-null object.
    * Once a preHandler or postHandler returns non-null, no other preHandler,
-   * edges, edgeFilter, or postHandler will be called.
-   * </p>
-   * <p>
-   * Due to preHandlers, edges, edgeFilter, and postHandler all being called on the main thread, slow implementations
+   * edges, edgeFilter, or postHandler will be called.</p>
+   *
+   * <p>Due to preHandlers, edges, edgeFilter, and postHandler all being called on the main thread, slow implementations
    * of these methods may limit effective concurrency.  A future improvement might be to allow for concurrent
-   * execution of handlers.
-   * </p>
-   * <p>
-   * If a page is already in the cache, it is fetched directly instead of passed-off to a separate
-   * thread for capture.  Thus, if all is cached, this method will not perform with any concurrency.
-   * </p>
+   * execution of handlers.</p>
+   *
+   * <p>If a page is already in the cache, it is fetched directly instead of passed-off to a separate
+   * thread for capture.  Thus, if all is cached, this method will not perform with any concurrency.</p>
    *
    * @param level        The captureLevel.  A higher captureLevel may be returned when it is available, such
    *                     as a META capture in place of a PAGE request.

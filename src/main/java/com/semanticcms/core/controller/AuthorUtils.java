@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -50,20 +50,16 @@ public final class AuthorUtils {
   }
 
   /**
-   * <p>
    * Finds all the authors for the given page.
-   * </p>
-   * <p>
-   * When no authors provided, will use the author(s) of any parent
+   *
+   * <p>When no authors provided, will use the author(s) of any parent
    * page that is within the same book.  If there are no parent pages
-   * in this same book, uses the book's authors.
-   * </p>
-   * <p>
-   * When inheriting authorship from multiple parent pages, the authors must
+   * in this same book, uses the book's authors.</p>
+   *
+   * <p>When inheriting authorship from multiple parent pages, the authors must
    * be in exact agreement.  This means exactly the same order and all
    * values matching precisely.  Any mismatch in authors will result in
-   * an exception.
-   * </p>
+   * an exception.</p>
    */
   public static Set<Author> findAuthors(
       ServletContext servletContext,

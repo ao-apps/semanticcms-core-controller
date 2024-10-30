@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -121,20 +121,16 @@ public final class PageUtils {
   }
 
   /**
-   * <p>
    * Finds the allowRobots setting for the given page.
-   * </p>
-   * <p>
-   * When no allowRobots provided, will use the allowRobots(s) of any parent
+   *
+   * <p>When no allowRobots provided, will use the allowRobots(s) of any parent
    * page that is within the same book.  If there are no parent pages
-   * in this same book, uses the book's allowRobots.
-   * </p>
-   * <p>
-   * When inheriting allowRobots from multiple parent pages, the allowRobots must
+   * in this same book, uses the book's allowRobots.</p>
+   *
+   * <p>When inheriting allowRobots from multiple parent pages, the allowRobots must
    * be in exact agreement.  This means exactly the same order and all
    * values matching precisely.  Any mismatch in allowRobots will result in
-   * an exception.
-   * </p>
+   * an exception.</p>
    */
   public static boolean findAllowRobots(
       ServletContext servletContext,

@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -52,10 +52,9 @@ public final class BookUtils {
    * Gets the canonical base URL, not including any trailing slash, such as
    * <code>https://example.com</code>
    * This is configured in the book via the "canonicalBase" setting.
-   * <p>
-   * TODO: Create central per-request warnings list that could be reported during development mode, include this warning on requests.
-   * TODO: Also could use that for broken link detection instead of throwing exceptions.
-   * </p>
+   *
+   * <p>TODO: Create central per-request warnings list that could be reported during development mode, include this warning on requests.
+   * TODO: Also could use that for broken link detection instead of throwing exceptions.</p>
    */
   public static String getCanonicalBase(ServletContext servletContext, HttpServletRequest request, Book book) {
     String canonicalBase = book.getCanonicalBase();
