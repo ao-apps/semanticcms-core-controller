@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -557,12 +557,12 @@ public final class CapturePage {
     // Find the executor
     final Executor concurrentSubrequestExecutor;
     final int preferredConcurrency;
-      { // Scoping block
-        final Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
-        concurrentSubrequestExecutor = executors.getPerProcessor();
-        preferredConcurrency = executors.getPreferredConcurrency();
-        assert preferredConcurrency > 1 : "Single-CPU systems should never make it to this concurrent implementation";
-      }
+    { // Scoping block
+      final Executors executors = SemanticCMS.getInstance(servletContext).getExecutors();
+      concurrentSubrequestExecutor = executors.getPerProcessor();
+      preferredConcurrency = executors.getPreferredConcurrency();
+      assert preferredConcurrency > 1 : "Single-CPU systems should never make it to this concurrent implementation";
+    }
     final TempFileContext tempFileContext = TempFileContextEE.get(request);
 
     int maxSize = 0;

@@ -173,54 +173,54 @@ public class SemanticCMS {
 
   private Book initBooks() throws IOException, SAXException, ParserConfigurationException, ValidationException {
     Document booksXml;
-      {
-        InputStream schemaIn10 = SemanticCMS.class.getResourceAsStream(BOOKS_XML_SCHEMA_1_0_RESOURCE);
-        if (schemaIn10 == null) {
-          throw new IOException("Schema not found: " + BOOKS_XML_SCHEMA_1_0_RESOURCE);
+    {
+      InputStream schemaIn10 = SemanticCMS.class.getResourceAsStream(BOOKS_XML_SCHEMA_1_0_RESOURCE);
+      if (schemaIn10 == null) {
+        throw new IOException("Schema not found: " + BOOKS_XML_SCHEMA_1_0_RESOURCE);
+      }
+      try {
+        InputStream schemaIn11 = SemanticCMS.class.getResourceAsStream(BOOKS_XML_SCHEMA_1_1_RESOURCE);
+        if (schemaIn11 == null) {
+          throw new IOException("Schema not found: " + BOOKS_XML_SCHEMA_1_1_RESOURCE);
         }
         try {
-          InputStream schemaIn11 = SemanticCMS.class.getResourceAsStream(BOOKS_XML_SCHEMA_1_1_RESOURCE);
-          if (schemaIn11 == null) {
-            throw new IOException("Schema not found: " + BOOKS_XML_SCHEMA_1_1_RESOURCE);
+          DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+          try {
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+          } catch (ParserConfigurationException e) {
+            throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
+          }
+          // See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
+          // See https://rules.sonarsource.com/java/RSPEC-2755
+          dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+          dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "https"); // TODO: How can avoid this while schema included in JAR?
+          dbf.setNamespaceAware(true);
+          dbf.setValidating(true);
+          dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
+          dbf.setAttribute(
+              "http://java.sun.com/xml/jaxp/properties/schemaSource",
+              new InputStream[]{
+                  schemaIn10,
+                  schemaIn11
+              }
+          );
+          DocumentBuilder db = dbf.newDocumentBuilder();
+          InputStream booksXmlIn = servletContext.getResource(BOOKS_XML_RESOURCE).openStream();
+          if (booksXmlIn == null) {
+            throw new IOException(BOOKS_XML_RESOURCE + " not found");
           }
           try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            try {
-              dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            } catch (ParserConfigurationException e) {
-              throw new AssertionError("All implementations are required to support the javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING feature.", e);
-            }
-            // See https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.md#java
-            // See https://rules.sonarsource.com/java/RSPEC-2755
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "https"); // TODO: How can avoid this while schema included in JAR?
-            dbf.setNamespaceAware(true);
-            dbf.setValidating(true);
-            dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            dbf.setAttribute(
-                "http://java.sun.com/xml/jaxp/properties/schemaSource",
-                new InputStream[]{
-                    schemaIn10,
-                    schemaIn11
-                }
-            );
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            InputStream booksXmlIn = servletContext.getResource(BOOKS_XML_RESOURCE).openStream();
-            if (booksXmlIn == null) {
-              throw new IOException(BOOKS_XML_RESOURCE + " not found");
-            }
-            try {
-              booksXml = db.parse(booksXmlIn);
-            } finally {
-              booksXmlIn.close();
-            }
+            booksXml = db.parse(booksXmlIn);
           } finally {
-            schemaIn11.close();
+            booksXmlIn.close();
           }
         } finally {
-          schemaIn10.close();
+          schemaIn11.close();
         }
+      } finally {
+        schemaIn10.close();
       }
+    }
     org.w3c.dom.Element booksElem = booksXml.getDocumentElement();
     // Load missingBooks
     for (org.w3c.dom.Element missingBookElem : XmlUtils.iterableChildElementsByTagName(booksElem, MISSING_BOOK_TAG)) {
@@ -247,30 +247,30 @@ public class SemanticCMS {
     }
     // Load books
     BookRef rootBookRef;
-      {
-        String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE);
-        Path rootBookPath = Path.valueOf(
-            Strings.nullIfEmpty(
-                booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
-            )
-        );
-        if (rootBookPath == null) {
-          throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE + "\" not found");
-        }
-        rootBookRef = new BookRef(
-            rootDomainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(rootDomainStr),
-            rootBookPath
-        );
+    {
+      String rootDomainStr = booksElem.getAttribute(ROOT_DOMAIN_ATTRIBUTE);
+      Path rootBookPath = Path.valueOf(
+          Strings.nullIfEmpty(
+              booksElem.getAttribute(ROOT_BOOK_ATTRIBUTE)
+          )
+      );
+      if (rootBookPath == null) {
+        throw new IllegalStateException(BOOKS_XML_RESOURCE + ": \"" + ROOT_BOOK_ATTRIBUTE + "\" not found");
       }
+      rootBookRef = new BookRef(
+          rootDomainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(rootDomainStr),
+          rootBookPath
+      );
+    }
     for (org.w3c.dom.Element bookElem : XmlUtils.iterableChildElementsByTagName(booksElem, BOOK_TAG)) {
       BookRef bookRef;
-        {
-          String domainStr = bookElem.getAttribute("domain");
-          bookRef = new BookRef(
-              domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
-              Path.valueOf(bookElem.getAttribute("name"))
-          );
-        }
+      {
+        String domainStr = bookElem.getAttribute("domain");
+        bookRef = new BookRef(
+            domainStr.isEmpty() ? BookRef.DEFAULT_DOMAIN : DomainName.valueOf(domainStr),
+            Path.valueOf(bookElem.getAttribute("name"))
+        );
+      }
       Set<ParentRef> parentRefs = new LinkedHashSet<>();
       for (org.w3c.dom.Element parentElem : XmlUtils.iterableChildElementsByTagName(bookElem, PARENT_TAG)) {
         String domainStr = parentElem.getAttribute("domain");
