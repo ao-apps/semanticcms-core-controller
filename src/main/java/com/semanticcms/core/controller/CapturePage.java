@@ -219,7 +219,7 @@ public final class CapturePage {
               level == CaptureLevel.BODY
                   // Perform full verification now since not interacting with the page cache
                   || level == null
-          ) && capturedPage != null
+            ) && capturedPage != null
       ) {
         PageUtils.fullVerifyParentChild(servletContext, request, response, capturedPage);
       }
@@ -626,7 +626,7 @@ public final class CapturePage {
                     && (
                     edgeFilter == null
                         || edgeFilter.applyEdge(edge)
-                )
+                  )
             ) {
               visited.add(edge);
               // Check cache before going to concurrency
@@ -926,7 +926,7 @@ public final class CapturePage {
               && (
               edgeFilter == null
                   || edgeFilter.applyEdge(edge)
-          )
+            )
       ) {
         T result = traversePagesDepthFirstRecurseSequential(
             servletContext,
