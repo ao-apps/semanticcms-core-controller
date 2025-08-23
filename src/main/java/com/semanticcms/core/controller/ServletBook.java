@@ -255,63 +255,63 @@ public class ServletBook extends Book {
   }
 
   // TODO: Move to resource store
-  //private volatile File resourceFile;
-  //// TODO: Is this cached too long now that we have higher-level caching strategies?
-  //private volatile Boolean exists;
+  // private volatile File resourceFile;
+  // // TODO: Is this cached too long now that we have higher-level caching strategies?
+  // private volatile Boolean exists;
 
   // TODO: Move to resource store
-  ///**
-  // * the underlying file, only available when have access to the referenced book.
-  // *
-  // * @param requireBook when true, will always get a File object back
-  // * @param requireFile when true, any File object returned will exist on the filesystem
-  // *
-  // * @return null if not access to book or File of resource path.
-  // */
-  //public File getPageSourceFile(String path, boolean requireBook, boolean requireFile) {
-  //  if (book == null) {
-  //    if (requireBook) {
-  //      throw new IOException("Book not found: " + bookName);
-  //    }
-  //    return null;
-  //  } else {
-  //    File rf = resourceFile;
-  //    if (rf == null) {
-  //      File cvsworkDirectory = book.getCvsworkDirectory();
-  //      // Skip past first slash
-  //      assert path.charAt(0) == '/';
-  //      int start = 1;
-  //      // Skip past any trailing slashes
-  //      int end = path.length();
-  //      while (end > start && path.charAt(end - 1) == '/') end--;
-  //      String subPath = path.substring(start, end);
-  //      // Combine paths
-  //      rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);
-  //      // The canonical file must be in the cvswork directory
-  //      String cvsworkCanonical = cvsworkDirectory.getCanonicalPath();
-  //      String cvsworkCanonicalPrefix = cvsworkCanonical + File.separatorChar;
-  //      String canonicalPath = rf.getCanonicalPath();
-  //      if (
-  //        !canonicalPath.equals(cvsworkCanonical)
-  //        && !canonicalPath.startsWith(cvsworkCanonicalPrefix)
-  //      ) {
-  //        throw new SecurityException('"' + canonicalPath + "\" is not in \"" + cvsworkCanonicalPrefix);
-  //      }
-  //      this.resourceFile = rf;
-  //    }
-  //    if (requireFile) {
-  //      Boolean e = this.exists;
-  //      if (e == null) {
-  //        e = rf.exists();
-  //        this.exists = e;
-  //      }
-  //      if (!e) {
-  //        throw new FileNotFoundException(rf.getPath());
-  //      }
-  //    }
-  //    return rf;
-  //  }
-  //}
+  // /**
+  //  * the underlying file, only available when have access to the referenced book.
+  //  *
+  //  * @param requireBook when true, will always get a File object back
+  //  * @param requireFile when true, any File object returned will exist on the filesystem
+  //  *
+  //  * @return null if not access to book or File of resource path.
+  //  */
+  // public File getPageSourceFile(String path, boolean requireBook, boolean requireFile) {
+  //   if (book == null) {
+  //     if (requireBook) {
+  //       throw new IOException("Book not found: " + bookName);
+  //     }
+  //     return null;
+  //   } else {
+  //     File rf = resourceFile;
+  //     if (rf == null) {
+  //       File cvsworkDirectory = book.getCvsworkDirectory();
+  //       // Skip past first slash
+  //       assert path.charAt(0) == '/';
+  //       int start = 1;
+  //       // Skip past any trailing slashes
+  //       int end = path.length();
+  //       while (end > start && path.charAt(end - 1) == '/') end--;
+  //       String subPath = path.substring(start, end);
+  //       // Combine paths
+  //       rf = subPath.isEmpty() ? cvsworkDirectory : new File(cvsworkDirectory, subPath);
+  //       // The canonical file must be in the cvswork directory
+  //       String cvsworkCanonical = cvsworkDirectory.getCanonicalPath();
+  //       String cvsworkCanonicalPrefix = cvsworkCanonical + File.separatorChar;
+  //       String canonicalPath = rf.getCanonicalPath();
+  //       if (
+  //         !canonicalPath.equals(cvsworkCanonical)
+  //         && !canonicalPath.startsWith(cvsworkCanonicalPrefix)
+  //       ) {
+  //         throw new SecurityException('"' + canonicalPath + "\" is not in \"" + cvsworkCanonicalPrefix);
+  //       }
+  //       this.resourceFile = rf;
+  //     }
+  //     if (requireFile) {
+  //       Boolean e = this.exists;
+  //       if (e == null) {
+  //         e = rf.exists();
+  //         this.exists = e;
+  //       }
+  //       if (!e) {
+  //         throw new FileNotFoundException(rf.getPath());
+  //       }
+  //     }
+  //     return rf;
+  //   }
+  // }
 
   /**
    * TODO: Look for index.jspx, index.jsp.  In a per-book registered, extensible way?
