@@ -49,3 +49,12 @@ d0ae5d42d966812468e3a4a9029928a38dfb7805
 
 # Tab indentation and UNIX newlines
 04fe559c6f51130fbb722a3bbb50773d6ca0c9c2
+
+# Removed unnecessary whitespace
+0e29c7b969d7f80ad09e36be9fb6856185164132
+
+# Released semanticcms-parent-book-1.20.1
+d5414e9fc586cb46f9da4adbcebbbcd48a8e522f
+
+# checkstyle-11.0.0 compatibility
+d2d01c284fad9ae8af02c568ccde520b0c8ff025
