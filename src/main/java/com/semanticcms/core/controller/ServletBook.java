@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -227,6 +227,7 @@ public class ServletBook extends Book {
         } else {
           directory = new File(resourceDirectory);
         }
+        // TODO: Require resourceDirectory directory exists and is readable for books.xml in dev mode.
         directories.add(directory);
       }
       List<ResourceStore> resourceStores = new ArrayList<>(directories.size() + 1);
