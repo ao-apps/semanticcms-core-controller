@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -35,6 +35,9 @@ import com.semanticcms.core.model.PageReferrer;
 import com.semanticcms.core.model.ParentRef;
 import com.semanticcms.core.pages.CaptureLevel;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,8 +46,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.joda.time.DateTime;
-import org.joda.time.ReadableDateTime;
 
 /**
  * Utilities for working with pages.
@@ -251,18 +252,21 @@ public final class PageUtils {
   }
 
   // TODO: This should go where?  Picking up dependency on controller for this alone is too much
-  public static ReadableDateTime toDateTime(Object o) {
-    if (o instanceof ReadableDateTime) {
-      return (ReadableDateTime) o;
+  public static ZonedDateTime toDateTime(Object o) {
+    if (o instanceof ZonedDateTime) {
+      return (ZonedDateTime) o;
+    }
+    if (o instanceof Instant) {
+      return ZonedDateTime.ofInstant((Instant) o, ZoneId.systemDefault());
     }
     if (o instanceof Long) {
       long l = (Long) o;
-      return l == -1 || l == 0 ? null : new DateTime(l);
+      return l == -1 || l == 0 ? null : ZonedDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneId.systemDefault());
     }
     if (Coercion.isEmpty(o)) {
       return null;
     }
-    return new DateTime(o);
+    return ZonedDateTime.parse(Coercion.toString(o));
   }
 
   /**
