@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -36,6 +36,7 @@ import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.servlet.impl.PageImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.ZonedDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.ServletContext;
@@ -46,7 +47,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.jsp.SkipPageException;
 import org.apache.commons.lang3.NotImplementedException;
-import org.joda.time.ReadableDateTime;
 
 public class Page {
 
@@ -56,10 +56,10 @@ public class Page {
 
   private PageRef pageRef;
 
-  private ReadableDateTime dateCreated;
-  private ReadableDateTime datePublished;
-  private ReadableDateTime dateModified;
-  private ReadableDateTime dateReviewed;
+  private ZonedDateTime dateCreated;
+  private ZonedDateTime datePublished;
+  private ZonedDateTime dateModified;
+  private ZonedDateTime dateReviewed;
 
   private Serialization serialization;
   private Doctype doctype;
@@ -109,22 +109,22 @@ public class Page {
     return this;
   }
 
-  public Page dateCreated(ReadableDateTime dateCreated) {
+  public Page dateCreated(ZonedDateTime dateCreated) {
     this.dateCreated = dateCreated;
     return this;
   }
 
-  public Page datePublished(ReadableDateTime datePublished) {
+  public Page datePublished(ZonedDateTime datePublished) {
     this.datePublished = datePublished;
     return this;
   }
 
-  public Page dateModified(ReadableDateTime dateModified) {
+  public Page dateModified(ZonedDateTime dateModified) {
     this.dateModified = dateModified;
     return this;
   }
 
-  public Page dateReviewed(ReadableDateTime dateReviewed) {
+  public Page dateReviewed(ZonedDateTime dateReviewed) {
     this.dateReviewed = dateReviewed;
     return this;
   }

@@ -53,6 +53,7 @@ import com.semanticcms.core.servlet.Theme;
 import com.semanticcms.core.servlet.View;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -62,7 +63,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.SkipPageException;
-import org.joda.time.ReadableDateTime;
 
 public final class PageImpl {
 
@@ -194,10 +194,10 @@ public final class PageImpl {
       final HttpServletRequest request,
       final HttpServletResponse response,
       PageRef pageRef,
-      ReadableDateTime dateCreated,
-      ReadableDateTime datePublished,
-      ReadableDateTime dateModified,
-      ReadableDateTime dateReviewed,
+      ZonedDateTime dateCreated,
+      ZonedDateTime datePublished,
+      ZonedDateTime dateModified,
+      ZonedDateTime dateReviewed,
       Serialization serialization,
       Doctype doctype,
       Boolean autonli,
