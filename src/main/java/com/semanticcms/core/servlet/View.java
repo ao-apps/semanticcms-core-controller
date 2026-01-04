@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,6 +32,11 @@ import com.semanticcms.core.model.Author;
 import com.semanticcms.core.model.Copyright;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.SkipPageException;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -39,11 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.SkipPageException;
 
 /**
  * A site may provide multiple views of the data.  Except the default content view,
@@ -220,12 +220,12 @@ public abstract class View implements Comparable<View> {
    * Gets the canonical URL for the given page in this view.
    * Can not get canonical URLs for missing books.
    * This might be called even when a page is not applicable to this view, such as when browing to an empty TODO list.
-   * By default, {@link #getLinkParams(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page) link parameters}
+   * By default, {@link #getLinkParams(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page) link parameters}
    * are not added.
    *
    * <p>This URL is absolute and has already been response encoded.</p>
    *
-   * @see  BookUtils#getCanonicalBase(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.semanticcms.core.model.Book)
+   * @see  BookUtils#getCanonicalBase(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.semanticcms.core.model.Book)
    */
   public String getCanonicalUrl(
       ServletContext servletContext,
@@ -289,7 +289,7 @@ public abstract class View implements Comparable<View> {
   /**
    * Gets the copyright information for the view on the given page.
    *
-   * @see  CopyrightUtils#findCopyright(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page)
+   * @see  CopyrightUtils#findCopyright(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page)
    */
   public Copyright getCopyright(
       ServletContext servletContext,
@@ -303,7 +303,7 @@ public abstract class View implements Comparable<View> {
   /**
    * Gets the author(s) for the view on the given page.
    *
-   * @see  AuthorUtils#findAuthors(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page)
+   * @see  AuthorUtils#findAuthors(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page)
    */
   public Set<Author> getAuthors(
       ServletContext servletContext,
@@ -358,9 +358,9 @@ public abstract class View implements Comparable<View> {
    * in the order they should be added.
    *
    * <p>Please note, that any links to stylesheets here are never optimized.  Please
-   * prefer {@link #configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)}.</p>
+   * prefer {@link #configureResources(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)}.</p>
    *
-   * @see  #configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)
+   * @see  #configureResources(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)
    */
   public Collection<Link> getLinks(
       ServletContext servletContext,

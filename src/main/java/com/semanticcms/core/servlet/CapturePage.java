@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -51,6 +51,12 @@ import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.model.PageReferrer;
 import com.semanticcms.core.servlet.impl.PageImpl;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.jsp.SkipPageException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,12 +72,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.SkipPageException;
 
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
 public final class CapturePage {
@@ -123,7 +123,7 @@ public final class CapturePage {
    * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
    * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
    *
-   * @param cache  See {@link CacheFilter#getCache(javax.servlet.ServletRequest)}
+   * @param cache  See {@link CacheFilter#getCache(jakarta.servlet.ServletRequest)}
    */
   public static Page capturePage(
       ServletContext servletContext,
@@ -244,7 +244,7 @@ public final class CapturePage {
    * The capture is always done with a request method of "GET", even when the enclosing request is a different method.
    * Also validates parent-child and child-parent relationships if the other related pages happened to already be captured and cached.
    *
-   * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.Cache)
+   * @see  #capturePage(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.Cache)
    * @see  PageContext
    */
   public static Page capturePage(
@@ -267,7 +267,7 @@ public final class CapturePage {
    *
    * @return  map from pageRef to page, with iteration order equal to the provided pageRefs parameter.
    *
-   * @see  #capturePage(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.servlet.CaptureLevel)
+   * @see  #capturePage(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.PageReferrer, com.semanticcms.core.servlet.CaptureLevel)
    */
   public static Map<PageRef, Page> capturePages(
       final ServletContext servletContext,
@@ -367,7 +367,7 @@ public final class CapturePage {
   /**
    * Captures multiple pages in the current page context.
    *
-   * @see  #capturePages(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.util.Set, com.semanticcms.core.servlet.CaptureLevel)
+   * @see  #capturePages(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, java.util.Set, com.semanticcms.core.servlet.CaptureLevel)
    * @see  PageContext
    */
   public static Map<PageRef, Page> capturePages(
@@ -428,7 +428,7 @@ public final class CapturePage {
   }
 
   /**
-   * @see  #traversePagesAnyOrder(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.CapturePage.PageHandler, com.semanticcms.core.servlet.CapturePage.TraversalEdges, com.semanticcms.core.servlet.CapturePage.EdgeFilter)
+   * @see  #traversePagesAnyOrder(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.CapturePage.PageHandler, com.semanticcms.core.servlet.CapturePage.TraversalEdges, com.semanticcms.core.servlet.CapturePage.EdgeFilter)
    */
   public static <T> T traversePagesAnyOrder(
       ServletContext servletContext,
@@ -788,7 +788,7 @@ public final class CapturePage {
   }
 
   /**
-   * @see  #traversePagesDepthFirst(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.CapturePage.PageDepthHandler, com.semanticcms.core.servlet.CapturePage.TraversalEdges, com.semanticcms.core.servlet.CapturePage.EdgeFilter, com.semanticcms.core.servlet.CapturePage.PageDepthHandler)
+   * @see  #traversePagesDepthFirst(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page, com.semanticcms.core.servlet.CaptureLevel, com.semanticcms.core.servlet.CapturePage.PageDepthHandler, com.semanticcms.core.servlet.CapturePage.TraversalEdges, com.semanticcms.core.servlet.CapturePage.EdgeFilter, com.semanticcms.core.servlet.CapturePage.PageDepthHandler)
    */
   public static <T> T traversePagesDepthFirst(
       ServletContext servletContext,

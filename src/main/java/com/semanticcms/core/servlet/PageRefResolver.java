@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -30,10 +30,10 @@ import com.aoapps.net.URIResolver;
 import com.aoapps.servlet.http.Dispatcher;
 import com.semanticcms.core.model.Book;
 import com.semanticcms.core.model.PageRef;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper utilities for resolving PageRefs.
@@ -49,7 +49,7 @@ public final class PageRefResolver {
    * Finds the path to the current page.
    * The current page must be in a Book.
    *
-   * @see  #getCurrentPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, boolean)
+   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, boolean)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request) throws ServletException {
     return getCurrentPageRef(servletContext, request, true);
@@ -63,7 +63,7 @@ public final class PageRefResolver {
    *                    When {@code true}, a {@link ServletException} is thrown.
    *                    When {@code false}, {@code null} is returned.
    *
-   * @see  #getCurrentPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest)
+   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request, boolean requireBook) throws ServletException {
     String pagePath = Dispatcher.getCurrentPagePath(request);
@@ -138,7 +138,7 @@ public final class PageRefResolver {
   /**
    * Gets a PageRef in the current page context.
    *
-   * @see  #getPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
+   * @see  #getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
    * @see  PageContext
    */
   public static PageRef getPageRef(String book, String path) throws ServletException, MalformedURLException {

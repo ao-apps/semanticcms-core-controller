@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2013, 2014, 2015, 2016, 2017, 2019, 2020, 2021, 2022, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -28,15 +28,15 @@ import com.aoapps.lang.NullArgumentException;
 import com.aoapps.servlet.attribute.ScopeEE;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Captures all pages recursively and builds an index of pages
@@ -241,7 +241,7 @@ public class PageIndex {
    *
    * @param  id  optional, id not added when null or empty
    *
-   * @see  #getRefIdInPage(javax.servlet.http.HttpServletRequest, com.semanticcms.core.model.Page, java.lang.String)
+   * @see  #getRefIdInPage(jakarta.servlet.http.HttpServletRequest, com.semanticcms.core.model.Page, java.lang.String)
    */
   public static void appendIdInPage(PageIndex pageIndex, Page page, String id, Appendable out) throws IOException {
     if (pageIndex != null && page != null) {
