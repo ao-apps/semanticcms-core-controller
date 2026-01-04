@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
+ * Copyright (C) 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -37,6 +37,11 @@ import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.model.ParentRef;
 import com.semanticcms.core.renderer.Renderer;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -48,11 +53,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -389,7 +389,7 @@ public class SemanticCMS {
    * Consider using with autogit modules.</p>
    *
    * @see  #getPublishedBook(java.lang.String)
-   * @see  #getPublishedBook(javax.servlet.http.HttpServletRequest)
+   * @see  #getPublishedBook(jakarta.servlet.http.HttpServletRequest)
    */
   public Map<Path, Book> getPublishedBooks() {
     return unmodifiablePublishedBooks;
@@ -412,7 +412,7 @@ public class SemanticCMS {
    * TODO: How to return null at local-but-not-published books.</pre>
    *
    * @see  #getPublishedBooks()
-   * @see  #getPublishedBook(javax.servlet.http.HttpServletRequest)
+   * @see  #getPublishedBook(jakarta.servlet.http.HttpServletRequest)
    */
   public Book getPublishedBook(String servletPath) {
     // TODO: Was the old iterative search through all books actually faster?  Worth benchmarking?
@@ -449,7 +449,7 @@ public class SemanticCMS {
    * <p>Please note the book may be {@link Book#isAccessible() inaccessible}.</p>
    *
    * @see  #getPublishedBooks()
-   * @see  Dispatcher#getCurrentPagePath(javax.servlet.http.HttpServletRequest)
+   * @see  Dispatcher#getCurrentPagePath(jakarta.servlet.http.HttpServletRequest)
    * @see  #getPublishedBook(java.lang.String)
    */
   public Book getPublishedBook(HttpServletRequest request) {
@@ -506,9 +506,9 @@ public class SemanticCMS {
    * A shared executor available to all components.
    *
    * <p>Consider selecting concurrent or sequential implementations based on overall system load.
-   * See {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}.</p>
+   * See {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}.</p>
    *
-   * @see  ConcurrencyCoordinator#isConcurrentProcessingRecommended(javax.servlet.ServletRequest)
+   * @see  ConcurrencyCoordinator#isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)
    */
   public Executors getExecutors() {
     return executors;

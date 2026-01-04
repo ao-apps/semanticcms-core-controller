@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2018, 2019, 2020, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2017, 2018, 2019, 2020, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -35,16 +35,16 @@ import com.semanticcms.core.renderer.Renderer;
 import com.semanticcms.core.resources.Resource;
 import com.semanticcms.core.resources.ResourceConnection;
 import com.semanticcms.core.resources.ResourceStore;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * The main SemanticCMS controller.  This handles the request, serves resources,
@@ -101,7 +101,7 @@ public class Controller implements Filter {
    * Passes the request, unaltered, for direct processing by the local servlet container.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation simply calls {@link FilterChain#doFilter(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}</p>
+   * This default implementation simply calls {@link FilterChain#doFilter(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse)}</p>
    */
   protected void doPassThrough(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     chain.doFilter(request, response);
@@ -112,7 +112,7 @@ public class Controller implements Filter {
    * or response is not an {@link HttpServletResponse}.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation will call {@link #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
+   * This default implementation will call {@link #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
    * when the servlet context init parameter named {@link #NON_HTTP_PASS_THROUGH_INIT_PARAM}
    * exists and equals {@code true}.  Otherwise, throws {@link ServletException} indicating
    * the request is not HTTP.</p>
@@ -201,8 +201,8 @@ public class Controller implements Filter {
    * Called for HTTP requests.
    *
    * @see  #getPublishedBook(com.semanticcms.core.controller.SemanticCMS, java.lang.String)
-   * @see  #doNotPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String)
-   * @see  #doPublishedBook(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
+   * @see  #doNotPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String)
+   * @see  #doPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
    */
   protected void doHttp(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
     SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
@@ -271,13 +271,13 @@ public class Controller implements Filter {
    * Called for HTTP requests that do not correspond to a published book and have no local book.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation will call {@link #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)}
+   * This default implementation will call {@link #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
    * when the servlet context init parameter named {@link #NO_BOOK_PASS_THROUGH_INIT_PARAM}
-   * does not exist or does not equal {@code false}.  Otherwise, calls {@link #doNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)}.</p>
+   * does not exist or does not equal {@code false}.  Otherwise, calls {@link #doNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.</p>
    *
    * @see  #NO_BOOK_PASS_THROUGH_INIT_PARAM
-   * @see  #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
-   * @see  #doMethodCheckNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+   * @see  #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
+   * @see  #doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndNotLocalBook(
       HttpServletRequest request,
@@ -317,10 +317,10 @@ public class Controller implements Filter {
   /**
    * Called for HTTP requests that do not correspond to a published book but have a local book.
    *
-   * @see  #isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
-   * @see  #isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
-   * @see  #doPassThrough(javax.servlet.ServletRequest, javax.servlet.ServletResponse, javax.servlet.FilterChain)
-   * @see  #doMethodCheckNotFound(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+   * @see  #isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  #isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
+   * @see  #doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndLocalBook(
       HttpServletRequest request,
@@ -398,8 +398,8 @@ public class Controller implements Filter {
   /**
    * Called for HTTP requests that map onto a published book and are not GET, HEAD, or OPTIONS method.
    *
-   * @see  #isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
-   * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, javax.servlet.http.HttpServletRequest)
+   * @see  #isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
    */
   protected void doPublishedBookOtherMethod(
       HttpServletRequest request,
@@ -617,7 +617,7 @@ public class Controller implements Filter {
    * and has page found.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation calls {@link RendererServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.renderer.Renderer, com.semanticcms.core.model.Page)}</p>
+   * This default implementation calls {@link RendererServlet#dispatch(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.renderer.Renderer, com.semanticcms.core.model.Page)}</p>
    */
   protected void doRenderer(
       HttpServletRequest request,
@@ -779,7 +779,7 @@ public class Controller implements Filter {
 
   /**
    * <b>Implementation Note:</b><br>
-   * This default implementation calls {@link ResourceServlet#dispatch(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}.
+   * This default implementation calls {@link ResourceServlet#dispatch(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, com.semanticcms.core.resources.ResourceConnection)}.
    */
   protected void doPublishedBookResourceExistsGetHead(
       HttpServletRequest request,

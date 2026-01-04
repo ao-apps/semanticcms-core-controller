@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -26,13 +26,13 @@ package com.semanticcms.core.controller;
 import com.aoapps.concurrent.Executor;
 import com.aoapps.servlet.attribute.ScopeEE;
 import com.aoapps.servlet.filter.CountConcurrencyListener;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletRequestAttributeEvent;
-import javax.servlet.ServletRequestAttributeListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletRequestAttributeEvent;
+import jakarta.servlet.ServletRequestAttributeListener;
+import jakarta.servlet.annotation.WebListener;
 
 /**
  * Determines if concurrent processing is recommended for the current request.
@@ -118,7 +118,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
    * Determines if concurrent subrequests are currently allowed and advised for the given request.
    * <ol>
    * <li>Concurrent subrequests must be enabled: {@link SemanticCMS#getConcurrentSubrequests()}</li>
-   * <li>Request concurrency must be less than the executor per-processor thread limit: {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}</li>
+   * <li>Request concurrency must be less than the executor per-processor thread limit: {@link #isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}</li>
    * </ol>
    */
   public static boolean useConcurrentSubrequests(ServletRequest request) {
@@ -131,7 +131,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
 
   /**
    * Gets the executor to use for per-processor tasks.
-   * If {@link #isConcurrentProcessingRecommended(javax.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
+   * If {@link #isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
    * otherwise is {@link Executors#getSequential()}
    */
   public static Executor getRecommendedExecutor(ServletContext servletContext, ServletRequest request) {

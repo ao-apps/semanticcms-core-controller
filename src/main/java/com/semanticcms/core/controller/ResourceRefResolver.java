@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-controller - Serves SemanticCMS content from a Servlet environment.
- * Copyright (C) 2017, 2019, 2021, 2022, 2024  AO Industries, Inc.
+ * Copyright (C) 2017, 2019, 2021, 2022, 2024, 2025, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -32,11 +32,11 @@ import com.aoapps.servlet.http.Dispatcher;
 import com.semanticcms.core.model.BookRef;
 import com.semanticcms.core.model.ResourceRef;
 import com.semanticcms.core.pages.local.PageContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper utilities for resolving {@link ResourceRef ResourceRefs}.
@@ -66,7 +66,7 @@ public final class ResourceRefResolver {
    * @throws ServletException If no book provided and the current page is not within a book's content.
    *
    * @see  #getResourceRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
-   * @see  PageRefResolver#getPageRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  PageRefResolver#getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
   public static ResourceRef getResourceRef(
       ServletContext servletContext,
@@ -142,7 +142,7 @@ public final class ResourceRefResolver {
   /**
    * Gets a {@link ResourceRef} in the current {@link PageContext page context}.
    *
-   * @see  #getResourceRef(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  #getResourceRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    * @see  PageContext
    * @see  PageRefResolver#getPageRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
