@@ -1,6 +1,6 @@
 /*
  * semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
- * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022  AO Industries, Inc.
+ * Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2026  AO Industries, Inc.
  *     support@aoindustries.com
  *     7262 Bull Pen Cir
  *     Mobile, AL 36695
@@ -71,7 +71,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
       assert CONCURRENT_PROCESSING_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
       assert CONCURRENT_SUBREQUESTS_RECOMMENDED_REQUEST_ATTRIBUTE.context(request).get() == null;
 
-      // One single-CPU system, preferredConcurrency is 1 and concurrency will never be done
+      // On single-CPU systems, preferredConcurrency is 1 and concurrency will never be done
       boolean concurrentProcessingRecommended = newConcurrency < preferredConcurrency;
       boolean concurrentSubrequestsRecommended = concurrentProcessingRecommended && concurrentSubrequests;
 
