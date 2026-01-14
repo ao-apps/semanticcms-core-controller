@@ -115,10 +115,10 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
       <plugin>
         <groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId>
         <configuration>
-          <ignoredDependencies>
-            <!-- No "module-info.java" in some release builds -->
+          <usedDependencies>
+            <!-- Javadoc-only -->
             <dependency>com.aoapps:ao-hodgepodge</dependency>
-          </ignoredDependencies>
+          </usedDependencies>
         </configuration>
       </plugin>
       <plugin>
