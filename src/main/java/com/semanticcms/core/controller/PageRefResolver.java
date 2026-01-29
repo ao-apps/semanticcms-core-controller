@@ -54,7 +54,7 @@ public final class PageRefResolver {
    * Finds the path to the current page.
    * The current page must be in a Book.
    *
-   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, boolean)
+   * @see  PageRefResolver#getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, boolean)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request) throws ServletException {
     return getCurrentPageRef(servletContext, request, true);
@@ -68,7 +68,7 @@ public final class PageRefResolver {
    *                    When {@code true}, a {@link ServletException} is thrown.
    *                    When {@code false}, {@code null} is returned.
    *
-   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest)
+   * @see  PageRefResolver#getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request, boolean requireBook) throws ServletException {
     String pagePath = Dispatcher.getCurrentPagePath(request);
@@ -110,7 +110,7 @@ public final class PageRefResolver {
    *
    * @throws ServletException If no book provided and the current page is not within a book's content.
    *
-   * @see  #getPageRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  PageRefResolver#getPageRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    * @see  ResourceRefResolver#getResourceRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
   public static PageRef getPageRef(
@@ -183,7 +183,7 @@ public final class PageRefResolver {
   /**
    * Gets a {@link PageRef} in the current {@link PageContext page context}.
    *
-   * @see  #getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  PageRefResolver#getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    * @see  PageContext
    * @see  ResourceRefResolver#getResourceRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */

@@ -112,8 +112,8 @@ public class Controller implements Filter {
    * or response is not an {@link HttpServletResponse}.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation will call {@link #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
-   * when the servlet context init parameter named {@link #NON_HTTP_PASS_THROUGH_INIT_PARAM}
+   * This default implementation will call {@link Controller#doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
+   * when the servlet context init parameter named {@link Controller#NON_HTTP_PASS_THROUGH_INIT_PARAM}
    * exists and equals {@code true}.  Otherwise, throws {@link ServletException} indicating
    * the request is not HTTP.</p>
    */
@@ -200,9 +200,9 @@ public class Controller implements Filter {
   /**
    * Called for HTTP requests.
    *
-   * @see  #getPublishedBook(com.semanticcms.core.controller.SemanticCMS, java.lang.String)
-   * @see  #doNotPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String)
-   * @see  #doPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
+   * @see  Controller#getPublishedBook(com.semanticcms.core.controller.SemanticCMS, java.lang.String)
+   * @see  Controller#doNotPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String)
+   * @see  Controller#doPublishedBook(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse, jakarta.servlet.FilterChain, com.semanticcms.core.controller.SemanticCMS, java.lang.String, com.semanticcms.core.controller.Book, com.aoapps.net.Path)
    */
   protected void doHttp(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
     SemanticCMS semanticCms = SemanticCMS.getInstance(servletContext);
@@ -271,13 +271,13 @@ public class Controller implements Filter {
    * Called for HTTP requests that do not correspond to a published book and have no local book.
    *
    * <p><b>Implementation Note:</b><br>
-   * This default implementation will call {@link #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
-   * when the servlet context init parameter named {@link #NO_BOOK_PASS_THROUGH_INIT_PARAM}
-   * does not exist or does not equal {@code false}.  Otherwise, calls {@link #doNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.</p>
+   * This default implementation will call {@link Controller#doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)}
+   * when the servlet context init parameter named {@link Controller#NO_BOOK_PASS_THROUGH_INIT_PARAM}
+   * does not exist or does not equal {@code false}.  Otherwise, calls {@link Controller#doNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)}.</p>
    *
-   * @see  #NO_BOOK_PASS_THROUGH_INIT_PARAM
-   * @see  #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
-   * @see  #doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
+   * @see  Controller#NO_BOOK_PASS_THROUGH_INIT_PARAM
+   * @see  Controller#doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
+   * @see  Controller#doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndNotLocalBook(
       HttpServletRequest request,
@@ -317,10 +317,10 @@ public class Controller implements Filter {
   /**
    * Called for HTTP requests that do not correspond to a published book but have a local book.
    *
-   * @see  #isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
-   * @see  #isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
-   * @see  #doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
-   * @see  #doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
+   * @see  Controller#isLocalBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  Controller#isLocalBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  Controller#doPassThrough(jakarta.servlet.ServletRequest, jakarta.servlet.ServletResponse, jakarta.servlet.FilterChain)
+   * @see  Controller#doMethodCheckNotFound(jakarta.servlet.http.HttpServletRequest, jakarta.servlet.http.HttpServletResponse)
    */
   protected void doNotPublishedBookAndLocalBook(
       HttpServletRequest request,
@@ -398,8 +398,8 @@ public class Controller implements Filter {
   /**
    * Called for HTTP requests that map onto a published book and are not GET, HEAD, or OPTIONS method.
    *
-   * @see  #isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
-   * @see  #isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  Controller#isPublishedBookProtected(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
+   * @see  Controller#isPublishedBookPassThroughEnabled(com.semanticcms.core.controller.Book, com.aoapps.net.Path, jakarta.servlet.http.HttpServletRequest)
    */
   protected void doPublishedBookOtherMethod(
       HttpServletRequest request,

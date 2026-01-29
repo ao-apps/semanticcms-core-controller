@@ -65,7 +65,7 @@ public final class ResourceRefResolver {
    *
    * @throws ServletException If no book provided and the current page is not within a book's content.
    *
-   * @see  #getResourceRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  ResourceRefResolver#getResourceRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    * @see  PageRefResolver#getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */
   public static ResourceRef getResourceRef(
@@ -142,7 +142,7 @@ public final class ResourceRefResolver {
   /**
    * Gets a {@link ResourceRef} in the current {@link PageContext page context}.
    *
-   * @see  #getResourceRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
+   * @see  ResourceRefResolver#getResourceRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    * @see  PageContext
    * @see  PageRefResolver#getPageRef(com.aoapps.net.DomainName, com.aoapps.net.Path, java.lang.String)
    */

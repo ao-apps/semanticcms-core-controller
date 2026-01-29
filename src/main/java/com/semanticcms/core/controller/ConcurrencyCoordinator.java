@@ -118,7 +118,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
    * Determines if concurrent subrequests are currently allowed and advised for the given request.
    * <ol>
    * <li>Concurrent subrequests must be enabled: {@link SemanticCMS#getConcurrentSubrequests()}</li>
-   * <li>Request concurrency must be less than the executor per-processor thread limit: {@link #isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}</li>
+   * <li>Request concurrency must be less than the executor per-processor thread limit: {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}</li>
    * </ol>
    */
   public static boolean useConcurrentSubrequests(ServletRequest request) {
@@ -131,7 +131,7 @@ public class ConcurrencyCoordinator implements ServletContextListener, ServletRe
 
   /**
    * Gets the executor to use for per-processor tasks.
-   * If {@link #isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
+   * If {@link ConcurrencyCoordinator#isConcurrentProcessingRecommended(jakarta.servlet.ServletRequest)}, is {@link Executors#getPerProcessor()},
    * otherwise is {@link Executors#getSequential()}
    */
   public static Executor getRecommendedExecutor(ServletContext servletContext, ServletRequest request) {

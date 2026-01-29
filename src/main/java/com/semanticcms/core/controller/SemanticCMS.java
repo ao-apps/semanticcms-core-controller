@@ -73,7 +73,7 @@ public class SemanticCMS {
 
   /**
    * Exposes the application context as an application-scope {@link SemanticCMS} instance named
-   * "{@link #APPLICATION_ATTRIBUTE_NAME}".
+   * "{@link SemanticCMS#APPLICATION_ATTRIBUTE_NAME}".
    */
   @WebListener("Exposes the application context as an application-scope SemanticCMS instance named \"" + APPLICATION_ATTRIBUTE_NAME + "\".")
   public static class Initializer implements ServletContextListener {
@@ -337,10 +337,10 @@ public class SemanticCMS {
 
   /**
    * Gets the mapping of all configured books, including those that are not
-   * {@link #getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
+   * {@link SemanticCMS#getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
    *
-   * @see  #getBook(com.semanticcms.core.model.BookRef)
-   * @see  #getBook(com.aoapps.net.DomainName, com.aoapps.net.Path)
+   * @see  SemanticCMS#getBook(com.semanticcms.core.model.BookRef)
+   * @see  SemanticCMS#getBook(com.aoapps.net.DomainName, com.aoapps.net.Path)
    */
   public Map<BookRef, Book> getBooks() {
     return unmodifiableBooks;
@@ -348,11 +348,11 @@ public class SemanticCMS {
 
   /**
    * Gets a book given its reference, including those that are not
-   * {@link #getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
+   * {@link SemanticCMS#getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
    *
    * @throws  NoSuchElementException  when book not found
    *
-   * @see  #getBooks()
+   * @see  SemanticCMS#getBooks()
    */
   public Book getBook(BookRef bookRef) throws NoSuchElementException {
     Book book = books.get(bookRef);
@@ -364,11 +364,11 @@ public class SemanticCMS {
 
   /**
    * Gets a book given its domain and name, including those that are not
-   * {@link #getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
+   * {@link SemanticCMS#getPublishedBooks() published} and/or {@link Book#isAccessible() inaccessible}.
    *
    * @throws  NoSuchElementException  when book not found
    *
-   * @see  #getBook(com.semanticcms.core.model.BookRef)
+   * @see  SemanticCMS#getBook(com.semanticcms.core.model.BookRef)
    */
   public Book getBook(DomainName domain, Path path) throws NoSuchElementException {
     return getBook(new BookRef(domain, path));
@@ -388,8 +388,8 @@ public class SemanticCMS {
    * but at the cost of the two versions may get out of sync or be deployed separately.
    * Consider using with autogit modules.</p>
    *
-   * @see  #getPublishedBook(java.lang.String)
-   * @see  #getPublishedBook(jakarta.servlet.http.HttpServletRequest)
+   * @see  SemanticCMS#getPublishedBook(java.lang.String)
+   * @see  SemanticCMS#getPublishedBook(jakarta.servlet.http.HttpServletRequest)
    */
   public Map<Path, Book> getPublishedBooks() {
     return unmodifiablePublishedBooks;
@@ -411,8 +411,8 @@ public class SemanticCMS {
    * <pre>TODO: Support mount point different than name?
    * TODO: How to return null at local-but-not-published books.</pre>
    *
-   * @see  #getPublishedBooks()
-   * @see  #getPublishedBook(jakarta.servlet.http.HttpServletRequest)
+   * @see  SemanticCMS#getPublishedBooks()
+   * @see  SemanticCMS#getPublishedBook(jakarta.servlet.http.HttpServletRequest)
    */
   public Book getPublishedBook(String servletPath) {
     // TODO: Was the old iterative search through all books actually faster?  Worth benchmarking?
@@ -448,9 +448,9 @@ public class SemanticCMS {
    *
    * <p>Please note the book may be {@link Book#isAccessible() inaccessible}.</p>
    *
-   * @see  #getPublishedBooks()
+   * @see  SemanticCMS#getPublishedBooks()
    * @see  Dispatcher#getCurrentPagePath(jakarta.servlet.http.HttpServletRequest)
-   * @see  #getPublishedBook(java.lang.String)
+   * @see  SemanticCMS#getPublishedBook(java.lang.String)
    */
   public Book getPublishedBook(HttpServletRequest request) {
     return getPublishedBook(Dispatcher.getCurrentPagePath(request));
@@ -470,7 +470,7 @@ public class SemanticCMS {
    * <p>The root book will always be {@link Book#isAccessible() accessible}.
    * TODO: Can this be enforced in the XML Schema for books.xml?</p>
    *
-   * <p>The root book may or may not be {@link #getPublishedBooks() published} by the local
+   * <p>The root book may or may not be {@link SemanticCMS#getPublishedBooks() published} by the local
    * server.</p>
    */
   public Book getRootBook() {
@@ -541,7 +541,7 @@ public class SemanticCMS {
    *
    * <p>The renderers are ordered by suffix length descending, then suffix case-insensitive ascending.</p>
    *
-   * @see  #getRendererAndPath(com.aoapps.net.Path)
+   * @see  SemanticCMS#getRendererAndPath(com.aoapps.net.Path)
    */
   public SortedMap<String, Renderer> getRenderers() {
     // Not synchronizing renderers where because they are normally only set on application start-up
