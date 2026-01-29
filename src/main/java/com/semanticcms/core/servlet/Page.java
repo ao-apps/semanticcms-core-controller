@@ -309,14 +309,14 @@ public class Page {
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Page.Body)
+   * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
    */
   public void invoke() throws ServletException, IOException, SkipPageException {
     invoke((Body) null);
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Page.Body)
+   * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
    */
   public void invoke(final PageContextBody body) throws ServletException, IOException, SkipPageException {
     invoke(
@@ -327,7 +327,7 @@ public class Page {
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Page.Body)
+   * @see  Page#invoke(com.semanticcms.core.servlet.Page.Body)
    */
   public void invoke(final PageContextNoPageBody body) throws ServletException, IOException, SkipPageException {
     invoke(

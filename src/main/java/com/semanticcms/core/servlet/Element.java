@@ -105,7 +105,7 @@ public abstract class Element<E extends com.semanticcms.core.model.Element> impl
   /**
    * Adds this element to the current page, if part of a page.
    * Sets this element as the current element.
-   * Then, if not capturing or capturing META or higher, calls {@link #doBody}
+   * Then, if not capturing or capturing META or higher, calls {@link Element#doBody}
    *
    * <p>Also establishes a new {@link PageContext}.</p>
    *
@@ -166,14 +166,14 @@ public abstract class Element<E extends com.semanticcms.core.model.Element> impl
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Element.Body)
+   * @see  Element#invoke(com.semanticcms.core.servlet.Element.Body)
    */
   public void invoke() throws ServletException, IOException, SkipPageException {
     invoke((Body<? super E>) null);
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Element.Body)
+   * @see  Element#invoke(com.semanticcms.core.servlet.Element.Body)
    */
   public void invoke(final PageContextBody<? super E> body) throws ServletException, IOException, SkipPageException {
     invoke(
@@ -182,7 +182,7 @@ public abstract class Element<E extends com.semanticcms.core.model.Element> impl
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Element.Body)
+   * @see  Element#invoke(com.semanticcms.core.servlet.Element.Body)
    */
   public void invoke(final PageContextNoElementBody body) throws ServletException, IOException, SkipPageException {
     invoke(

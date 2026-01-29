@@ -118,7 +118,7 @@ public abstract class View implements Comparable<View> {
   /**
    * {@inheritDoc}
    *
-   * @see  #getDisplay()
+   * @see  View#getDisplay()
    */
   @Override
   public String toString() {
@@ -220,7 +220,7 @@ public abstract class View implements Comparable<View> {
    * Gets the canonical URL for the given page in this view.
    * Can not get canonical URLs for missing books.
    * This might be called even when a page is not applicable to this view, such as when browing to an empty TODO list.
-   * By default, {@link #getLinkParams(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page) link parameters}
+   * By default, {@link View#getLinkParams(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.model.Page) link parameters}
    * are not added.
    *
    * <p>This URL is absolute and has already been response encoded.</p>
@@ -358,9 +358,9 @@ public abstract class View implements Comparable<View> {
    * in the order they should be added.
    *
    * <p>Please note, that any links to stylesheets here are never optimized.  Please
-   * prefer {@link #configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)}.</p>
+   * prefer {@link View#configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)}.</p>
    *
-   * @see  #configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)
+   * @see  View#configureResources(javax.servlet.ServletContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, com.semanticcms.core.servlet.Theme, com.semanticcms.core.model.Page, com.aoapps.web.resources.registry.Registry)
    */
   public Collection<Link> getLinks(
       ServletContext servletContext,

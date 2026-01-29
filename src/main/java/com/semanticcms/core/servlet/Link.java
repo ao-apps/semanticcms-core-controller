@@ -253,14 +253,14 @@ public class Link {
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Link.Body)
+   * @see  Link#invoke(com.semanticcms.core.servlet.Link.Body)
    */
   public void invoke() throws ServletException, IOException, SkipPageException {
     invoke((Body) null);
   }
 
   /**
-   * @see  #invoke(com.semanticcms.core.servlet.Link.Body)
+   * @see  Link#invoke(com.semanticcms.core.servlet.Link.Body)
    */
   public void invoke(PageContextBody body) throws ServletException, IOException, SkipPageException {
     invoke(

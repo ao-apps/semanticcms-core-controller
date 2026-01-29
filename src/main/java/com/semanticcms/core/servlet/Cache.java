@@ -137,7 +137,7 @@ public abstract class Cache {
   /**
    * Sets a cache attribute.
    *
-   * @see  #removeAttribute(java.lang.String)  Setting to a null value is equivalent to calling removeAttribute.
+   * @see  Cache#removeAttribute(java.lang.String)  Setting to a null value is equivalent to calling removeAttribute.
    */
   public abstract void setAttribute(String key, Object value);
 

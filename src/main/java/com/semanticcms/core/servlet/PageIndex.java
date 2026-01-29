@@ -90,7 +90,7 @@ public class PageIndex {
    *
    * @param  id  optional, id not added when null or empty
    *
-   * @see  #appendIdInPage(java.lang.Integer, java.lang.String, java.lang.Appendable)
+   * @see  PageIndex#appendIdInPage(java.lang.Integer, java.lang.String, java.lang.Appendable)
    */
   public static String getRefId(Integer index, String id) {
     if (index != null) {
@@ -174,7 +174,7 @@ public class PageIndex {
    *
    * @param  id  optional, id not added when null or empty
    *
-   * @see  #appendIdInPage(com.semanticcms.core.servlet.PageIndex, com.semanticcms.core.model.Page, java.lang.String, java.lang.Appendable)
+   * @see  PageIndex#appendIdInPage(com.semanticcms.core.servlet.PageIndex, com.semanticcms.core.model.Page, java.lang.String, java.lang.Appendable)
    */
   public static String getRefIdInPage(
       PageIndex pageIndex,
@@ -205,7 +205,7 @@ public class PageIndex {
    *
    * @param  id  optional, id not added when null or empty
    *
-   * @see  #appendIdInPage(com.semanticcms.core.servlet.PageIndex, com.semanticcms.core.model.Page, java.lang.String, java.lang.Appendable)
+   * @see  PageIndex#appendIdInPage(com.semanticcms.core.servlet.PageIndex, com.semanticcms.core.model.Page, java.lang.String, java.lang.Appendable)
    */
   public static String getRefIdInPage(
       HttpServletRequest request,
@@ -241,7 +241,7 @@ public class PageIndex {
    *
    * @param  id  optional, id not added when null or empty
    *
-   * @see  #getRefIdInPage(javax.servlet.http.HttpServletRequest, com.semanticcms.core.model.Page, java.lang.String)
+   * @see  PageIndex#getRefIdInPage(javax.servlet.http.HttpServletRequest, com.semanticcms.core.model.Page, java.lang.String)
    */
   public static void appendIdInPage(PageIndex pageIndex, Page page, String id, Appendable out) throws IOException {
     if (pageIndex != null && page != null) {
