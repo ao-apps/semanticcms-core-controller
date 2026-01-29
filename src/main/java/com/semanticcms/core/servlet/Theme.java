@@ -87,7 +87,7 @@ public abstract class Theme {
   /**
    * {@inheritDoc}
    *
-   * @see  #getDisplay()
+   * @see  Theme#getDisplay()
    */
   @Override
   public String toString() {

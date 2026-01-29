@@ -49,7 +49,7 @@ public final class PageRefResolver {
    * Finds the path to the current page.
    * The current page must be in a Book.
    *
-   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, boolean)
+   * @see  PageRefResolver#getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, boolean)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request) throws ServletException {
     return getCurrentPageRef(servletContext, request, true);
@@ -63,7 +63,7 @@ public final class PageRefResolver {
    *                    When {@code true}, a {@link ServletException} is thrown.
    *                    When {@code false}, {@code null} is returned.
    *
-   * @see  #getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest)
+   * @see  PageRefResolver#getCurrentPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest)
    */
   public static PageRef getCurrentPageRef(ServletContext servletContext, HttpServletRequest request, boolean requireBook) throws ServletException {
     String pagePath = Dispatcher.getCurrentPagePath(request);
@@ -138,7 +138,7 @@ public final class PageRefResolver {
   /**
    * Gets a PageRef in the current page context.
    *
-   * @see  #getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
+   * @see  PageRefResolver#getPageRef(jakarta.servlet.ServletContext, jakarta.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
    * @see  PageContext
    */
   public static PageRef getPageRef(String book, String path) throws ServletException, MalformedURLException {

@@ -71,7 +71,7 @@ public class SemanticCMS {
 
   /**
    * Exposes the application context as an application-scope {@link SemanticCMS} instance named
-   * "{@link #APPLICATION_ATTRIBUTE_NAME}".
+   * "{@link SemanticCMS#APPLICATION_ATTRIBUTE_NAME}".
    */
   @WebListener("Exposes the application context as an application-scope SemanticCMS instance named \"" + APPLICATION_ATTRIBUTE_NAME + "\".")
   public static class Initializer implements ServletContextListener {
