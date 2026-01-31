@@ -23,6 +23,7 @@
 
 package com.semanticcms.core.servlet;
 
+import com.aoapps.lang.concurrent.CallableE;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -331,8 +332,7 @@ public final class PageContext {
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @FunctionalInterface
-  // TODO: Ex extends Throwable
-  public static interface PageContextCallableSkipE<V, Ex extends Exception> extends Callable<V> {
+  public static interface PageContextCallableSkipE<V, Ex extends Throwable> extends CallableE<V, Throwable> {
     @Override
     V call() throws Ex, ServletException, IOException, SkipPageException;
   }
@@ -400,8 +400,7 @@ public final class PageContext {
   /**
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
-  // TODO: Ex extends Throwable
-  public static <V, Ex extends Exception> V newPageContextSkipE(
+  public static <V, Ex extends Throwable> V newPageContextSkipE(
       ServletContext newServletContext,
       HttpServletRequest newRequest,
       HttpServletResponse newResponse,
@@ -464,7 +463,7 @@ public final class PageContext {
   }
 
   @FunctionalInterface
-  public static interface PageContextCallableSkipEE<V, Ex1 extends Exception, Ex2 extends Exception> extends Callable<V> {
+  public static interface PageContextCallableSkipEE<V, Ex1 extends Throwable, Ex2 extends Throwable> extends CallableE<V, Throwable> {
     @Override
     V call() throws Ex1, Ex2, ServletException, IOException, SkipPageException;
   }
@@ -526,7 +525,7 @@ public final class PageContext {
     }
   }
 
-  public static <V, Ex1 extends Exception, Ex2 extends Exception> V newPageContextSkipEE(
+  public static <V, Ex1 extends Throwable, Ex2 extends Throwable> V newPageContextSkipEE(
       ServletContext newServletContext,
       HttpServletRequest newRequest,
       HttpServletResponse newResponse,

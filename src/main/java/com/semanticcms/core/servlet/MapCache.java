@@ -23,6 +23,7 @@
 
 package com.semanticcms.core.servlet;
 
+import com.aoapps.lang.concurrent.CallableE;
 import com.semanticcms.core.model.ChildRef;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
@@ -199,11 +200,10 @@ abstract class MapCache extends Cache {
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @Override
-  // TODO: Ex extends Throwable
-  public <V, Ex extends Exception> V getAttribute(
+  public <V, Ex extends Throwable> V getAttribute(
       String key,
       Class<V> clazz,
-      Callable<? extends V, Ex> callable
+      CallableE<? extends V, Ex> callable
   ) throws Ex {
     V attribute = getAttribute(key, clazz);
     if (attribute == null) {

@@ -24,6 +24,7 @@
 package com.semanticcms.core.servlet;
 
 import com.aoapps.collections.AoCollections;
+import com.aoapps.lang.concurrent.CallableE;
 import com.semanticcms.core.model.Page;
 import jakarta.servlet.ServletException;
 import java.util.HashMap;
@@ -93,8 +94,7 @@ class SingleThreadCache extends MapCache {
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
   @Override
-  // TODO: Ex extends Throwable
-  public <V, Ex extends Exception> V getAttribute(String key, Class<V> clazz, Callable<? extends V, Ex> callable) throws Ex {
+  public <V, Ex extends Throwable> V getAttribute(String key, Class<V> clazz, CallableE<? extends V, Ex> callable) throws Ex {
     assert assertingThread == Thread.currentThread();
     return super.getAttribute(key, clazz, callable);
   }
