@@ -140,7 +140,7 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+                  <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
                   <type>jar</type>
                   <includes>com/semanticcms/core/servlet/books-1.0.xsd</includes>
                 </artifactItem>
@@ -150,7 +150,7 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
         </executions>
         <dependencies>
           <dependency>
-            <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+            <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
             <type>jar</type>
             <exclusions><exclusion><groupId>*</groupId><artifactId>*</artifactId></exclusion></exclusions>
           </dependency>
@@ -272,7 +272,7 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
         <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-model</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
-        <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+        <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-servlet</artifactId><version>2.0.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
         <groupId>com.semanticcms</groupId><artifactId>semanticcms-news-model</artifactId><version>2.0.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
