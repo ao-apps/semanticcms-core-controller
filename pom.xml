@@ -456,7 +456,7 @@ along with semanticcms-core-controller.  If not, see <https://www.gnu.org/licens
         <groupId>com.aoapps</groupId><artifactId>ao-encoding-servlet</artifactId><version>5.0.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
-        <groupId>com.aoapps</groupId><artifactId>ao-io-buffer</artifactId><version>4.2.0-SNAPSHOT<!-- ${POST-SNAPSHOT} --></version>
+        <groupId>com.aoapps</groupId><artifactId>ao-io-buffer</artifactId><version>4.2.0${POST-SNAPSHOT}</version>
       </dependency>
       <dependency>
         <groupId>com.aoapps</groupId><artifactId>ao-tlds</artifactId><version>2.1.0${POST-SNAPSHOT}</version>
