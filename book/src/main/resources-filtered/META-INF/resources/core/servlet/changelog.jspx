@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 semanticcms-core-servlet - Java API for modeling web page content and relationships in a Servlet environment.
-Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025  AO Industries, Inc.
+Copyright (C) 2016, 2017, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026  AO Industries, Inc.
     support@aoindustries.com
     7262 Bull Pen Cir
     Mobile, AL 36695
@@ -37,9 +37,9 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
     shortTitle="Changelog"
     tocLevels="1"
     datePublished="2016-10-30T18:16:13-05:00"
-    dateModified="2025-07-02T23:05:45Z"
+    dateModified="2026-01-31T23:28:09Z"
   >
-    <c:set var="latestRelease" value="1.20.0" />
+    <c:set var="latestRelease" value="1.21.0" />
     <c:if test="${
       fn:endsWith('@{project.version}', '-SNAPSHOT')
       and !fn:endsWith('@{project.version}', '-POST-SNAPSHOT')
@@ -51,23 +51,32 @@ along with semanticcms-core-servlet.  If not, see <https://www.gnu.org/licenses/
         groupId="@{project.groupId}"
         artifactId="@{documented.artifactId}"
         scmUrl="@{project.scm.url}"
-      >
-        <ul>
-          <li>
-            <p>
-              Find book from servlet path along path boundaries (/) only.
-              For example, a book at "/api" does not contain the servlet at the path "/apidocs/index.html".
-            </p>
-            <p>
-              Furthermore, no longer matches a book with an exact servletPath without a slash separator.
-              Every path within a book is contained after a slash separator, including the top-most index at "/",
-              "/index.jsp", or "/index.jspx".  For example, a book at "/api" does not contain the servlet at the path
-              "/api", but does contain every servlet starting with "/api/" (unless a more specific book matches).
-            </p>
-          </li>
-        </ul>
-      </changelog:release>
+      />
     </c:if>
+
+    <changelog:release
+      projectName="@{documented.name}"
+      version="1.21.0"
+      datePublished="2026-01-31T23:28:09Z"
+      groupId="@{project.groupId}"
+      artifactId="@{documented.artifactId}"
+      scmUrl="@{project.scm.url}"
+    >
+      <ul>
+        <li>
+          <p>
+            Find book from servlet path along path boundaries (/) only.
+            For example, a book at "/api" does not contain the servlet at the path "/apidocs/index.html".
+          </p>
+          <p>
+            Furthermore, no longer matches a book with an exact servletPath without a slash separator.
+            Every path within a book is contained after a slash separator, including the top-most index at "/",
+            "/index.jsp", or "/index.jspx".  For example, a book at "/api" does not contain the servlet at the path
+            "/api", but does contain every servlet starting with "/api/" (unless a more specific book matches).
+          </p>
+        </li>
+      </ul>
+    </changelog:release>
 
     <changelog:release
       projectName="@{documented.name}"
