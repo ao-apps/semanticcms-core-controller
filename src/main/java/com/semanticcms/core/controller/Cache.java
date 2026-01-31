@@ -23,6 +23,7 @@
 
 package com.semanticcms.core.controller;
 
+import com.aoapps.lang.concurrent.CallableE;
 import com.semanticcms.core.model.Page;
 import com.semanticcms.core.model.PageRef;
 import com.semanticcms.core.pages.CaptureLevel;
@@ -179,18 +180,6 @@ public abstract class Cache {
   public abstract void setAttribute(String key, Object value);
 
   /**
-   * Constrains allowed exception type.
-   *
-   * @param  <Ex>  An arbitrary exception type that may be thrown
-   */
-  @FunctionalInterface
-  // TODO: Ex extends Throwable
-  public static interface Callable<V, Ex extends Exception> extends java.util.concurrent.Callable<V> {
-    @Override
-    public V call() throws Ex;
-  }
-
-  /**
    * Gets a cache attribute or null if not in cache.
    */
   public abstract Object getAttribute(String key);
@@ -211,11 +200,10 @@ public abstract class Cache {
    *
    * @param  <Ex>  An arbitrary exception type that may be thrown
    */
-  // TODO: Ex extends Throwable
-  public abstract <V, Ex extends Exception> V getAttribute(
+  public abstract <V, Ex extends Throwable> V getAttribute(
       String key,
       Class<V> clazz,
-      Callable<? extends V, Ex> callable
+      CallableE<? extends V, Ex> callable
   ) throws Ex;
 
   /**
