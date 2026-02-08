@@ -26,13 +26,12 @@ package com.semanticcms.core.servlet;
 import static org.junit.Assert.assertSame;
 
 import com.aoapps.html.any.AnyDocument;
-import com.semanticcms.core.servlet.PageServlet;
 import org.junit.Test;
 
 public class PageServletTest {
 
   @Test
-  public void testEncodingEqualsAnyDocument() throws Exception {
+  public void testEncodingEqualsAnyDocument() {
     assertSame(AnyDocument.ENCODING, PageServlet.ENCODING);
   }
 }
