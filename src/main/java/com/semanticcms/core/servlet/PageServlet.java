@@ -23,7 +23,6 @@
 
 package com.semanticcms.core.servlet;
 
-import com.aoapps.html.any.AnyDocument;
 import com.aoapps.lang.io.ContentType;
 import com.aoapps.servlet.ServletUtil;
 import com.aoapps.servlet.http.HttpServletUtil;
@@ -36,6 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.jsp.SkipPageException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Automatically sets up the Page and the PageContext.
@@ -47,7 +47,10 @@ public abstract class PageServlet extends HttpServlet {
 
   private static final long serialVersionUID = 1L;
 
-  public static final Charset ENCODING = AnyDocument.ENCODING;
+  // Matches AnyDocument.ENCODING
+  // Copied here to avoid picking-up dependency on ao-fluent-html-any.
+  // Value is verified in PageServletTest.java
+  public static final Charset ENCODING = StandardCharsets.UTF_8;
 
   /**
    * @see  com.semanticcms.core.model.Page#getTitle()

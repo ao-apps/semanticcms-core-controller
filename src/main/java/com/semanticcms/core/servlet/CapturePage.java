@@ -29,7 +29,6 @@ import com.aoapps.encoding.Doctype;
 import com.aoapps.encoding.Serialization;
 import com.aoapps.encoding.servlet.DoctypeEE;
 import com.aoapps.encoding.servlet.SerializationEE;
-import com.aoapps.html.any.AnyDocument;
 import com.aoapps.lang.NullArgumentException;
 import com.aoapps.lang.concurrent.ExecutionExceptions;
 import com.aoapps.servlet.ServletUtil;
@@ -181,7 +180,7 @@ public final class CapturePage {
       // Set the content type
       Serialization currentSerialization = SerializationEE.getDefault(servletContext, subRequest);
       SerializationEE.set(subRequest, currentSerialization);
-      ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), AnyDocument.ENCODING);
+      ServletUtil.setContentType(subResponse, currentSerialization.getContentType(), PageServlet.ENCODING);
       // Set the default doctype for all captures
       DoctypeEE.set(subRequest, Doctype.DEFAULT);
       // Set new capture context

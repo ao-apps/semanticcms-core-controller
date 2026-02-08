@@ -53,6 +53,9 @@ binding.setVariable('upstreamProjects', [
   // No Jenkins: <groupId>jakarta.servlet.jsp</groupId><artifactId>jakarta.servlet.jsp-api</artifactId>
   'model', // <groupId>com.semanticcms</groupId><artifactId>semanticcms-core-model</artifactId>
 
+  // Test Direct
+  // No Jenkins: <groupId>junit</groupId><artifactId>junit</artifactId>
+
   // BOM
   '../../oss/jakartaee-web-profile-bom', // <groupId>com.aoapps</groupId><artifactId>jakartaee-web-profile-bom</artifactId>
 ])
